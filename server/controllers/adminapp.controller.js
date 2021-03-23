@@ -1,5 +1,6 @@
 const Actuacion = require('../models/actuacion');
 const Taller = require('../models/taller');
+const Mapa = require('../models/mapa');
 
 const adminappCtrl = {};
 
@@ -78,6 +79,19 @@ adminappCtrl.deleteTaller = async (req, res) => {
     try{
         await Taller.findByIdAndDelete(req.params.id);
         res.status(200).json({message: 'Taller deleted'});
+    }catch (e) {
+        res.status(400).json({message: e.message});
+    }
+};
+
+adminappCtrl.editMapa = async (req, res) => {
+    try{
+        const mapa = {
+            imagen: req.body.imagen,
+            puntos: req.body.puntos,
+        };
+        await Mapa.findByIdAndUpdate(req.params.id,{$set: mapa}, {new:true, useFindAndModify:false});
+        res.status(201).json({message: 'Mapa updated'});
     }catch (e) {
         res.status(400).json({message: e.message});
     }

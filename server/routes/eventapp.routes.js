@@ -8,5 +8,6 @@ router.get('/actuaciones', async (req, res) => {eventAppCtrl.getActuaciones(req,
 router.get('/actuacion/:id', async (req, res) => {eventAppCtrl.getActuacion(req,res);});
 router.get('/talleres',  async (req, res) => {eventAppCtrl.getTalleres(req,res);});
 router.get('/taller/:id',  async (req, res) => {eventAppCtrl.getTaller(req,res);});
+router.get('/mapa/:id',  async (req, res) => {eventAppCtrl.getMapa(req,res);});
 
 module.exports = router;

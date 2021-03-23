@@ -1,5 +1,6 @@
 const Actuacion = require('../models/actuacion');
 const Taller = require('../models/taller');
+const Mapa = require('../models/mapa');
 
 const eventappCtrl = {};
 
@@ -40,6 +41,19 @@ eventappCtrl.getTaller = async (req, res) => {
             res.status(404).json({message: 'Taller not found'});
         }
         res.status(201).json(taller);
+    }catch (e) {
+        res.status(500).json({message: e.message});
+    }
+};
+
+//Get un mapa por id
+eventappCtrl.getMapa = async (req, res) => {
+    try{
+        const mapa = await Mapa.findById(req.params.id);
+        if (mapa == null){
+            res.status(404).json({message: 'Mapa not found'});
+        }
+        res.status(201).json(mapa);
     }catch (e) {
         res.status(500).json({message: e.message});
     }
