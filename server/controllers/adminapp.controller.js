@@ -19,6 +19,31 @@ adminappCtrl.createActuacion = async (req, res) => {
     }
 };
 
+adminappCtrl.editActuacion = async (req, res) => {
+    try{
+        const actuacion = {
+            nombre: req.body.nombre,
+            horario: req.body.horario,
+            artistas: req.body.artistas,
+            descripcion: req.body.descripcion,
+            img: req.body.img
+        };
+        await Taller.findByIdAndUpdate(req.params.id,{$set: actuacion}, {new:true, useFindAndModify:false});
+        res.status(201).json({message: 'Actuacion updated'});
+    }catch (e) {
+        res.status(400).json({message: e.message});
+    }
+};
+
+adminappCtrl.deleteActuacion = async (req, res) => {
+    try{
+        await Actuacion.findByIdAndDelete(req.params.id);
+        res.status(200).json({message: 'Actuacion deleted'});
+    }catch (e) {
+        res.status(400).json({message: e.message});
+    }
+};
+
 adminappCtrl.createTaller = async (req, res) => {
     try{
         const taller = new Taller({
@@ -28,7 +53,31 @@ adminappCtrl.createTaller = async (req, res) => {
             img: req.body.img
         });
         await taller.save();
-        res.status(201).json({message: 'Actuacion creada'})
+        res.status(201).json({message: 'Taller creado'})
+    }catch (e) {
+        res.status(400).json({message: e.message});
+    }
+};
+
+adminappCtrl.editTaller = async (req, res) => {
+    try{
+        const taller = {
+            nombre: req.body.nombre,
+            horario: req.body.horario,
+            descripcion: req.body.descripcion,
+            img: req.body.img
+        };
+        await Taller.findByIdAndUpdate(req.params.id,{$set: taller}, {new:true, useFindAndModify:false});
+        res.status(201).json({message: 'Taller updated'});
+    }catch (e) {
+        res.status(400).json({message: e.message});
+    }
+};
+
+adminappCtrl.deleteTaller = async (req, res) => {
+    try{
+        await Taller.findByIdAndDelete(req.params.id);
+        res.status(200).json({message: 'Taller deleted'});
     }catch (e) {
         res.status(400).json({message: e.message});
     }
