@@ -28,7 +28,7 @@ adminappCtrl.editActuacion = async (req, res) => {
             descripcion: req.body.descripcion,
             img: req.body.img
         };
-        await Taller.findByIdAndUpdate(req.params.id,{$set: actuacion}, {new:true, useFindAndModify:false});
+        await Actuacion.findByIdAndUpdate(req.params.id,{$set: actuacion}, {new:true, useFindAndModify:false});
         res.status(201).json({message: 'Actuacion updated'});
     }catch (e) {
         res.status(400).json({message: e.message});

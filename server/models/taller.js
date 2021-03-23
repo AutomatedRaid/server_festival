@@ -5,8 +5,7 @@ const TallerSchema = new Schema({
     nombre: String,
     horario: String,
     descripcion: String,
-    img: String,
-    id: String
+    img: String
 });
 
 module.exports = mongoose.model('Taller', TallerSchema);

@@ -6,8 +6,7 @@ const ActuacionSchema = new Schema({
     horario: String,
     artistas: [String],
     descripcion: String,
-    img: String,
-    id: String
+    img: String
 });
 
 module.exports = mongoose.model('Actuacion', ActuacionSchema);
