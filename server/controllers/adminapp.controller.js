@@ -97,4 +97,17 @@ adminappCtrl.editMapa = async (req, res) => {
     }
 };
 
+adminappCtrl.createMapa = async (req, res) => {
+    try{
+        const mapa = new Mapa({
+            imagen: req.body.imagen,
+            puntos: req.body.puntos,
+        });
+        await mapa.save();
+        res.status(201).json({message: 'Mapa creado'})
+    }catch (e) {
+        res.status(400).json({message: e.message});
+    }
+};
+
 module.exports = adminappCtrl;
