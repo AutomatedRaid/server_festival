@@ -28,7 +28,8 @@ adminappCtrl.editActuacion = async (req, res) => {
             horario: req.body.horario,
             artistas: req.body.artistas,
             descripcion: req.body.descripcion,
-            img: req.body.img
+            img: req.body.img,
+            img_mapa: req.body.img_mapa
         };
         await Actuacion.findByIdAndUpdate(req.params.id,{$set: actuacion}, {new:true, useFindAndModify:false});
         res.status(201).json({message: 'Actuacion updated'});
@@ -52,7 +53,8 @@ adminappCtrl.createTaller = async (req, res) => {
             nombre: req.body.nombre,
             horario: req.body.horario,
             descripcion: req.body.descripcion,
-            img: req.body.img
+            img: req.body.img,
+            img_mapa: req.body.img_mapa
         });
         await taller.save();
         res.status(201).json({message: 'Taller creado'})
@@ -67,7 +69,8 @@ adminappCtrl.editTaller = async (req, res) => {
             nombre: req.body.nombre,
             horario: req.body.horario,
             descripcion: req.body.descripcion,
-            img: req.body.img
+            img: req.body.img,
+            img_mapa: req.body.img_mapa
         };
         await Taller.findByIdAndUpdate(req.params.id,{$set: taller}, {new:true, useFindAndModify:false});
         res.status(201).json({message: 'Taller updated'});
