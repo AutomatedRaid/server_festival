@@ -11,7 +11,8 @@ adminappCtrl.createActuacion = async (req, res) => {
             horario: req.body.horario,
             artistas: req.body.artistas,
             descripcion: req.body.descripcion,
-            img: req.body.img
+            img: req.body.img,
+            img_mapa: req.body.img_mapa
         });
         await actuacion.save();
         res.status(201).json({message: 'Actuacion creada'})
