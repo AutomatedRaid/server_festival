@@ -48,15 +48,10 @@ eventappCtrl.getTaller = async (req, res) => {
 
 //Get un mapa por id
 eventappCtrl.getMapa = async (req, res) => {
-    try{
-        const mapa = await Mapa.findById(req.params.id);
-        if (mapa == null){
-            res.status(404).json({message: 'Mapa not found'});
-        }
-        res.status(201).json(mapa);
-    }catch (e) {
-        res.status(500).json({message: e.message});
-    }
+    const mapa = await Mapa.find().catch((err) => {
+        res.status(500).json({message: err.message})
+    });
+    res.json(mapa);
 };
 
 module.exports = eventappCtrl;
