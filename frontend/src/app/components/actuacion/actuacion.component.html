@@ -4,15 +4,27 @@
   </div>
 </nav>
 <div class="container">
-  <div class="card" style="padding: 20px">
+  <div class="card" style="padding: 30px">
     <form>
       <div class="input-field input-div">
         <input id="nombre_actuacion" type="text" class="validate">
-        <label for="nombre_actuacion" style="font-size: 1.5em">Nombre actuación</label>
+        <label for="nombre_actuacion" class="text-input">Nombre actuación</label>
       </div>
       <div class="input-field input-div">
-        <input type="text" id="time" class="timepicker">
-        <label for="time">Tiempo inicio</label>
+        <input type="text" id="time-inicio" class="timepicker">
+        <label for="time-inicio" class="text-input">Tiempo inicio</label>
+      </div>
+      <div class="input-field input-div">
+        <input type="text" id="time-fin" class="timepicker">
+        <label for="time-fin" class="text-input">Tiempo Fin</label>
+      </div>
+      <label class="text-input">Actores</label>
+      <div class="input-div chips" style="margin-top: 0px">
+        <input id="actores" placeholder="Nombre actor">
+      </div>
+      <div class="input-field input-div">
+        <textarea type="text" id="descripcion" class="materialize-textarea"></textarea>
+        <label for="descripcion" class="text-input">Descripcion</label>
       </div>
     </form>
   </div>
@@ -20,5 +32,9 @@
 <script>
     $(document).ready(function(){
         $('.timepicker').timepicker();
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+        var elems = document.querySelectorAll('.chips');
+        var instances = M.Chips.init(elems, options);
     });
 </script>
