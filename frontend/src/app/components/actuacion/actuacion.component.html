@@ -30,25 +30,26 @@
         <div class="file-field col s6">
           <div class="btn">
             <span>File</span>
-            <input type="file">
+            <form>
+              <input type="file" id="img-uploader">
+            </form>
           </div>
           <div class="file-path-wrapper">
-            <input class="file-path validate" type="text">
+            <input class="file-path validate" type="text" disabled>
           </div>
         </div>
         <div class="col s6">
           <img src="https://media.istockphoto.com/videos/low-poly-dark-background-video-id850926774?s=640x640"
-               style="width: 100%">
+               style="width: 100%" id="img-preview">
         </div>
       </div>
       <div class="row">
         <div class="file-field input-field col s6">
           <div class="btn">
             <span>File</span>
-            <input type="file">
           </div>
           <div class="file-path-wrapper">
-            <input class="file-path validate" type="text">
+            <input class="file-path validate" type="file" name="imagen">
           </div>
         </div>
         <div class="col s6">
@@ -60,11 +61,13 @@
   </div>
 </div>
 <script>
-    $(document).ready(function () {
-        $('.timepicker').timepicker();
-    });
-    document.addEventListener('DOMContentLoaded', function () {
-        var elems = document.querySelectorAll('.chips');
-        var instances = M.Chips.init(elems, options);
-    });
+  $(document).ready(function () {
+    console.log("ola");
+    console.log('ola');
+    $('.timepicker').timepicker();
+  });
+  document.addEventListener('DOMContentLoaded', function () {
+    var elems = document.querySelectorAll('.chips');
+    var instances = M.Chips.init(elems, options);
+  });
 </script>
