@@ -119,5 +119,6 @@ export class ActuacionComponent implements OnInit {
       }
     );
     console.log(res);
+    console.log(res.data.url)
   }
 }
