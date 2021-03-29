@@ -1,0 +1,70 @@
+<nav>
+  <div class="nav-wrapper" style="padding-left: 5%;padding-right: 5%;">
+    <label class="brand-logo">Evento</label>
+  </div>
+</nav>
+<div class="container">
+  <div class="card" style="padding: 30px">
+    <form>
+      <div class="input-field input-div">
+        <input id="nombre_actuacion" type="text" class="validate">
+        <label for="nombre_actuacion" class="text-input">Nombre taller</label>
+      </div>
+      <div class="input-field input-div">
+        <input type="text" id="time-inicio" class="timepicker">
+        <label for="time-inicio" class="text-input">Hora inicio</label>
+      </div>
+      <div class="input-field input-div">
+        <input type="text" id="time-fin" class="timepicker">
+        <label for="time-fin" class="text-input">Hora Fin</label>
+      </div>
+      <label class="text-input">Actores</label>
+      <div class="input-div chips" style="margin-top: 0px">
+        <input id="actores" placeholder="Nombre actor">
+      </div>
+      <div class="input-field input-div">
+        <textarea type="text" id="descripcion" class="materialize-textarea"></textarea>
+        <label for="descripcion" class="text-input">Descripción</label>
+      </div>
+      <div class="row">
+        <div class="file-field col s6">
+          <div class="btn">
+            <span>File</span>
+            <input type="file">
+          </div>
+          <div class="file-path-wrapper">
+            <input class="file-path validate" type="text">
+          </div>
+        </div>
+        <div class="col s6">
+          <img src="https://media.istockphoto.com/videos/low-poly-dark-background-video-id850926774?s=640x640"
+               style="width: 100%">
+        </div>
+      </div>
+      <div class="row">
+        <div class="file-field input-field col s6">
+          <div class="btn">
+            <span>File</span>
+            <input type="file">
+          </div>
+          <div class="file-path-wrapper">
+            <input class="file-path validate" type="text">
+          </div>
+        </div>
+        <div class="col s6">
+          <img src="https://media.istockphoto.com/videos/low-poly-dark-background-video-id850926774?s=640x640"
+               style="width: 100%">
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<script>
+  $(document).ready(function () {
+    $('.timepicker').timepicker();
+  });
+  document.addEventListener('DOMContentLoaded', function () {
+    var elems = document.querySelectorAll('.chips');
+    var instances = M.Chips.init(elems, options);
+  });
+</script>
