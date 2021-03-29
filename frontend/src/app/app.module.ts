@@ -7,6 +7,7 @@ import { HomeComponent } from './components/home/home.component';
 import { ActuacionComponent } from './components/actuacion/actuacion.component';
 import {FormsModule} from "@angular/forms";
 import { TallerComponent } from './components/taller/taller.component';
+import {HttpClientModule} from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { TallerComponent } from './components/taller/taller.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

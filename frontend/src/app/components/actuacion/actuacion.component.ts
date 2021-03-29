@@ -2,11 +2,12 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, NgForm} from "@angular/forms";
 import {Actuacion} from "../../models/actuacion";
 import axios from 'axios';
+import {EventoService} from "../../services/evento.service";
 
 declare const M: any;
 
 let imageUploader;
-const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/djlgdcqhg/image/upload'
+const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/djlgdcqhg/image/upload';
 const CLOUDINARY_UPLOAD_PRESET = 'rdzzccwc';
 @Component({
   selector: 'app-actuacion',
@@ -25,7 +26,7 @@ export class ActuacionComponent implements OnInit {
   private file1: any;
   private file2: any;
 
-  constructor() {
+  constructor(private eventService: EventoService) {
     this.ngModel = new Actuacion();
   }
 
@@ -42,19 +43,31 @@ export class ActuacionComponent implements OnInit {
     });
   }
 
-  guardarActuacion(actForm: NgForm) {
-    console.log(actForm.value);
-    console.log(this.horaIniciov);
-    console.log(this.horaFinv);
-    this.uploadimg(1);
-    this.uploadimg(2);
+  async guardarActuacion(actForm: NgForm) {
+    if (actForm.value.nombre != '' && actForm.value.descripcion != '' && this.horaFinv != '' && this.horaIniciov != '' && this.file1 != null && this.file2 != null && this.artistas.length > 0) {
+      const actuacion: Actuacion = new Actuacion();
+      actuacion.nombre = actForm.value.nombre;
+      actuacion.horario = this.horaIniciov + this.horaFinv;
+      actuacion.artistas = this.artistas;
+      actuacion.descripcion = actForm.value.descripcion;
+      actuacion.img = await this.uploadimg(1);
+      actuacion.img_mapa = await this.uploadimg(2);
+      this.eventService.postActuacion(actuacion).subscribe(res => {
+        M.toast({html: 'Serie guardada correctamente', classes: 'rounded'});
+      });
+    } else {
+      M.toast({html: 'Debe completar todos los campos primero!', classes: 'rounded'});
+    }
   }
 
   addArtistas(artista: HTMLInputElement) {
     if (artista.value != "" && artista.value != null) {
-      this.artistas.push(artista.value);
+      if (artista.value.length <= 25) {
+        this.artistas.push(artista.value);
       artista.value = "";
-      console.log(this.artistas);
+      }else {
+        M.toast({html: 'Máximo 25 carácteres', classes: 'rounded'});
+      }
     }
   }
 
@@ -62,7 +75,6 @@ export class ActuacionComponent implements OnInit {
     for (let i = 0; i < this.artistas.length; i++) {
       if(this.artistas[i] == a){
         this.artistas.splice(i,1);
-        console.log(this.artistas);
         break;
       }
     }
@@ -81,7 +93,6 @@ export class ActuacionComponent implements OnInit {
       var reader = new FileReader();
       reader.readAsDataURL(event.target.files[0]);
       reader.onload = (eventt) => {
-        console.log(eventt);
         switch (number) {
           case 1:
             this.img = eventt.target.result;
@@ -114,11 +125,9 @@ export class ActuacionComponent implements OnInit {
         },
         onUploadProgress(e) {
           let progress = Math.round((e.loaded * 100.0) / e.total);
-          console.log(progress);
         }
       }
     );
-    console.log(res);
-    console.log(res.data.url)
+    return res.data.url;
   }
 }
