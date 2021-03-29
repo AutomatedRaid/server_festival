@@ -29,7 +29,6 @@ export class ActuacionComponent implements OnInit {
       formData.append('file', file);
       formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
 
-
       const res = await axios.post(
         CLOUDINARY_URL,
         formData,
