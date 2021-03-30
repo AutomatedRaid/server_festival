@@ -55,9 +55,6 @@ export class TallerComponent implements OnInit {
         });
       }
     });
-    if (this.idTaller == null) {
-
-    }
   }
 
   async guardarTaller(actForm: NgForm) {

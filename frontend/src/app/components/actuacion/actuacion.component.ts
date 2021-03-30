@@ -3,6 +3,7 @@ import {NgForm} from "@angular/forms";
 import {Actuacion} from "../../models/actuacion";
 import axios from 'axios';
 import {EventoService} from "../../services/evento.service";
+import {ActivatedRoute, Router} from "@angular/router";
 
 declare const M: any;
 
@@ -26,8 +27,9 @@ export class ActuacionComponent implements OnInit {
   img2: string | ArrayBuffer = 'assets/img-not-found.png';
   private file1: any;
   private file2: any;
+  actuacion: Actuacion;
 
-  constructor(private eventService: EventoService) {
+  constructor(private eventService: EventoService, private route: ActivatedRoute, private router: Router) {
     this.ngModel = new Actuacion();
   }
 
@@ -41,6 +43,15 @@ export class ActuacionComponent implements OnInit {
         twelveHour: false,
         i18n: {cancel: 'Cancelar', done: 'Aceptar'}
       });
+    });
+    this.route.paramMap.subscribe(params => {
+      if (params.has("id")) {
+        console.log(params.get("id"));
+        this.eventService.getActuacion(params.get("id") || "").subscribe(res => {
+          this.actuacion = res as Actuacion;
+          this.inicializarDatos();
+        });
+      }
     });
   }
 
@@ -130,5 +141,21 @@ export class ActuacionComponent implements OnInit {
       }
     );
     return res.data.url;
+  }
+
+  private inicializarDatos() {
+    this.ngModel.nombre = this.actuacion.nombre;
+    this.ngModel.descripcion = this.actuacion.descripcion;
+    this.horaIniciov = this.actuacion.horario.split(' - ')[0];
+    this.horaFinv = this.actuacion.horario.split(' - ')[1];
+    // @ts-ignore
+    this.artistas = this.actuacion.artistas;
+    console.log(this.actuacion.horario);
+    // @ts-ignore
+    this.img = this.actuacion.img;
+    // @ts-ignore
+    this.img2 = this.actuacion.img_mapa;
+    console.log(this.horaIniciov);
+    console.log(this.horaFinv);
   }
 }
