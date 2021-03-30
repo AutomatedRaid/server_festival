@@ -30,6 +30,13 @@ export class EventoService {
     return this.http.get( this.URL_API_EVENT + '/talleres');
   }
 
+  getTaller(id: string) {
+    return this.http.get(this.URL_API_EVENT + `/taller/${id}`);
+  }
+
+  getActuacion(id: string) {
+    return this.http.get(this.URL_API_EVENT + `/actuacion/${id}`);
+  }
   deleteActuacion (_id: string){
     return this.http.delete( this.URL_API_ADMIN + `/actuacion/${_id}` );
   }
