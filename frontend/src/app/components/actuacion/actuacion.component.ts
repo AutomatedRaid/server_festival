@@ -9,6 +9,7 @@ declare const M: any;
 let imageUploader;
 const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/djlgdcqhg/image/upload';
 const CLOUDINARY_UPLOAD_PRESET = 'rdzzccwc';
+
 @Component({
   selector: 'app-actuacion',
   templateUrl: './actuacion.component.html',

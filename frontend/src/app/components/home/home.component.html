@@ -17,35 +17,11 @@
         </tr>
         </thead>
         <tbody>
-        <tr>
-          <td>Actuacion pedro y Julián</td>
-          <td>10:15-11:00</td>
+        <tr *ngFor="let a of actuaciones">
+          <td>{{a.nombre}}</td>
+          <td>{{a.horario}}</td>
           <td style="width: calc(120px - 0.2em)">
-            <div><i class="material-icons" style="margin-left: -1em">create</i><i class="material-icons">delete</i>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>Show de putin</td>
-          <td>11:15-13:00</td>
-          <td style="width: calc(120px - 0.2em)">
-            <div><i class="material-icons" style="margin-left: -1em">create</i><i class="material-icons">delete</i>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>Show de PocoTu</td>
-          <td>14:30-15:00</td>
-          <td style="width: calc(120px - 0.2em)">
-            <div><i class="material-icons" style="margin-left: -1em">create</i><i class="material-icons">delete</i>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>Espectáculo pitara</td>
-          <td>16:00-17:00</td>
-          <td style="width: calc(120px - 0.2em)">
-            <div><i class="material-icons" style="margin-left: -1em">create</i><i class="material-icons">delete</i>
+            <div><i class="material-icons" style="margin-left: -1em">create</i><i class="material-icons" (click)="delete(a._id)">delete</i>
             </div>
           </td>
         </tr>
@@ -64,40 +40,27 @@
         </tr>
         </thead>
         <tbody>
-        <tr>
-          <td>Taller de pintura</td>
-          <td>10:00-14:00</td>
+        <tr *ngFor="let t of talleres">
+          <td>{{t.nombre}}</td>
+          <td>{{t.horario}}</td>
           <td style="width: calc(120px - 0.2em)">
             <div><i class="material-icons" style="margin-left: -1em">create</i><i class="material-icons">delete</i>
             </div>
           </td>
-        </tr>
-        <tr>
-          <td>Taller de costura</td>
-          <td>10:15-13:00</td>
-          <td style="width: calc(120px - 0.2em)">
-            <div><i class="material-icons" style="margin-left: -1em">create</i><i class="material-icons">delete</i>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>Taller de manualidades</td>
-          <td>14:00-17:00</td>
-          <td style="width: calc(120px - 0.2em)">
-            <div><i class="material-icons" style="margin-left: -1em">create</i><i class="material-icons">delete</i>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>Taller de cocina</td>
-          <td>12:00-114:00</td>
-          <td style="width: calc(120px - 0.2em)">
-            <div><i class="material-icons" style="margin-left: -1em">create</i><i class="material-icons">delete</i>
-            </div>
-          </td>
-        </tr>
         </tbody>
       </table>
+    </div>
+    <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Modal</a>
+
+    <!-- Modal Structure -->
+    <div id="modal1" class="modal">
+      <div class="modal-content">
+        <h4>Modal Header</h4>
+        <p>A bunch of text</p>
+      </div>
+      <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
+      </div>
     </div>
   </div>
 </div>
