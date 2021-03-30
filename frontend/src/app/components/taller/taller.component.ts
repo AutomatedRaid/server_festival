@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, NgForm} from "@angular/forms";
 import {Taller} from "../../models/taller";
 import axios from 'axios';
+import {EventoService} from "../../services/evento.service";
+import {Actuacion} from "../../models/actuacion";
 
 declare const M: any;
 
@@ -24,8 +26,8 @@ export class TallerComponent implements OnInit {
   private file1: any;
   private file2: any;
 
-  constructor() {
-    this.ngModel = new Taller();
+  constructor(private eventService: EventoService) {
+    this.ngModel = new Actuacion();
   }
 
   ngOnInit() {
@@ -41,12 +43,20 @@ export class TallerComponent implements OnInit {
     });
   }
 
-  guardarTaller(actForm: NgForm) {
-    console.log(actForm.value);
-    console.log(this.horaIniciov);
-    console.log(this.horaFinv);
-    this.uploadimg(1);
-    this.uploadimg(2);
+  async guardarTaller(actForm: NgForm) {
+    if (actForm.value.nombre != '' && actForm.value.descripcion != '' && this.horaFinv != '' && this.horaIniciov != '' && this.file1 != null && this.file2 != null) {
+      const taller: Taller = new Taller();
+      taller.nombre = actForm.value.nombre;
+      taller.horario = this.horaIniciov + ' - ' + this.horaFinv;
+      taller.descripcion = actForm.value.descripcion;
+      taller.img = await this.uploadimg(1);
+      taller.img_mapa = await this.uploadimg(2);
+      this.eventService.postTaller(taller).subscribe(res => {
+        M.toast({html: 'Taller guardado correctamente', classes: 'rounded'});
+      });
+    } else {
+      M.toast({html: 'Debe completar todos los campos primero!', classes: 'rounded'});
+    }
   }
 
   onSelectFile(event, number: number) {
@@ -99,6 +109,6 @@ export class TallerComponent implements OnInit {
         }
       }
     );
-    console.log(res);
+    return res.data.url;
   }
 }

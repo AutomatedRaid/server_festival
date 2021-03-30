@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {Actuacion} from "../models/actuacion";
+import {Taller} from "../models/taller";
 import {HttpClient} from "@angular/common/http";
 
 @Injectable({
@@ -16,4 +17,7 @@ export class EventoService {
     return this.http.post(this.URL_API + '/actuacion', actuacion);
   }
 
+  postTaller (taller: Taller){
+    return this.http.post(this.URL_API + '/taller', taller);
+  }
 }
