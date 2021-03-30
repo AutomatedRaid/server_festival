@@ -4,12 +4,14 @@ import {Taller} from "../../models/taller";
 import axios from 'axios';
 import {EventoService} from "../../services/evento.service";
 import {Actuacion} from "../../models/actuacion";
+import {ActivatedRoute, Router} from "@angular/router";
 
 declare const M: any;
 
 let imageUploader;
 const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/djlgdcqhg/image/upload'
 const CLOUDINARY_UPLOAD_PRESET = 'rdzzccwc';
+
 @Component({
   selector: 'app-taller',
   templateUrl: './taller.component.html',
@@ -21,12 +23,15 @@ export class TallerComponent implements OnInit {
   ngModel: Taller;
   horaIniciov = '';
   horaFinv = '';
+  idTaller: number;
   img: string | ArrayBuffer = 'assets/img-not-found.png';
   img2: string | ArrayBuffer = 'assets/img-not-found.png';
   private file1: any;
   private file2: any;
+  taller: Taller;
 
-  constructor(private eventService: EventoService) {
+
+  constructor(private eventService: EventoService, private route: ActivatedRoute, private router: Router) {
     this.ngModel = new Actuacion();
   }
 
@@ -41,6 +46,18 @@ export class TallerComponent implements OnInit {
         i18n: {cancel: 'Cancelar', done: 'Aceptar'}
       });
     });
+    this.route.paramMap.subscribe(params => {
+      if (params.has("id")) {
+        console.log(params.get("id"));
+        this.eventService.getTaller(params.get("id") || "").subscribe(res => {
+          this.taller = res as Taller;
+          this.inicializarDatos();
+        });
+      }
+    });
+    if (this.idTaller == null) {
+
+    }
   }
 
   async guardarTaller(actForm: NgForm) {
@@ -102,13 +119,23 @@ export class TallerComponent implements OnInit {
       {
         headers: {
           'Content-Type': 'multipart/form-data'
-        },
-        onUploadProgress(e) {
-          let progress = Math.round((e.loaded * 100.0) / e.total);
-          console.log(progress);
         }
       }
     );
     return res.data.url;
+  }
+
+  private inicializarDatos() {
+    this.ngModel.nombre = this.taller.nombre;
+    this.ngModel.descripcion = this.taller.descripcion;
+    this.horaIniciov = this.taller.horario.split(' - ')[0];
+    this.horaFinv = this.taller.horario.split(' - ')[1];
+    console.log(this.taller.horario);
+    // @ts-ignore
+    this.img = this.taller.img;
+    // @ts-ignore
+    this.img2 = this.taller.img_mapa;
+    console.log(this.horaIniciov);
+    console.log(this.horaFinv);
   }
 }

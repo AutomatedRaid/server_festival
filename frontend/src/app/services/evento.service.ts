@@ -29,4 +29,8 @@ export class EventoService {
   getTalleres (){
     return this.http.get( this.URL_API_EVENT + '/talleres');
   }
+
+  getTaller(id: string) {
+    return this.http.get(this.URL_API_EVENT + `/taller/${id}`);
+  }
 }
