@@ -1,6 +1,6 @@
 tbody {
   display:block;
-  height:150px;
+  height:180px;
   overflow:auto;
 }
 thead, tbody tr {

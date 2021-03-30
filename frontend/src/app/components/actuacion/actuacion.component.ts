@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, NgForm} from "@angular/forms";
+import {NgForm} from "@angular/forms";
 import {Actuacion} from "../../models/actuacion";
 import axios from 'axios';
 import {EventoService} from "../../services/evento.service";
@@ -34,8 +34,8 @@ export class ActuacionComponent implements OnInit {
     imageUploader = document.getElementById('img-uploader');
     M.AutoInit();
     document.addEventListener('DOMContentLoaded', function () {
-      var elems = document.querySelectorAll('.timepicker');
-      var instances = M.Timepicker.init(elems, {
+      const elems = document.querySelectorAll('.timepicker');
+      M.Timepicker.init(elems, {
         defaultTime: '9:00',
         twelveHour: false,
         i18n: {cancel: 'Cancelar', done: 'Aceptar'}
@@ -47,12 +47,12 @@ export class ActuacionComponent implements OnInit {
     if (actForm.value.nombre != '' && actForm.value.descripcion != '' && this.horaFinv != '' && this.horaIniciov != '' && this.file1 != null && this.file2 != null && this.artistas.length > 0) {
       const actuacion: Actuacion = new Actuacion();
       actuacion.nombre = actForm.value.nombre;
-      actuacion.horario = this.horaIniciov + this.horaFinv;
+      actuacion.horario = this.horaIniciov + ' - ' + this.horaFinv;
       actuacion.artistas = this.artistas;
       actuacion.descripcion = actForm.value.descripcion;
       actuacion.img = await this.uploadimg(1);
       actuacion.img_mapa = await this.uploadimg(2);
-      this.eventService.postActuacion(actuacion).subscribe(res => {
+      this.eventService.postActuacion(actuacion).subscribe(() => {
         M.toast({html: 'Serie guardada correctamente', classes: 'rounded'});
       });
     } else {
@@ -90,7 +90,7 @@ export class ActuacionComponent implements OnInit {
           this.file2 = event.target.files[0];
           break;
       }
-      var reader = new FileReader();
+      const reader = new FileReader();
       reader.readAsDataURL(event.target.files[0]);
       reader.onload = (eventt) => {
         switch (number) {
@@ -122,10 +122,10 @@ export class ActuacionComponent implements OnInit {
       {
         headers: {
           'Content-Type': 'multipart/form-data'
-        },
+        }/**,
         onUploadProgress(e) {
           let progress = Math.round((e.loaded * 100.0) / e.total);
-        }
+        }**/
       }
     );
     return res.data.url;
