@@ -29,4 +29,12 @@ export class EventoService {
   getTalleres (){
     return this.http.get( this.URL_API_EVENT + '/talleres');
   }
+
+  deleteActuacion (_id: string){
+    return this.http.delete( this.URL_API_ADMIN + `/actuacion/${_id}` );
+  }
+
+  deleteTaller (_id: string){
+    return this.http.delete( this.URL_API_ADMIN + `/taller/${_id}` );
+  }
 }

@@ -20,8 +20,8 @@
         <tr *ngFor="let a of actuaciones">
           <td>{{a.nombre}}</td>
           <td>{{a.horario}}</td>
-          <td style="width: calc(120px - 0.2em)">
-            <div><i class="material-icons" style="margin-left: -1em">create</i><i class="material-icons" (click)="delete(a._id)">delete</i>
+          <td [ngStyle]="{'width': actuaciones.length>=3 ? 'calc(120px - 0.2em)' : '133px'}">
+            <div><i class="material-icons" style="margin-left: -1em">create</i><i class="material-icons" (click)="confirmdelete(a._id, a.nombre, false)">delete</i>
             </div>
           </td>
         </tr>
@@ -35,7 +35,7 @@
         <tr>
           <th class="">Taller</th>
           <th class="">Horarios</th>
-          <th style="border-left: 1px solid #6a6a6a;width: 120px"><i class="material-icons" style="margin-right: 1em;">add_circle</i>
+          <th style="border-left: 1px solid #6a6a6a;width: 120px"><i class="material-icons" style="margin-right: 1em;" routerLink="/taller">add_circle</i>
           </th>
         </tr>
         </thead>
@@ -43,24 +43,23 @@
         <tr *ngFor="let t of talleres">
           <td>{{t.nombre}}</td>
           <td>{{t.horario}}</td>
-          <td style="width: calc(120px - 0.2em)">
-            <div><i class="material-icons" style="margin-left: -1em">create</i><i class="material-icons">delete</i>
+          <td [ngStyle]="{'width': talleres.length>=3 ? 'calc(120px - 0.2em)' : '133px'}">
+            <div><i class="material-icons" style="margin-left: -1em">create</i><i class="material-icons" (click)="confirmdelete(t._id, t.nombre, true)">delete</i>
             </div>
           </td>
         </tbody>
       </table>
     </div>
-    <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Modal</a>
-
     <!-- Modal Structure -->
-    <div id="modal1" class="modal">
-      <div class="modal-content">
-        <h4>Modal Header</h4>
-        <p>A bunch of text</p>
-      </div>
-      <div class="modal-footer">
-        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
-      </div>
-    </div>
   </div>
+  <div id="modal1" class="modal">
+  <div class="modal-content">
+    <h4>{{alertHead}}</h4>
+    <p>{{alertbody}}</p>
+  </div>
+  <div class="modal-footer">
+    <a href="#!" class="modal-action modal-close waves-effect waves-red btn-flat" (click)="delete()">Eliminar</a>
+    <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
+  </div>
+</div>
 </div>
