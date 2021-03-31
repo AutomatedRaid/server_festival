@@ -21,7 +21,7 @@
           <td>{{a.nombre}}</td>
           <td>{{a.horario}}</td>
           <td [ngStyle]="{'width': actuaciones.length>=3 ? 'calc(120px - 0.2em)' : '133px'}">
-            <div><i class="material-icons" style="margin-left: -1em">create</i><i class="material-icons" (click)="confirmdelete(a._id, a.nombre, false)">delete</i>
+            <div><i class="material-icons" style="margin-left: -1em" routerLink="/actuacion/{{a._id}}">create</i><i class="material-icons" (click)="confirmdelete(a._id, a.nombre, false)">delete</i>
             </div>
           </td>
         </tr>
@@ -44,7 +44,7 @@
           <td>{{t.nombre}}</td>
           <td>{{t.horario}}</td>
           <td [ngStyle]="{'width': talleres.length>=3 ? 'calc(120px - 0.2em)' : '133px'}">
-            <div><i class="material-icons" style="margin-left: -1em">create</i><i class="material-icons" (click)="confirmdelete(t._id, t.nombre, true)">delete</i>
+            <div><i class="material-icons" style="margin-left: -1em" routerLink="/taller/{{t._id}}">create</i><i class="material-icons" (click)="confirmdelete(t._id, t.nombre, true)">delete</i>
             </div>
           </td>
         </tbody>
