@@ -7,9 +7,9 @@ import {ActivatedRoute, Router} from "@angular/router";
 
 declare const M: any;
 
-let imageUploader;
 const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/djlgdcqhg/image/upload';
 const CLOUDINARY_UPLOAD_PRESET = 'rdzzccwc';
+let progressbar: any = null;
 
 @Component({
   selector: 'app-actuacion',
@@ -22,19 +22,18 @@ export class ActuacionComponent implements OnInit {
   ngModel: Actuacion;
   horaIniciov = '';
   horaFinv = '';
-  artistas: string[] = [];
-  img: string | ArrayBuffer = 'assets/img-not-found.png';
-  img2: string | ArrayBuffer = 'assets/img-not-found.png';
-  private file1: any;
-  private file2: any;
+  artistas: String[] = [];
+  img: String | ArrayBuffer = 'assets/img-not-found.png'; img2: String | ArrayBuffer = 'assets/img-not-found.png';
+  private file1: any; private file2: any;
   actuacion: Actuacion;
+  alertBody = '';
 
-  constructor(private eventService: EventoService, private route: ActivatedRoute, private router: Router) {
+  constructor(private eventService: EventoService, private route: ActivatedRoute,  private router: Router) {
     this.ngModel = new Actuacion();
   }
 
   ngOnInit() {
-    imageUploader = document.getElementById('img-uploader');
+    progressbar = document.getElementById('img-upload-bar');
     M.AutoInit();
     document.addEventListener('DOMContentLoaded', function () {
       const elems = document.querySelectorAll('.timepicker');
@@ -57,16 +56,24 @@ export class ActuacionComponent implements OnInit {
 
   async guardarActuacion(actForm: NgForm) {
     if (actForm.value.nombre != '' && actForm.value.descripcion != '' && this.horaFinv != '' && this.horaIniciov != '' && this.file1 != null && this.file2 != null && this.artistas.length > 0) {
+      this.alertBody = 'Guardando imagen: ' + this.file1.name;
+      const elems = document.getElementById('modal1');
+      const instances = M.Modal.init(elems, {dismissible:false});
+      instances.open();
       const actuacion: Actuacion = new Actuacion();
       actuacion.nombre = actForm.value.nombre;
       actuacion.horario = this.horaIniciov + ' - ' + this.horaFinv;
       actuacion.artistas = this.artistas;
       actuacion.descripcion = actForm.value.descripcion;
       actuacion.img = await this.uploadimg(1);
+      this.alertBody = 'Guardando imagen: ' + this.file2.name;
+      progressbar.setAttribute('value', String(0));
       actuacion.img_mapa = await this.uploadimg(2);
       this.eventService.postActuacion(actuacion).subscribe(() => {
-        M.toast({html: 'Serie guardada correctamente', classes: 'rounded'});
+        M.toast({html: 'Actuacion guardada correctamente', classes: 'rounded'});
       });
+      instances.close();
+      this.router.navigate(['/']);
     } else {
       M.toast({html: 'Debe completar todos los campos primero!', classes: 'rounded'});
     }
@@ -128,16 +135,19 @@ export class ActuacionComponent implements OnInit {
     formData.append('file', file);
     formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
 
+
+
     const res = await axios.post(
       CLOUDINARY_URL,
       formData,
       {
         headers: {
           'Content-Type': 'multipart/form-data'
-        }/**,
+        },
         onUploadProgress(e) {
-          let progress = Math.round((e.loaded * 100.0) / e.total);
-        }**/
+          var progress = Math.round((e.loaded * 100.0) / e.total);
+          progressbar.setAttribute('value', String(progress));
+        }
       }
     );
     return res.data.url;
@@ -148,12 +158,9 @@ export class ActuacionComponent implements OnInit {
     this.ngModel.descripcion = this.actuacion.descripcion;
     this.horaIniciov = this.actuacion.horario.split(' - ')[0];
     this.horaFinv = this.actuacion.horario.split(' - ')[1];
-    // @ts-ignore
     this.artistas = this.actuacion.artistas;
     console.log(this.actuacion.horario);
-    // @ts-ignore
     this.img = this.actuacion.img;
-    // @ts-ignore
     this.img2 = this.actuacion.img_mapa;
     console.log(this.horaIniciov);
     console.log(this.horaFinv);

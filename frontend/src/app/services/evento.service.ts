@@ -37,6 +37,7 @@ export class EventoService {
   getActuacion(id: string) {
     return this.http.get(this.URL_API_EVENT + `/actuacion/${id}`);
   }
+
   deleteActuacion (_id: string){
     return this.http.delete( this.URL_API_ADMIN + `/actuacion/${_id}` );
   }
