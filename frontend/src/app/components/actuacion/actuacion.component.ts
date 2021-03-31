@@ -185,7 +185,5 @@ export class ActuacionComponent implements OnInit {
     this.file2 = this.actuacion.img_mapa;
     this.img = this.actuacion.img;
     this.img2 = this.actuacion.img_mapa;
-    console.log(this.horaIniciov);
-    console.log(this.horaFinv);
   }
 }
