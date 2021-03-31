@@ -27,6 +27,7 @@ export class ActuacionComponent implements OnInit {
   private file1: any; private file2: any;
   actuacion: Actuacion;
   alertBody = '';
+  editando = false;
 
   constructor(private eventService: EventoService, private route: ActivatedRoute,  private router: Router) {
     this.ngModel = new Actuacion();
@@ -45,7 +46,7 @@ export class ActuacionComponent implements OnInit {
     });
     this.route.paramMap.subscribe(params => {
       if (params.has("id")) {
-        console.log(params.get("id"));
+        this.editando = true;
         this.eventService.getActuacion(params.get("id") || "").subscribe(res => {
           this.actuacion = res as Actuacion;
           this.inicializarDatos();
@@ -69,10 +70,22 @@ export class ActuacionComponent implements OnInit {
       this.alertBody = 'Guardando imagen: ' + this.file2.name;
       progressbar.setAttribute('value', String(0));
       actuacion.img_mapa = await this.uploadimg(2);
-      await this.eventService.postActuacion(actuacion).subscribe(() => {
-        M.toast({html: 'Actuacion guardada correctamente', classes: 'rounded'});
-        this.router.navigate(['/']);
-        instances.close();
+
+      this.route.paramMap.subscribe(params => {
+        if (params.has("id")) {
+          this.eventService.putActuacion(params.get("id"), actuacion).subscribe(() => {
+            M.toast({html: 'Actuacion guardada correctamente', classes: 'rounded'});
+            this.router.navigate(['/']);
+            instances.close();
+          });
+        }
+        else {
+          this.eventService.postActuacion(actuacion).subscribe(() => {
+            M.toast({html: 'Actuacion guardada correctamente', classes: 'rounded'});
+            this.router.navigate(['/']);
+            instances.close();
+          });
+        }
       });
     } else {
       M.toast({html: 'Debe completar todos los campos primero!', classes: 'rounded'});
@@ -168,6 +181,8 @@ export class ActuacionComponent implements OnInit {
     this.horaFinv = this.actuacion.horario.split(' - ')[1];
     this.artistas = this.actuacion.artistas;
     console.log(this.actuacion.horario);
+    this.file1 = this.actuacion.img;
+    this.file2 = this.actuacion.img_mapa;
     this.img = this.actuacion.img;
     this.img2 = this.actuacion.img_mapa;
     console.log(this.horaIniciov);

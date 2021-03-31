@@ -67,10 +67,21 @@ export class TallerComponent implements OnInit {
       this.alertBody = 'Guardando imagen: ' + this.file2.name;
       progressbar.setAttribute('value', String(0));
       taller.img_mapa = await this.uploadimg(2);
-      await this.eventService.postTaller(taller).subscribe(res => {
-        M.toast({html: 'Taller guardado correctamente', classes: 'rounded'});
-        this.router.navigate(['/']);
-        instances.close();
+      this.route.paramMap.subscribe(params => {
+        if (params.has("id")) {
+          this.eventService.putTaller(params.get("id"), taller).subscribe(() => {
+            M.toast({html: 'Taller guardado correctamente', classes: 'rounded'});
+            this.router.navigate(['/']);
+            instances.close();
+          });
+        }
+        else {
+          this.eventService.postTaller(taller).subscribe(() => {
+            M.toast({html: 'Taller guardado correctamente', classes: 'rounded'});
+            this.router.navigate(['/']);
+            instances.close();
+          });
+        }
       });
     } else {
       M.toast({html: 'Debe completar todos los campos primero!', classes: 'rounded'});
@@ -140,6 +151,8 @@ export class TallerComponent implements OnInit {
     this.img = this.taller.img;
     // @ts-ignore
     this.img2 = this.taller.img_mapa;
+    this.file1 = this.taller.img;
+    this.file2 = this.taller.img_mapa;
     console.log(this.horaIniciov);
     console.log(this.horaFinv);
   }

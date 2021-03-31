@@ -18,8 +18,16 @@ export class EventoService {
     return this.http.post(this.URL_API_ADMIN + '/actuacion', actuacion);
   }
 
+  putActuacion (id: String, actuacion: Actuacion){
+    return this.http.put(this.URL_API_ADMIN + `/actuacion/${id}`, actuacion);
+  }
+
   postTaller (taller: Taller){
     return this.http.post(this.URL_API_ADMIN + '/taller', taller);
+  }
+
+  putTaller (id: String, taller: Taller){
+    return this.http.put(this.URL_API_ADMIN + `/taller/${id}`, taller);
   }
 
   getActuaciones (){
