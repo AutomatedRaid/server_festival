@@ -8,17 +8,17 @@
     <form #actForm="ngForm">
       <div class="input-field input-div">
         <input id="nombre_actuacion" type="text" name="nombre" [(ngModel)]="ngModel.nombre">
-        <label for="nombre_actuacion" class="text-input">Nombre actuación</label>
+        <label id="label1" for="nombre_actuacion" class="text-input">Nombre actuación</label>
       </div>
       <div class="input-field input-div">
         <input type="text" id="time-inicio" class="timepicker" name="horainicio" readonly #horaInicio
                (change)="horaIniciov = horaInicio.value">
-        <label for="time-inicio" class="text-input">Hora inicio</label>
+        <label id="label2" for="time-inicio" class="text-input">Hora inicio</label>
       </div>
       <div class="input-field input-div">
         <input type="text" id="time-fin" class="timepicker" name="horafin" readonly #horaFin
                (change)="horaFinv = horaFin.value">
-        <label for="time-fin" class="text-input">Hora fin</label>
+        <label id="label3" for="time-fin" class="text-input">Hora fin</label>
       </div>
       <label class="text-input">Artistas (max 25)</label>
       <div class="row">
@@ -29,7 +29,7 @@
         </div>
         <div class="col s6">
           <div class="chip" *ngFor="let a of artistas">
-            <span style="    position: relative; top: -5px;">{{a}}</span>
+            <span style="position: relative; top: -5px;">{{a}}</span>
             <i class="material-icons" (click)="removeArtistas(a)">close</i>
           </div>
         </div>
@@ -37,7 +37,7 @@
       <div class="input-field input-div">
         <textarea type="text" id="descripcion" class="materialize-textarea" name="descripcion"
                   [(ngModel)]="ngModel.descripcion"></textarea>
-        <label for="descripcion" class="text-input">Descripción</label>
+        <label id="label4" for="descripcion" class="text-input">Descripción</label>
       </div>
       <div class="row valign-wrapper">
         <div class="col s6">

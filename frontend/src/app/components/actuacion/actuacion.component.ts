@@ -69,11 +69,11 @@ export class ActuacionComponent implements OnInit {
       this.alertBody = 'Guardando imagen: ' + this.file2.name;
       progressbar.setAttribute('value', String(0));
       actuacion.img_mapa = await this.uploadimg(2);
-      this.eventService.postActuacion(actuacion).subscribe(() => {
+      await this.eventService.postActuacion(actuacion).subscribe(() => {
         M.toast({html: 'Actuacion guardada correctamente', classes: 'rounded'});
+        this.router.navigate(['/']);
+        instances.close();
       });
-      instances.close();
-      this.router.navigate(['/']);
     } else {
       M.toast({html: 'Debe completar todos los campos primero!', classes: 'rounded'});
     }
@@ -135,8 +135,6 @@ export class ActuacionComponent implements OnInit {
     formData.append('file', file);
     formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
 
-
-
     const res = await axios.post(
       CLOUDINARY_URL,
       formData,
@@ -156,7 +154,17 @@ export class ActuacionComponent implements OnInit {
   private inicializarDatos() {
     this.ngModel.nombre = this.actuacion.nombre;
     this.ngModel.descripcion = this.actuacion.descripcion;
+    const time_inicio = <HTMLInputElement>document.getElementById('time-inicio');
+    time_inicio.value = this.actuacion.horario.split(' - ')[0];
+    const labels = ['label1','label2','label3','label4'];
+    for (let i = 0; i < labels.length; i++) {
+      const label = <HTMLLabelElement>document.getElementById(labels[i]);
+      label.classList.add('active');
+    }
+
     this.horaIniciov = this.actuacion.horario.split(' - ')[0];
+    const time_fin = <HTMLInputElement>document.getElementById('time-fin');
+    time_fin.value = this.actuacion.horario.split(' - ')[1];
     this.horaFinv = this.actuacion.horario.split(' - ')[1];
     this.artistas = this.actuacion.artistas;
     console.log(this.actuacion.horario);

@@ -1,16 +1,15 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, NgForm} from "@angular/forms";
+import { NgForm} from "@angular/forms";
 import {Taller} from "../../models/taller";
 import axios from 'axios';
 import {EventoService} from "../../services/evento.service";
-import {Actuacion} from "../../models/actuacion";
 import {ActivatedRoute, Router} from "@angular/router";
 
 declare const M: any;
 
-let imageUploader;
-const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/djlgdcqhg/image/upload'
+const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/djlgdcqhg/image/upload';
 const CLOUDINARY_UPLOAD_PRESET = 'rdzzccwc';
+let progressbar: any = null;
 
 @Component({
   selector: 'app-taller',
@@ -23,24 +22,21 @@ export class TallerComponent implements OnInit {
   ngModel: Taller;
   horaIniciov = '';
   horaFinv = '';
-  idTaller: number;
-  img: string | ArrayBuffer = 'assets/img-not-found.png';
-  img2: string | ArrayBuffer = 'assets/img-not-found.png';
-  private file1: any;
-  private file2: any;
+  img: string | ArrayBuffer = 'assets/img-not-found.png'; img2: string | ArrayBuffer = 'assets/img-not-found.png';
+  private file1: any; private file2: any;
   taller: Taller;
-
+  alertBody = '';
 
   constructor(private eventService: EventoService, private route: ActivatedRoute, private router: Router) {
-    this.ngModel = new Actuacion();
+    this.ngModel = new Taller();
   }
 
   ngOnInit() {
-    imageUploader = document.getElementById('img-uploader');
+    progressbar = document.getElementById('img-upload-bar');
     M.AutoInit();
     document.addEventListener('DOMContentLoaded', function () {
       var elems = document.querySelectorAll('.timepicker');
-      var instances = M.Timepicker.init(elems, {
+      M.Timepicker.init(elems, {
         defaultTime: '9:00',
         twelveHour: false,
         i18n: {cancel: 'Cancelar', done: 'Aceptar'}
@@ -59,14 +55,22 @@ export class TallerComponent implements OnInit {
 
   async guardarTaller(actForm: NgForm) {
     if (actForm.value.nombre != '' && actForm.value.descripcion != '' && this.horaFinv != '' && this.horaIniciov != '' && this.file1 != null && this.file2 != null) {
+      this.alertBody = 'Guardando imagen: ' + this.file1.name;
+      const elems = document.getElementById('modal1');
+      const instances = M.Modal.init(elems, {dismissible:false});
+      instances.open();
       const taller: Taller = new Taller();
       taller.nombre = actForm.value.nombre;
       taller.horario = this.horaIniciov + ' - ' + this.horaFinv;
       taller.descripcion = actForm.value.descripcion;
       taller.img = await this.uploadimg(1);
+      this.alertBody = 'Guardando imagen: ' + this.file2.name;
+      progressbar.setAttribute('value', String(0));
       taller.img_mapa = await this.uploadimg(2);
-      this.eventService.postTaller(taller).subscribe(res => {
+      await this.eventService.postTaller(taller).subscribe(res => {
         M.toast({html: 'Taller guardado correctamente', classes: 'rounded'});
+        this.router.navigate(['/']);
+        instances.close();
       });
     } else {
       M.toast({html: 'Debe completar todos los campos primero!', classes: 'rounded'});
@@ -116,6 +120,10 @@ export class TallerComponent implements OnInit {
       {
         headers: {
           'Content-Type': 'multipart/form-data'
+        },
+        onUploadProgress(e) {
+          var progress = Math.round((e.loaded * 100.0) / e.total);
+          progressbar.setAttribute('value', String(progress));
         }
       }
     );
