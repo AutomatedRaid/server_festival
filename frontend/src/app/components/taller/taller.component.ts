@@ -144,21 +144,20 @@ export class TallerComponent implements OnInit {
   private inicializarDatos() {
     this.ngModel.nombre = this.taller.nombre;
     this.ngModel.descripcion = this.taller.descripcion;
-    const time_inicio = <HTMLInputElement>document.getElementById('time-inicio');
-    time_inicio.value = this.taller.horario.split(' - ')[0];
     const labels = ['label1','label2','label3','label4'];
     for (let i = 0; i < labels.length; i++) {
       const label = <HTMLLabelElement>document.getElementById(labels[i]);
       label.classList.add('active');
     }
+    const time_inicio = <HTMLInputElement>document.getElementById('time-inicio');
+    time_inicio.value = this.taller.horario.split(' - ')[0];
     this.horaIniciov = this.taller.horario.split(' - ')[0];
     const time_fin = <HTMLInputElement>document.getElementById('time-fin');
-    console.log(this.taller.horario);
+    time_fin.value = this.taller.horario.split(' - ')[1];
+    this.horaFinv = this.taller.horario.split(' - ')[1];
     this.img = this.taller.img;
     this.img2 = this.taller.img_mapa;
     this.file1 = this.taller.img;
     this.file2 = this.taller.img_mapa;
-    console.log(this.horaIniciov);
-    console.log(this.horaFinv);
   }
 }
