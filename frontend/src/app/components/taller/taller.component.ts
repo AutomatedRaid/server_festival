@@ -159,7 +159,5 @@ export class TallerComponent implements OnInit {
     this.img2 = this.taller.img_mapa;
     this.file1 = this.taller.img;
     this.file2 = this.taller.img_mapa;
-    console.log(this.horaIniciov);
-    console.log(this.horaFinv);
   }
 }
