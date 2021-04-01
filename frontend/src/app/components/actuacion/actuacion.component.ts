@@ -27,7 +27,6 @@ export class ActuacionComponent implements OnInit {
   private file1: any; private file2: any;
   actuacion: Actuacion;
   alertBody = '';
-  editando = false;
 
   constructor(private eventService: EventoService, private route: ActivatedRoute,  private router: Router) {
     this.ngModel = new Actuacion();
@@ -46,7 +45,6 @@ export class ActuacionComponent implements OnInit {
     });
     this.route.paramMap.subscribe(params => {
       if (params.has("id")) {
-        this.editando = true;
         this.eventService.getActuacion(params.get("id") || "").subscribe(res => {
           this.actuacion = res as Actuacion;
           this.inicializarDatos();
