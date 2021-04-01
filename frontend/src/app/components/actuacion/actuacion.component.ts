@@ -167,7 +167,6 @@ export class ActuacionComponent implements OnInit {
     time_fin.value = this.actuacion.horario.split(' - ')[1];
     this.horaFinv = this.actuacion.horario.split(' - ')[1];
     this.artistas = this.actuacion.artistas;
-    console.log(this.actuacion.horario);
     this.img = this.actuacion.img;
     this.img2 = this.actuacion.img_mapa;
   }
