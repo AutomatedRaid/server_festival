@@ -52,5 +52,13 @@ export class EventoService {
 
   deleteTaller (_id: string){
     return this.http.delete( this.URL_API_ADMIN + `/taller/${_id}` );
+  }/*
+
+  getMapa (){
+    return this.http.get( this.URL_API_ADMIN + `/mapa/` );
   }
+
+  postMapa (){
+    return this.http.post( this.URL_API_ADMIN + `/mapa/`, mapa,  );
+  }*/
 }

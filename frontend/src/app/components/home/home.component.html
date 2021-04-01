@@ -12,7 +12,8 @@
         <tr>
           <th>Actuacion</th>
           <th style="border-left: 1px solid #6a6a6a;">Horarios</th>
-          <th style="border-left: 1px solid #6a6a6a;width: 120px"><i class="material-icons" style="margin-right: 1em;" routerLink="/actuacion">add_circle</i>
+          <th style="border-left: 1px solid #6a6a6a;width: 120px"><i class="material-icons" style="margin-right: 1em;"
+                                                                     routerLink="/actuacion">add_circle</i>
           </th>
         </tr>
         </thead>
@@ -21,7 +22,8 @@
           <td>{{a.nombre}}</td>
           <td>{{a.horario}}</td>
           <td [ngStyle]="{'width': actuaciones.length>=3 ? 'calc(120px - 0.2em)' : '133px'}">
-            <div><i class="material-icons" style="margin-left: -1em" routerLink="/actuacion/{{a._id}}">create</i><i class="material-icons" (click)="confirmdelete(a._id, a.nombre, false)">delete</i>
+            <div><i class="material-icons" style="margin-left: -1em" routerLink="/actuacion/{{a._id}}">create</i><i
+              class="material-icons" (click)="confirmdelete(a._id, a.nombre, false)">delete</i>
             </div>
           </td>
         </tr>
@@ -35,7 +37,8 @@
         <tr>
           <th class="">Taller</th>
           <th class="">Horarios</th>
-          <th style="border-left: 1px solid #6a6a6a;width: 120px"><i class="material-icons" style="margin-right: 1em;" routerLink="/taller">add_circle</i>
+          <th style="border-left: 1px solid #6a6a6a;width: 120px"><i class="material-icons" style="margin-right: 1em;"
+                                                                     routerLink="/taller">add_circle</i>
           </th>
         </tr>
         </thead>
@@ -44,13 +47,34 @@
           <td>{{t.nombre}}</td>
           <td>{{t.horario}}</td>
           <td [ngStyle]="{'width': talleres.length>=3 ? 'calc(120px - 0.2em)' : '133px'}">
-            <div><i class="material-icons" style="margin-left: -1em" routerLink="/taller/{{t._id}}">create</i><i class="material-icons" (click)="confirmdelete(t._id, t.nombre, true)">delete</i>
+            <div><i class="material-icons" style="margin-left: -1em" routerLink="/taller/{{t._id}}">create</i><i
+              class="material-icons" (click)="confirmdelete(t._id, t.nombre, true)">delete</i>
             </div>
           </td>
         </tbody>
       </table>
+    </div><!--
+    <h5>Imagen del mapa</h5>
+    <div class="file-field input-field" style="margin-top: 15px">
+      <div class="btn">
+        <span>File</span>
+        <input type="file" accept="image/*" (change)="onSelectFile($event)">
+      </div>
+      <div class="file-path-wrapper">
+        <input class="file-path validate" accept="image/*" type="text">
+      </div>
     </div>
+    <div class="center-align">
+      <img [src]="img"
+           style="max-width: 50%; align-self: center">
+    </div>
+    <div class="right-align" style="border: 20px">
+      <div class="btn" style=" font-size: 1.1em" (click)="guardarCambios()">
+        <span>Guardar cambios</span>
+      </div>
+    </div>-->
   </div>
+
   <!-- Modal Structure -->
   <div id="modal1" class="modal">
     <div class="modal-content">
@@ -62,4 +86,9 @@
       <a href="#!" class="modal-action modal-close waves-effect waves-red btn-flat" (click)="delete()">Eliminar</a>
     </div>
   </div>
-</div>
+  <div id="modal2" class="modal">
+    <div class="modal-content">
+      <h4>Guardando mapa</h4>
+      <progress id="img-upload-bar" value="0" max="100" style="width: 100%; margin: 10px 0;"></progress>
+    </div>
+  </div>
