@@ -13,7 +13,7 @@ authUserCtrl.signUp = async (req, res) => {
     });
 
     user.save(err => {
-        if (err) res.status(500).send({ message: 'Error al crear el ususario: ${err}'});
+        if (err) res.status(500).send({ message: 'Error al crear el ususario:'+err});
 
         return res.status(200).send({ token: service.createToken(user) })
     })

@@ -1,8 +1,8 @@
-'use strict'
+'use strict';
 
 const mongoose = require('mongoose');
 const {Schema} = mongoose;
-const bcrypt = require('bcrypt-node.js');
+const bcrypt = require('bcrypt-nodejs');
 
 const UserSchema = new Schema({
     email: { type: String, unique: true, lowercase: true},
@@ -26,4 +26,4 @@ UserSchema.pre('save', (next) => {
         });
     });
 });
-module.exports = mongoose.model('User', MapaSchema);
+module.exports = mongoose.model('User', UserSchema);
