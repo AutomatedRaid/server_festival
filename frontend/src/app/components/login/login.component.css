@@ -41,7 +41,11 @@ body {
 }
 
 .iniciar{
-  color: #ee6e73;
-  font-weight: 300;
+  color: #0b8e36;
+  font-size: 3.56rem !important;
   font-family: "Roboto", sans-serif;
+}
+
+.boton {
+  background-color: #0b8e36 !important;
 }
