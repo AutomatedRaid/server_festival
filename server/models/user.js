@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 const mongoose = require('mongoose');
 const {Schema} = mongoose;
@@ -26,4 +26,4 @@ UserSchema.pre('save', (next) => {
         });
     });
 });
-module.exports = mongoose.model('User', MapaSchema);
+module.exports = mongoose.model('User', UserSchema);
