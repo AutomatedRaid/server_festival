@@ -8,8 +8,8 @@ import {HttpClient} from "@angular/common/http";
 })
 export class EventoService {
 
-  URL_API_ADMIN = 'http://45.84.0.19:3000/api/adminapp';
-  URL_API_EVENT = 'http://45.84.0.19:3000/api/eventapp';
+  URL_API_ADMIN = 'http://localhost:3000/api/adminapp';
+  URL_API_EVENT = 'http://localhost:3000/api/eventapp';
 
   constructor(private http: HttpClient) {
   }

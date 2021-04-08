@@ -8,13 +8,15 @@ import { ActuacionComponent } from './components/actuacion/actuacion.component';
 import {FormsModule} from "@angular/forms";
 import { TallerComponent } from './components/taller/taller.component';
 import {HttpClientModule} from "@angular/common/http";
+import { LoginComponent } from './components/login/login.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     ActuacionComponent,
-    TallerComponent
+    TallerComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
