@@ -1,0 +1,32 @@
+<div class="center-align" style="vertical-align: middle;">
+  <div id="login-page" style="display: flex; justify-content: center; height: 100vh; width: 100%">
+    <div class="" style="align-self: center;">
+      <div class="z-depth-6 card-panel" style="padding: 60px">
+        <div style="font-size: 1.5em; margin-bottom: 20px; " class="iniciar">Iniciar sesión</div>
+        <form class="login-form" #loginForm="ngForm" (ngSubmit)="login(loginForm)">
+          <div class="row">
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+              <i class="material-icons prefix">mail_outline</i>
+              <input class="validate" id="email" type="email">
+              <label for="email" data-error="wrong" data-success="right">Email</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+              <i class="material-icons prefix">lock_outline</i>
+              <input id="password" type="password">
+              <label for="password">Contraseña</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+              <button href="#" class="btn waves-effect waves-light col s12 boton" type="submit">Login</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

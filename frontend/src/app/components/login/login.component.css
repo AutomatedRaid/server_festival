@@ -1,0 +1,26 @@
+html,body {
+  height: 100%;
+}
+html {
+  display: table;
+  margin: auto;
+}
+body {
+  display: table-cell;
+  vertical-align: middle;
+  background: #4ECDC4;
+}
+
+#login-page {
+  width: 500px;
+}
+
+.iniciar{
+  color: #0b8e36;
+  font-size: 3.56rem !important;
+  font-family: "Roboto", sans-serif;
+}
+
+.boton {
+  background-color: #0b8e36 !important;
+}
