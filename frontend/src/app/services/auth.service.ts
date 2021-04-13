@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {User} from "../models/user";
 
 @Injectable({
@@ -13,12 +13,24 @@ export class AuthService {
   constructor(private http: HttpClient) {
   }
 
-  isAuth() {
-    return false;
+  async isAuth() {
+    let r = false;
+    const t = localStorage.getItem("61757468");
+    if (t != null) {
+      await this.http.get(this.URL_API_EVENT + '/auth', {
+        headers: new HttpHeaders({
+          'x-access-token': ('Bearer ' + t)
+        })
+      }).subscribe(() => {
+        r = true;
+      });
+    }
+    console.log("isAuth: " + r);
+    return r;
   }
 
   login(user: User) {
-    return this.http.post(this.URL_API_EVENT + '/actuacion', User);
+    return this.http.post(this.URL_API_EVENT + '/signin', user);
   }
 
   setToken(token): void {
