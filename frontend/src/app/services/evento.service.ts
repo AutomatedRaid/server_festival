@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {Actuacion} from "../models/actuacion";
 import {Taller} from "../models/taller";
 import {HttpClient} from "@angular/common/http";
+import {Mapa} from "../models/mapa";
 
 @Injectable({
   providedIn: 'root'
@@ -52,13 +53,13 @@ export class EventoService {
 
   deleteTaller (_id: string){
     return this.http.delete( this.URL_API_ADMIN + `/taller/${_id}` );
-  }/*
+  }
 
   getMapa (){
     return this.http.get( this.URL_API_ADMIN + `/mapa/` );
   }
 
-  postMapa (){
-    return this.http.post( this.URL_API_ADMIN + `/mapa/`, mapa,  );
-  }*/
+  postMapa (mapa: Mapa){
+    return this.http.post( this.URL_API_ADMIN + `/mapa/`, mapa);
+  }
 }
