@@ -23,9 +23,9 @@ authCtrl.singup = async (req, res) =>{
 
 authCtrl.singin = async (req, res) =>{
     const userfound = await User.findOne({ email: req.body.email });
-    if (userfound == null) return res.status(400).json({ message: "Este email no existe" });
+    if (userfound == null) return res.status(401).json({ message: "Email o contraseña incorrectas" });
     if(!await User.checkPassword(req.body.password, userfound.password)) {
-        res.status(400).json({ message: "Error password" });
+        res.status(401).json({ message: "Email o contraseña incorrectas" });
     }
     const token = jwt.sign({id: userfound._id}, config.SECRET, {
         expiresIn: 86400
