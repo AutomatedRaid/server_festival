@@ -107,7 +107,6 @@ adminappCtrl.createMapa = async (req, res) => {
         if (mapaex == null) {
             const mapa = new Mapa({
                 imagen: req.body.imagen,
-                puntos: req.body.puntos,
             });
             await mapa.save();
             res.status(201).json({message: 'Mapa creado'})

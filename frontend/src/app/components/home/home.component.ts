@@ -108,8 +108,8 @@ export class HomeComponent implements OnInit {
       this.img = eventt.target.result;
     }
   }
-/*
+
   guardarCambios() {
-    this.eventoService.post
-  }*/
+
+  }
 }

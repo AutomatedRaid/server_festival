@@ -14,7 +14,7 @@ export class AuthService {
   }
 
   isAuth() {
-    return false;
+    return true;
   }
 
   login(user: User) {
