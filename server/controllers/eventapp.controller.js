@@ -9,7 +9,7 @@ eventappCtrl.getActuaciones = async (req, res) => {
     const actuaciones = await Actuacion.find().catch((err) => {
         res.status(500).json({message: err.message})
     });
-    res.json(actuaciones);
+    await res.json(actuaciones);
 };
 
 //Get lista de talleres
@@ -17,7 +17,7 @@ eventappCtrl.getTalleres = async (req, res) => {
     const talleres = await Taller.find().catch((err) => {
         res.status(500).json({message: err.message})
     });
-    res.json(talleres);
+    await res.json(talleres);
 };
 
 //Get una actuacion por id

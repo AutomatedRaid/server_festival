@@ -17,7 +17,7 @@ export class AuthService {
     let r = false;
     const t = localStorage.getItem("61757468");
     if (t != null) {
-      await this.http.get(this.URL_API_EVENT + '/auth', {
+      this.http.get(this.URL_API_EVENT + '/auth', {
         headers: new HttpHeaders({
           'x-access-token': ('Bearer ' + t)
         })
@@ -25,7 +25,6 @@ export class AuthService {
         r = true;
       });
     }
-    console.log("isAuth: " + r);
     return r;
   }
 
