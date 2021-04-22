@@ -44,7 +44,7 @@ if (EventoService) {
     {
       path:'login',
       pathMatch: 'full',
-        component: LoginComponent
+      component: LoginComponent
     }
   ];
 }else {
