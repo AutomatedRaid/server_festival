@@ -11,6 +11,7 @@ adminappCtrl.createActuacion = async (req, res) => {
             horario: req.body.horario,
             artistas: req.body.artistas,
             descripcion: req.body.descripcion,
+            zona: req.body.zona,
             img: req.body.img,
             img_mapa: req.body.img_mapa
         });
@@ -28,6 +29,7 @@ adminappCtrl.editActuacion = async (req, res) => {
             horario: req.body.horario,
             artistas: req.body.artistas,
             descripcion: req.body.descripcion,
+            zona: req.body.zona,
             img: req.body.img,
             img_mapa: req.body.img_mapa
         };
@@ -53,6 +55,7 @@ adminappCtrl.createTaller = async (req, res) => {
             nombre: req.body.nombre,
             horario: req.body.horario,
             descripcion: req.body.descripcion,
+            zona: req.body.zona,
             img: req.body.img,
             img_mapa: req.body.img_mapa
         });
@@ -69,6 +72,7 @@ adminappCtrl.editTaller = async (req, res) => {
             nombre: req.body.nombre,
             horario: req.body.horario,
             descripcion: req.body.descripcion,
+            zona: req.body.zona,
             img: req.body.img,
             img_mapa: req.body.img_mapa
         };
