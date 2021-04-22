@@ -3,6 +3,8 @@ import {EventoService} from "../../services/evento.service";
 import {Actuacion} from "../../models/actuacion";
 import {Taller} from "../../models/taller";
 import axios from "axios";
+import {Mapa} from "../../models/mapa";
+import {NgForm} from "@angular/forms";
 
 declare const M: any;
 const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/djlgdcqhg/image/upload';
@@ -23,6 +25,7 @@ export class HomeComponent implements OnInit {
   idToEliminate: string;
   act0tal1 = null;
   img: String | ArrayBuffer = 'assets/img-not-found.png';
+  alertBody = '';
   private file1: any;
 
   constructor(private eventoService: EventoService) {
@@ -108,8 +111,19 @@ export class HomeComponent implements OnInit {
       this.img = eventt.target.result;
     }
   }
-/*
-  guardarCambios() {
-    this.eventoService.post
-  }*/
+
+  async guardarCambios() {
+    this.alertBody = 'Guardando imagen: ' + this.file1.name;
+    const elems = document.getElementById('modal2');
+    const instances = M.Modal.init(elems, {dismissible: false});
+    instances.open();
+    const mapa: Mapa = new Mapa();
+    mapa.imagen = await this.uploadimg();
+    this.eventoService.postMapa(mapa).subscribe(() => {
+      M.toast({html: 'Mapa guardado correctamente', classes: 'rounded'});
+      instances.close();
+    });
+
+  }
+
 }

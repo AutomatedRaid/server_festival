@@ -11,8 +11,8 @@ router.delete('/actuacion/:id', verifyToken,  async (req, res) => {await adminAp
 router.post('/taller', verifyToken, async (req, res) => {await adminAppCtrl.createTaller(req, res);});
 router.put('/taller/:id', verifyToken, async (req, res) => {await adminAppCtrl.editTaller(req, res);});
 router.delete('/taller/:id', verifyToken, async (req, res) => {await adminAppCtrl.deleteTaller(req, res);});
-router.put('/mapa/:id', verifyToken, async (req, res) => {await adminAppCtrl.editMapa(req, res);});
-router.post('/mapa', verifyToken, async (req, res) => {await adminAppCtrl.createMapa(req, res);});
+router.put('/mapa/:id', async (req, res) => {await adminAppCtrl.editMapa(req, res);});
+router.post('/mapa', async (req, res) => {await adminAppCtrl.createMapa(req, res);});
 router.get('/private', verifyToken, async (req, res) => {res.status(200).json({ message: "Okey... Hi!" })});
 
 module.exports = router;

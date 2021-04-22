@@ -1,0 +1,86 @@
+Index: frontend/src/app/components/login/login.component.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><div class=\"center-align valign-wrapper\" style=\"vertical-align: middle;\">\r\n  <div id=\"login-page\" class=\"row container\">\r\n    <div class=\"col s12 z-depth-6 card-panel\">\r\n      <div style=\"font-size: 1.5em; margin-bottom: 20px; \" class=\"iniciar\">Iniciar sesión</div>\r\n      <form class=\"login-form\">\r\n        <div class=\"row\">\r\n        </div>\r\n        <div class=\"row\">\r\n          <div class=\"input-field col s12\">\r\n            <i class=\"material-icons prefix\">mail_outline</i>\r\n            <input class=\"validate\" id=\"email\" type=\"email\">\r\n            <label for=\"email\" data-error=\"wrong\" data-success=\"right\">Email</label>\r\n          </div>\r\n        </div>\r\n        <div class=\"row\">\r\n          <div class=\"input-field col s12\">\r\n            <i class=\"material-icons prefix\">lock_outline</i>\r\n            <input id=\"password\" type=\"password\">\r\n            <label for=\"password\">Contraseña</label>\r\n          </div>\r\n        </div>\r\n        <div class=\"row\">\r\n          <div class=\"input-field col s12\">\r\n            <a href=\"#\" class=\"btn waves-effect waves-light col s12 boton\">Login</a>\r\n          </div>\r\n        </div>\r\n      </form>\r\n    </div>\r\n  </div>\r\n</div>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- frontend/src/app/components/login/login.component.html	(revision ae11996d46cfcccceeefc604e9d5ba01d1a9f70c)
++++ frontend/src/app/components/login/login.component.html	(date 1617877804222)
+@@ -1,30 +1,32 @@
+-<div class="center-align valign-wrapper" style="vertical-align: middle;">
+-  <div id="login-page" class="row container">
+-    <div class="col s12 z-depth-6 card-panel">
+-      <div style="font-size: 1.5em; margin-bottom: 20px; " class="iniciar">Iniciar sesión</div>
+-      <form class="login-form">
+-        <div class="row">
+-        </div>
+-        <div class="row">
+-          <div class="input-field col s12">
+-            <i class="material-icons prefix">mail_outline</i>
+-            <input class="validate" id="email" type="email">
+-            <label for="email" data-error="wrong" data-success="right">Email</label>
+-          </div>
+-        </div>
+-        <div class="row">
+-          <div class="input-field col s12">
+-            <i class="material-icons prefix">lock_outline</i>
+-            <input id="password" type="password">
+-            <label for="password">Contraseña</label>
+-          </div>
+-        </div>
+-        <div class="row">
+-          <div class="input-field col s12">
+-            <a href="#" class="btn waves-effect waves-light col s12 boton">Login</a>
+-          </div>
+-        </div>
+-      </form>
++<div class="center-align" style="vertical-align: middle;">
++  <div id="login-page" style="display: flex; justify-content: center; height: 100vh; width: 100%">
++    <div class="" style="align-self: center">
++      <div class="z-depth-6 card-panel" style="padding: 60px">
++        <div style="font-size: 1.5em; margin-bottom: 20px; " class="iniciar">Iniciar sesión</div>
++        <form class="login-form">
++          <div class="row">
++          </div>
++          <div class="row">
++            <div class="input-field col s12">
++              <i class="material-icons prefix">mail_outline</i>
++              <input class="validate" id="email" type="email">
++              <label for="email" data-error="wrong" data-success="right">Email</label>
++            </div>
++          </div>
++          <div class="row">
++            <div class="input-field col s12">
++              <i class="material-icons prefix">lock_outline</i>
++              <input id="password" type="password">
++              <label for="password">Contraseña</label>
++            </div>
++          </div>
++          <div class="row">
++            <div class="input-field col s12">
++              <a href="#" class="btn waves-effect waves-light col s12 boton">Login</a>
++            </div>
++          </div>
++        </form>
++      </div>
+     </div>
+   </div>
+ </div>
+Index: frontend/src/app/components/actuacion/actuacion.component.css
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>.input-div{\r\n  width: 50% !important;\r\n  margin-bottom: 25px;\r\n}\r\n.text-input{\r\n  font-size: 1.5em;\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- frontend/src/app/components/actuacion/actuacion.component.css	(revision ae11996d46cfcccceeefc604e9d5ba01d1a9f70c)
++++ frontend/src/app/components/actuacion/actuacion.component.css	(date 1617953260582)
+@@ -5,3 +5,7 @@
+ .text-input{
+   font-size: 1.5em;
+ }
++
++.bar{
++  background-color: #0b8e36 !important;
++}

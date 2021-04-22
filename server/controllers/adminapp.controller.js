@@ -104,16 +104,19 @@ adminappCtrl.editMapa = async (req, res) => {
 adminappCtrl.createMapa = async (req, res) => {
     try{
         const mapaex = await Mapa.find();
-        if (mapaex == null) {
-            const mapa = new Mapa({
-                imagen: req.body.imagen,
-                puntos: req.body.puntos,
-            });
+        const mapa = new Mapa({
+            imagen: req.body.imagen,
+        });
+        console.log(mapa);
+        await Mapa.findByIdAndUpdate(mapa._id, mapa, {new:true, useFindAndModify:false});
+        res.status(201).json({message: 'Mapa guardado'})
+        /*if (mapaex == null) {
             await mapa.save();
             res.status(201).json({message: 'Mapa creado'})
         }else {
-            res.status(400).json({message: 'Ya hay un mapa'})
-        }
+            await Mapa.findByIdAndUpdate(mapaex._id, mapa);
+            res.status(201).json({message: 'Ya había un mapa, se ha sustituido'})
+        }*/
     }catch (e) {
         res.status(400).json({message: e.message});
     }
