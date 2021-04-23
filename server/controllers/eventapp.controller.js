@@ -1,6 +1,7 @@
 const Actuacion = require('../models/actuacion');
 const Taller = require('../models/taller');
 const Mapa = require('../models/mapa');
+const Faq = require('../models/faq');
 
 const eventappCtrl = {};
 
@@ -52,6 +53,22 @@ eventappCtrl.getMapa = async (req, res) => {
         res.status(500).json({message: err.message})
     });
     res.json(mapa);
+};
+
+//Get FAQS
+eventappCtrl.getFAQs = async (req, res) => {
+    const faqs = await Faq.find().catch((err) => {
+        res.status(500).json({message: err.message})
+    });
+    await res.status(201).json(faqs);
+};
+
+//Get FAQ
+eventappCtrl.getFAQ = async (req, res) => {
+    const faq = await Faq.findById(req.params.id).catch((err) => {
+        res.status(500).json({message: err.message})
+    });
+    await res.status(201).json(faq);
 };
 
 module.exports = eventappCtrl;

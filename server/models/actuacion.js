@@ -7,7 +7,8 @@ const ActuacionSchema = new Schema({
     artistas: [String],
     descripcion: String,
     img: String,
-    img_mapa: String
+    img_mapa: String,
+    ubicacion: String
 });
 
 module.exports = mongoose.model('Actuacion', ActuacionSchema);

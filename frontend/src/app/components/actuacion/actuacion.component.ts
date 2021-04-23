@@ -54,13 +54,14 @@ export class ActuacionComponent implements OnInit {
   }
 
   async guardarActuacion(actForm: NgForm) {
-    if (actForm.value.nombre != '' && actForm.value.descripcion != '' && this.horaFinv != '' && this.horaIniciov != '' && this.file1 != null && this.file2 != null && this.artistas.length > 0) {
+    if (actForm.value.nombre != '' && actForm.value.descripcion != '' && actForm.value.ubicacion != '' && this.horaFinv != '' && this.horaIniciov != '' && this.file1 != null && this.file2 != null && this.artistas.length > 0) {
       this.alertBody = 'Guardando imagen: ' + this.file1.name;
       const elems = document.getElementById('modal1');
       const instances = M.Modal.init(elems, {dismissible:false});
       instances.open();
       const actuacion: Actuacion = new Actuacion();
       actuacion.nombre = actForm.value.nombre;
+      actuacion.ubicacion = actForm.value.ubicacion;
       actuacion.horario = this.horaIniciov + ' - ' + this.horaFinv;
       actuacion.artistas = this.artistas;
       actuacion.descripcion = actForm.value.descripcion;
@@ -165,9 +166,10 @@ export class ActuacionComponent implements OnInit {
   private inicializarDatos() {
     this.ngModel.nombre = this.actuacion.nombre;
     this.ngModel.descripcion = this.actuacion.descripcion;
+    this.ngModel.ubicacion = this.actuacion.ubicacion;
     const time_inicio = <HTMLInputElement>document.getElementById('time-inicio');
     time_inicio.value = this.actuacion.horario.split(' - ')[0];
-    const labels = ['label1','label2','label3','label4'];
+    const labels = ['label1','label2','label3','label4', 'label5'];
     for (let i = 0; i < labels.length; i++) {
       const label = <HTMLLabelElement>document.getElementById(labels[i]);
       label.classList.add('active');

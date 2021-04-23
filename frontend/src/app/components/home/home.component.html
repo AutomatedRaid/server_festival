@@ -53,8 +53,8 @@
           </td>
         </tbody>
       </table>
-    </div><!--
-    <h5>Imagen del mapa</h5>
+    </div>
+    <h5>Imagen mapa</h5>
     <div class="file-field input-field" style="margin-top: 15px">
       <div class="btn">
         <span>File</span>
@@ -70,9 +70,31 @@
     </div>
     <div class="right-align" style="border: 20px">
       <div class="btn" style=" font-size: 1.1em" (click)="guardarCambios()">
-        <span>Guardar cambios</span>
+        <span>Guardar imagen</span>
       </div>
-    </div>-->
+    </div>
+    <h5>FAQs</h5>
+    <div class="responsive-table table-status-sheet" style="margin: 30px">
+      <table class="bordered centered striped" style="text-indent: 1em;">
+        <thead>
+        <tr>
+          <th>Actuacion</th>
+          <th style="border-left: 1px solid #6a6a6a;width: 120px"><i class="material-icons" style="margin-right: 1em;" (click)="addFAQ()">add_circle</i>
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let f of faqs">
+          <td>{{f.question}}</td>
+          <td [ngStyle]="{'width': faqs.length>=3 ? 'calc(120px - 0.2em)' : '133px'}">
+            <div><i class="material-icons" style="margin-left: -1em" (click)="editFAQ(f._id, question, answer)">create</i><i
+              class="material-icons" (click)="deleteFAQ(f._id)">delete</i>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
   <!-- Modal Structure -->
@@ -92,3 +114,21 @@
       <progress id="img-upload-bar" value="0" max="100" style="width: 100%; margin: 10px 0;"></progress>
     </div>
   </div>
+  <div id="modalFAQs" class="modal">
+    <div class="modal-content">
+      <h4>FAQ</h4>
+      <div class="input-field input-div" style="margin: 15px">
+        <textarea type="text" id="question" class="materialize-textarea" name="question" #question></textarea>
+        <label id="questionlbl" for="question" class="text-input">Pregunta</label>
+      </div>
+      <div class="input-field input-div" style="margin: 15px">
+        <textarea type="text" id="answer" class="materialize-textarea" name="answer" #answer></textarea>
+        <label id="answerlbl" for="answer" class="text-input">Respuesta</label>
+      </div>
+      <div class="modal-footer">
+        <a href="#!" class="modal-action modal-close waves-effect waves-red btn-flat" (click)="question.value = ''; answer.value = ''">Cancelar</a>
+        <a class="modal-action waves-effect waves-green btn-flat" (click)="guardarFAQs(question, answer)">Guardar</a>
+      </div>
+    </div>
+  </div>
+</div>

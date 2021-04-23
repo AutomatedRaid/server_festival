@@ -54,13 +54,14 @@ export class TallerComponent implements OnInit {
   }
 
   async guardarTaller(actForm: NgForm) {
-    if (actForm.value.nombre != '' && actForm.value.descripcion != '' && this.horaFinv != '' && this.horaIniciov != '' && this.file1 != null && this.file2 != null) {
+    if (actForm.value.nombre != '' && actForm.value.descripcion != '' && actForm.value.ubicacion != '' && this.horaFinv != '' && this.horaIniciov != '' && this.file1 != null && this.file2 != null) {
       this.alertBody = 'Guardando imagen: ' + this.file1.name;
       const elems = document.getElementById('modal1');
       const instances = M.Modal.init(elems, {dismissible:false});
       instances.open();
       const taller: Taller = new Taller();
       taller.nombre = actForm.value.nombre;
+      taller.ubicacion = actForm.value.ubicacion;
       taller.horario = this.horaIniciov + ' - ' + this.horaFinv;
       taller.descripcion = actForm.value.descripcion;
       taller.img = await this.uploadimg(1);
@@ -144,7 +145,8 @@ export class TallerComponent implements OnInit {
   private inicializarDatos() {
     this.ngModel.nombre = this.taller.nombre;
     this.ngModel.descripcion = this.taller.descripcion;
-    const labels = ['label1','label2','label3','label4'];
+    this.ngModel.ubicacion = this.taller.ubicacion;
+    const labels = ['label1','label2','label3','label4','label5'];
     for (let i = 0; i < labels.length; i++) {
       const label = <HTMLLabelElement>document.getElementById(labels[i]);
       label.classList.add('active');

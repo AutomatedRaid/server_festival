@@ -62,4 +62,24 @@ export class EventoService {
   postMapa (mapa: Mapa){
     return this.http.post( this.URL_API_ADMIN + `/mapa/`, mapa);
   }
+
+  getFAQs (){
+    return this.http.get( this.URL_API_EVENT + '/faq')
+  }
+
+  getFAQ (_id: string){
+    return this.http.get( this.URL_API_EVENT + `/faq/${_id}`)
+  }
+
+  postFAQs (faq: {question: String, answer: String}){
+    return this.http.post( this.URL_API_ADMIN + '/faq', faq);
+  }
+
+  putFAQs (_id: string, faq: {question: String, answer: String}){
+    return this.http.put(this.URL_API_ADMIN + `/faq/${_id}`, faq);
+  }
+
+  deleteFAQs (_id: string){
+    return this.http.delete( this.URL_API_ADMIN + `/faq/${_id}`);
+  }
 }
