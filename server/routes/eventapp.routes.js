@@ -9,5 +9,6 @@ router.get('/actuacion/:id', async (req, res) => {eventAppCtrl.getActuacion(req,
 router.get('/talleres', async (req, res) => {eventAppCtrl.getTalleres(req,res);});
 router.get('/taller/:id', async (req, res) => {eventAppCtrl.getTaller(req,res);});
 router.get('/mapa', async (req, res) => {eventAppCtrl.getMapa(req,res);});
+router.get('/comollegar', async (req, res) => {eventAppCtrl.getComoLlegar(req,res);});
 
 module.exports = router;
