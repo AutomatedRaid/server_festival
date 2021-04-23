@@ -2,6 +2,7 @@ const Actuacion = require('../models/actuacion');
 const Taller = require('../models/taller');
 const Mapa = require('../models/mapa');
 const Faq = require('../models/faq');
+const ComoLlegar = require('../models/comollegar');
 
 const adminappCtrl = {};
 
@@ -119,13 +120,28 @@ adminappCtrl.createMapa = async (req, res) => {
         console.log(mapa);
         await Mapa.findByIdAndUpdate(mapa._id, mapa, {new:true, useFindAndModify:false});
         res.status(201).json({message: 'Mapa guardado'})
-        /*if (mapaex == null) {
+        if (mapaex == null) {
             await mapa.save();
             res.status(201).json({message: 'Mapa creado'})
         }else {
             await Mapa.findByIdAndUpdate(mapaex._id, mapa);
             res.status(201).json({message: 'Ya había un mapa, se ha sustituido'})
-        }*/
+        }
+    }catch (e) {
+        res.status(400).json({message: e.message});
+    }
+};
+
+adminappCtrl.createComoLlegar = async (req, res) => {
+    try{
+        const comollegar = new ComoLlegar({
+            nombre: req.body.nombre,
+            ubicompleta: req.body.ubicompleta,
+            urlmapa: req.body.urlmapa,
+            img: req.body.img
+        });
+        await comollegar.save();
+        res.status(201).json({message: 'ubicacion creada'})
     }catch (e) {
         res.status(400).json({message: e.message});
     }

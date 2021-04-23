@@ -11,5 +11,6 @@ router.get('/taller/:id', async (req, res) => {eventAppCtrl.getTaller(req,res);}
 router.get('/mapa', async (req, res) => {eventAppCtrl.getMapa(req,res);});
 router.get('/faq', async (req, res) => {eventAppCtrl.getFAQs(req,res);});
 router.get('/faq/:id', async (req, res) => {eventAppCtrl.getFAQ(req,res);});
+router.get('/comollegar', async (req, res) => {eventAppCtrl.getComoLlegar(req,res);});
 
 module.exports = router;

@@ -1,6 +1,7 @@
 const Actuacion = require('../models/actuacion');
 const Taller = require('../models/taller');
 const Mapa = require('../models/mapa');
+const ComoLlegar = require('../models/comollegar');
 const Faq = require('../models/faq');
 
 const eventappCtrl = {};
@@ -53,6 +54,15 @@ eventappCtrl.getMapa = async (req, res) => {
         res.status(500).json({message: err.message})
     });
     res.json(mapa);
+};
+
+
+//Get comollegar
+eventappCtrl.getComoLlegar = async (req, res) => {
+    const comoLlegar = await ComoLlegar.findOne().catch((err) => {
+        res.status(500).json({message: err.message})
+    });
+    await res.json(comoLlegar);
 };
 
 //Get FAQS
