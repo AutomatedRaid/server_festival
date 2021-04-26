@@ -1,6 +1,7 @@
 <nav>
   <div class="nav-wrapper" style="padding-left: 5%;padding-right: 5%; background: #0cbf41;">
-    <label class="brand-logo center" routerLink="/" style="height: 100%"><img src="assets/logo_cocodrilo_fondotransparente.png" style="height: 100%"></label>
+    <label class="brand-logo center" routerLink="/" style="height: 100%">
+      <img src="assets/logo_cocodrilo_fondotransparente.png"  style="height: 100%; cursor: pointer" routerLink="/"></label>
     <label class="brand-logo ">Evento</label>
     <label class="brand-logo right">Evento</label>
   </div>
@@ -14,7 +15,8 @@
         <tr>
           <th>Actuacion</th>
           <th style="border-left: 1px solid #6a6a6a;">Horarios</th>
-          <th style="border-left: 1px solid #6a6a6a;width: 120px"><i class="material-icons" style="margin-right: 1em;" routerLink="/actuacion">add_circle</i>
+          <th style="border-left: 1px solid #6a6a6a;width: 120px">
+            <img src="assets/images/add.png" style="cursor: pointer;" routerLink="/actuacion">
           </th>
         </tr>
         </thead>
@@ -23,8 +25,9 @@
           <td>{{a.nombre}}</td>
           <td>{{a.horario}}</td>
           <td [ngStyle]="{'width': actuaciones.length>=3 ? 'calc(120px - 0.2em)' : '133px'}">
-            <div><i class="material-icons" style="margin-left: -1em" routerLink="/actuacion/{{a._id}}">create</i><i
-              class="material-icons" (click)="confirmdelete(a._id, a.nombre, false)">delete</i>
+            <div>
+              <img src="assets/images/edit.png" alt="" routerLink="/actuacion/{{a._id}}" style="cursor: pointer; margin-right: 5px">
+              <img src="assets/images/delete.png" (click)="confirmdelete(a._id, a.nombre, false)" style="margin-left: 5px; cursor: pointer">
             </div>
           </td>
         </tr>
@@ -38,8 +41,9 @@
         <tr>
           <th class="">Taller</th>
           <th class="">Horarios</th>
-          <th style="border-left: 1px solid #6a6a6a;width: 120px"><i class="material-icons" style="margin-right: 1em;" routerLink="/taller">add_circle</i>
-          </th>
+          <th style="border-left: 1px solid #6a6a6a;width: 120px">
+          <img src="assets/images/add.png" style="cursor: pointer;" routerLink="/taller">
+        </th>
         </tr>
         </thead>
         <tbody>
@@ -47,8 +51,9 @@
           <td>{{t.nombre}}</td>
           <td>{{t.horario}}</td>
           <td [ngStyle]="{'width': talleres.length>=3 ? 'calc(120px - 0.2em)' : '133px'}">
-            <div><i class="material-icons" style="margin-left: -1em" routerLink="/taller/{{t._id}}">create</i><i
-              class="material-icons" (click)="confirmdelete(t._id, t.nombre, true)">delete</i>
+            <div>
+              <img src="assets/images/edit.png" alt="" routerLink="/taller/{{t._id}}" style="cursor: pointer; margin-right: 5px">
+              <img src="assets/images/delete.png" (click)="confirmdelete(t._id, t.nombre, false)" style="margin-left: 5px; cursor: pointer">
             </div>
           </td>
         </tbody>
@@ -79,16 +84,18 @@
         <thead>
         <tr>
           <th>Actuacion</th>
-          <th style="border-left: 1px solid #6a6a6a;width: 120px"><i class="material-icons" style="margin-right: 1em;" (click)="addFAQ()">add_circle</i>
-          </th>
+          <th style="border-left: 1px solid #6a6a6a;width: 120px">
+          <img src="assets/images/add.png" style="cursor: pointer;" (click)="addFAQ()">
+        </th>
         </tr>
         </thead>
         <tbody>
         <tr *ngFor="let f of faqs">
           <td>{{f.question}}</td>
           <td [ngStyle]="{'width': faqs.length>=3 ? 'calc(120px - 0.2em)' : '133px'}">
-            <div><i class="material-icons" style="margin-left: -1em" (click)="editFAQ(f._id, question, answer)">create</i><i
-              class="material-icons" (click)="deleteFAQ(f._id)">delete</i>
+            <div>
+              <img src="assets/images/edit.png" style="cursor: pointer;margin-right: 5px" (click)="editFAQ(f._id, question, answer)">
+              <img src="assets/images/delete.png" (click)="deleteFAQ(f._id)" style="margin-left: 5px; cursor: pointer">
             </div>
           </td>
         </tr>
