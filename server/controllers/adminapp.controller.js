@@ -37,7 +37,7 @@ adminappCtrl.editActuacion = async (req, res) => {
             img_mapa: req.body.img_mapa,
             ubicacion: req.body.ubicacion
         };
-        await Actuacion.findByIdAndUpdate(req.params.id,{$set: actuacion}, {new:true, useFindAndModify:false});
+        await Actuacion.findByIdAndUpdate(req.params.id,{$set: actuacion}, {new:false, useFindAndModify:false});
         res.status(201).json({message: 'Actuacion updated'});
     }catch (e) {
         res.status(400).json({message: e.message});
@@ -82,7 +82,7 @@ adminappCtrl.editTaller = async (req, res) => {
             img_mapa: req.body.img_mapa,
             ubicacion: req.body.ubicacion
         };
-        await Taller.findByIdAndUpdate(req.params.id,{$set: taller}, {new:true, useFindAndModify:false});
+        await Taller.findByIdAndUpdate(req.params.id,{$set: taller}, {new:false, useFindAndModify:false});
         res.status(201).json({message: 'Taller updated'});
     }catch (e) {
         res.status(400).json({message: e.message});
@@ -98,36 +98,22 @@ adminappCtrl.deleteTaller = async (req, res) => {
     }
 };
 
-adminappCtrl.editMapa = async (req, res) => {
-    try{
-        const mapa = {
-            imagen: req.body.imagen,
-            puntos: req.body.puntos,
-        };
-        await Mapa.findByIdAndUpdate(req.params.id,{$set: mapa}, {new:true, useFindAndModify:false});
-        res.status(201).json({message: 'Mapa updated'});
-    }catch (e) {
-        res.status(400).json({message: e.message});
-    }
-};
-
 adminappCtrl.createMapa = async (req, res) => {
     try{
-        const mapaex = await Mapa.find();
         const mapa = new Mapa({
-            imagen: req.body.imagen,
+            imagen: req.body.imagen
         });
-        console.log(mapa);
-        await Mapa.findByIdAndUpdate(mapa._id, mapa, {new:true, useFindAndModify:false});
-        res.status(201).json({message: 'Mapa guardado'});
-        if (mapaex == null) {
-            await mapa.save();
-            res.status(201).json({message: 'Mapa creado'})
-        }else {
-            await Mapa.findByIdAndUpdate(mapaex._id, mapa);
-            res.status(201).json({message: 'Ya había un mapa, se ha sustituido'})
+        const mapax = await Mapa.findOne().catch((err) => {
+            res.status(500).json({message: err.message})
+        });
+        if(mapax != null){
+            console.log(mapax._id);
+            await Mapa.findByIdAndDelete(mapax._id);
         }
+        await mapa.save();
+        res.status(201).json({message: 'Mapa guardado'})
     }catch (e) {
+        console.log(e.message);
         res.status(400).json({message: e.message});
     }
 };
@@ -141,7 +127,7 @@ adminappCtrl.createComoLlegar = async (req, res) => {
             img: req.body.img
         });
         await comollegar.save();
-        res.status(201).json({message: 'ubicacion creada'})
+        res.status(201).json({message: 'Ubicacion creada'})
     }catch (e) {
         res.status(400).json({message: e.message});
     }

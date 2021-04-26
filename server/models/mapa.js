@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const {Schema} = mongoose;
 
 const MapaSchema = new Schema({
+    id: String,
     imagen: String
 });
 

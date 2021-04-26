@@ -47,6 +47,12 @@ export class HomeComponent implements OnInit {
     this.eventoService.getFAQs().subscribe( res => {
       this.faqs = res as {_id:String, question: String, answer: String}[];
     });
+    this.eventoService.getMapa().subscribe( res => {
+      const mapa = res as Mapa;
+      if(mapa.imagen != null && mapa.imagen != ''){
+        this.img = mapa.imagen;
+      }
+    });
   }
 
   confirmdelete(_id: string, nombre: string, table: boolean) {

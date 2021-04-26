@@ -56,7 +56,7 @@ export class EventoService {
   }
 
   getMapa (){
-    return this.http.get( this.URL_API_ADMIN + `/mapa/` );
+    return this.http.get( this.URL_API_EVENT + `/mapa` );
   }
 
   postMapa (mapa: Mapa){

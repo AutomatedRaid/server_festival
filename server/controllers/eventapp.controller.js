@@ -48,9 +48,9 @@ eventappCtrl.getTaller = async (req, res) => {
     }
 };
 
-//Get un mapa por id
+//Get un mapa
 eventappCtrl.getMapa = async (req, res) => {
-    const mapa = await Mapa.find().catch((err) => {
+    const mapa = await Mapa.findOne().catch((err) => {
         res.status(500).json({message: err.message})
     });
     res.json(mapa);
