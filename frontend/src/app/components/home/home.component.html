@@ -1,7 +1,8 @@
 <nav>
   <div class="nav-wrapper" style="padding-left: 5%;padding-right: 5%; background: #0cbf41;">
     <label class="brand-logo center" routerLink="/" style="height: 100%">
-      <img src="assets/logo_cocodrilo_fondotransparente.png"  style="height: 100%; cursor: pointer" routerLink="/"></label>
+      <img src="assets/logo_cocodrilo_fondotransparente.png" style="height: 100%; cursor: pointer"
+           routerLink="/"></label>
     <label class="brand-logo ">Evento</label>
     <label class="brand-logo right">Evento</label>
   </div>
@@ -26,8 +27,10 @@
           <td>{{a.horario}}</td>
           <td [ngStyle]="{'width': actuaciones.length>=3 ? 'calc(120px - 0.2em)' : '133px'}">
             <div>
-              <img src="assets/images/edit.png" alt="" routerLink="/actuacion/{{a._id}}" style="cursor: pointer; margin-right: 5px">
-              <img src="assets/images/delete.png" (click)="confirmdelete(a._id, a.nombre, false)" style="margin-left: 5px; cursor: pointer">
+              <img src="assets/images/edit.png" alt="" routerLink="/actuacion/{{a._id}}"
+                   style="cursor: pointer; margin-right: 5px">
+              <img src="assets/images/delete.png" (click)="confirmdelete(a._id, a.nombre, false)"
+                   style="margin-left: 5px; cursor: pointer">
             </div>
           </td>
         </tr>
@@ -42,8 +45,8 @@
           <th class="">Taller</th>
           <th class="">Horarios</th>
           <th style="border-left: 1px solid #6a6a6a;width: 120px">
-          <img src="assets/images/add.png" style="cursor: pointer;" routerLink="/taller">
-        </th>
+            <img src="assets/images/add.png" style="cursor: pointer;" routerLink="/taller">
+          </th>
         </tr>
         </thead>
         <tbody>
@@ -52,8 +55,10 @@
           <td>{{t.horario}}</td>
           <td [ngStyle]="{'width': talleres.length>=3 ? 'calc(120px - 0.2em)' : '133px'}">
             <div>
-              <img src="assets/images/edit.png" alt="" routerLink="/taller/{{t._id}}" style="cursor: pointer; margin-right: 5px">
-              <img src="assets/images/delete.png" (click)="confirmdelete(t._id, t.nombre, false)" style="margin-left: 5px; cursor: pointer">
+              <img src="assets/images/edit.png" alt="" routerLink="/taller/{{t._id}}"
+                   style="cursor: pointer; margin-right: 5px">
+              <img src="assets/images/delete.png" (click)="confirmdelete(t._id, t.nombre, false)"
+                   style="margin-left: 5px; cursor: pointer">
             </div>
           </td>
         </tbody>
@@ -85,8 +90,8 @@
         <tr>
           <th>Actuacion</th>
           <th style="border-left: 1px solid #6a6a6a;width: 120px">
-          <img src="assets/images/add.png" style="cursor: pointer;" (click)="addFAQ()">
-        </th>
+            <img src="assets/images/add.png" style="cursor: pointer;" (click)="addFAQ()">
+          </th>
         </tr>
         </thead>
         <tbody>
@@ -94,7 +99,8 @@
           <td>{{f.question}}</td>
           <td [ngStyle]="{'width': faqs.length>=3 ? 'calc(120px - 0.2em)' : '133px'}">
             <div>
-              <img src="assets/images/edit.png" style="cursor: pointer;margin-right: 5px" (click)="editFAQ(f._id, question, answer)">
+              <img src="assets/images/edit.png" style="cursor: pointer;margin-right: 5px"
+                   (click)="editFAQ(f._id, question, answer)">
               <img src="assets/images/delete.png" (click)="deleteFAQ(f._id)" style="margin-left: 5px; cursor: pointer">
             </div>
           </td>
@@ -102,72 +108,82 @@
         </tbody>
       </table>
     </div>
+    <h5>Como llegar</h5>
+    <h6>Nombre dirección: {{comollegar.nombre}}</h6>
+    <h6>Ubicación completa: </h6>
+    <h6>URL Mapa: </h6>
+    <h6>Imagen: </h6>
     <div class="right-align" style="border: 20px">
       <div class="btn" style=" font-size: 1.1em" (click)="abrirComoLlegar()">
         <span>Como llegar</span>
       </div>
-  </div>
+    </div>
 
-  <!-- Modal Structure -->
-  <div id="modal1" class="modal">
-    <div class="modal-content">
-      <h4>{{alertHead}}</h4>
-      <p>{{alertbody}}</p>
-    </div>
-    <div class="modal-footer">
-      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
-      <a href="#!" class="modal-action modal-close waves-effect waves-red btn-flat" (click)="delete()">Eliminar</a>
-    </div>
-  </div>
-  <div id="modal2" class="modal">
-    <div class="modal-content">
-      <h4>Guardando mapa</h4>
-      <progress id="img-upload-bar" value="0" max="100" style="width: 100%; margin: 10px 0;"></progress>
-    </div>
-  </div>
-  <div id="modalFAQs" class="modal">
-    <div class="modal-content">
-      <h4>FAQ</h4>
-      <div class="input-field input-div" style="margin: 15px">
-        <textarea type="text" id="question" class="materialize-textarea" name="question" #question></textarea>
-        <label id="questionlbl" for="question" class="text-input">Pregunta</label>
-      </div>
-      <div class="input-field input-div" style="margin: 15px">
-        <textarea type="text" id="answer" class="materialize-textarea" name="answer" #answer></textarea>
-        <label id="answerlbl" for="answer" class="text-input">Respuesta</label>
+    <!-- Modal Structure -->
+    <div id="modal1" class="modal">
+      <div class="modal-content">
+        <h4>{{alertHead}}</h4>
+        <p>{{alertbody}}</p>
       </div>
       <div class="modal-footer">
-        <a href="#!" class="modal-action modal-close waves-effect waves-red btn-flat" (click)="question.value = ''; answer.value = ''">Cancelar</a>
-        <a class="modal-action waves-effect waves-green btn-flat" (click)="guardarFAQs(question, answer)">Guardar</a>
+        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
+        <a href="#!" class="modal-action modal-close waves-effect waves-red btn-flat" (click)="delete()">Eliminar</a>
       </div>
     </div>
-  </div>
-
-
-  <div id="modalComoLlegar" class="modal">
-    <div class="modal-content">
-      <h4>Como llegar</h4>
-      <div class="input-field input-div" style="margin: 15px">
-        <textarea type="text" id="nombre" class="materialize-textarea" name="nombre" #nombre></textarea>
-        <label id="nombrelbl" for="question" class="text-input">Nombre</label>
-      </div>
-      <div class="input-field input-div" style="margin: 15px">
-        <textarea type="text" id="ubicompleta" class="materialize-textarea" name="ubicompleta" #ubicompleta></textarea>
-        <label id="ubicompletalbl" for="answer" class="text-input">Ubicación completa</label>
-      </div>
-      <div class="input-field input-div" style="margin: 15px">
-        <textarea type="text" id="urlmapa" class="materialize-textarea" name="urlmapa" #urlmapa></textarea>
-        <label id="urlmapalbl" for="answer" class="text-input">Ubicación completa</label>
-      </div>
-      <div class="input-field input-div" style="margin: 15px">
-        <textarea type="text" id="imgmapa" class="materialize-textarea" name="imgmapa" #imgmapa></textarea>
-        <label id="imgmapalbl" for="answer" class="text-input">Imagen mapa</label>
-      </div>
-      <div class="modal-footer">
-        <a href="#!" class="modal-action modal-close waves-effect waves-red btn-flat" (click)="nombre.value = ''; urlmapa.value = ''; ubicompleta.value = ''; imgmapa.value = '';">Cancelar</a>
-        <a class="modal-action waves-effect waves-green btn-flat" (click)="guardarComoLlegar(nombre, ubicompleta, urlmapa, imgmapa)">Guardar</a>
+    <div id="modal2" class="modal">
+      <div class="modal-content">
+        <h4>Guardando mapa</h4>
+        <progress id="img-upload-bar" value="0" max="100" style="width: 100%; margin: 10px 0;"></progress>
       </div>
     </div>
-  </div>
+    <div id="modalFAQs" class="modal">
+      <div class="modal-content">
+        <h4>FAQ</h4>
+        <div class="input-field input-div" style="margin: 15px">
+          <textarea type="text" id="question" class="materialize-textarea" name="question" #question></textarea>
+          <label id="questionlbl" for="question" class="text-input">Pregunta</label>
+        </div>
+        <div class="input-field input-div" style="margin: 15px">
+          <textarea type="text" id="answer" class="materialize-textarea" name="answer" #answer></textarea>
+          <label id="answerlbl" for="answer" class="text-input">Respuesta</label>
+        </div>
+        <div class="modal-footer">
+          <a href="#!" class="modal-action modal-close waves-effect waves-red btn-flat"
+             (click)="question.value = ''; answer.value = ''">Cancelar</a>
+          <a class="modal-action waves-effect waves-green btn-flat" (click)="guardarFAQs(question, answer)">Guardar</a>
+        </div>
+      </div>
+    </div>
 
+
+    <div id="modalComoLlegar" class="modal">
+      <div class="modal-content">
+        <h4>Como llegar</h4>
+        <div class="input-field input-div" style="margin: 15px">
+          <textarea type="text" id="nombre" class="materialize-textarea" name="nombre" #nombre></textarea>
+          <label id="nombrelbl" for="question" class="text-input">Nombre</label>
+        </div>
+        <div class="input-field input-div" style="margin: 15px">
+          <textarea type="text" id="ubicompleta" class="materialize-textarea" name="ubicompleta"
+                    #ubicompleta></textarea>
+          <label id="ubicompletalbl" for="answer" class="text-input">Ubicación completa</label>
+        </div>
+        <div class="input-field input-div" style="margin: 15px">
+          <textarea type="text" id="urlmapa" class="materialize-textarea" name="urlmapa" #urlmapa></textarea>
+          <label id="urlmapalbl" for="answer" class="text-input">Ubicación completa</label>
+        </div>
+        <div class="input-field input-div" style="margin: 15px">
+          <textarea type="text" id="imgmapa" class="materialize-textarea" name="imgmapa" #imgmapa></textarea>
+          <label id="imgmapalbl" for="answer" class="text-input">Imagen mapa</label>
+        </div>
+        <div class="modal-footer">
+          <a href="#!" class="modal-action modal-close waves-effect waves-red btn-flat"
+             (click)="nombre.value = ''; urlmapa.value = ''; ubicompleta.value = ''; imgmapa.value = '';">Cancelar</a>
+          <a class="modal-action waves-effect waves-green btn-flat"
+             (click)="guardarComoLlegar(nombre, ubicompleta, urlmapa, imgmapa)">Guardar</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
 </div>

@@ -83,11 +83,15 @@ export class EventoService {
     return this.http.delete( this.URL_API_ADMIN + `/faq/${_id}`);
   }
 
-  putComoLlegar(_id: string, comoLlegar: { nombre: string; ubicompleta: string; urlmapa: string; imgmapa: string }) {
-    return this.http.put(this.URL_API_ADMIN + `/comoLlegar/${_id}`, comoLlegar);
+  putComoLlegar(_id: string, comoLlegar: { nombre: string; ubicompleta: string; urlmapa: string; img: string }) {
+    return this.http.put(this.URL_API_ADMIN + `/comollegar/${_id}`, comoLlegar);
   }
 
-  postComoLlegar(comoLlegar: {nombre: string, ubicompleta: string, urlmapa: string; imgmapa: string;}) {
-    return this.http.post( this.URL_API_ADMIN + '/comoLlegar', comoLlegar);
+  postComoLlegar(comoLlegar: {nombre: string, ubicompleta: string, urlmapa: string; img: string;}) {
+    return this.http.post( this.URL_API_ADMIN + '/comollegar', comoLlegar);
+  }
+
+  getComoLlegar(_id: string) {
+    return this.http.get( this.URL_API_EVENT + `/comollegar/${_id}`)
   }
 }
