@@ -119,7 +119,7 @@ adminappCtrl.createMapa = async (req, res) => {
         });
         console.log(mapa);
         await Mapa.findByIdAndUpdate(mapa._id, mapa, {new:true, useFindAndModify:false});
-        res.status(201).json({message: 'Mapa guardado'})
+        res.status(201).json({message: 'Mapa guardado'});
         if (mapaex == null) {
             await mapa.save();
             res.status(201).json({message: 'Mapa creado'})
