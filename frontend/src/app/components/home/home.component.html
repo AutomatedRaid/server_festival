@@ -102,6 +102,10 @@
         </tbody>
       </table>
     </div>
+    <div class="right-align" style="border: 20px">
+      <div class="btn" style=" font-size: 1.1em" (click)="abrirComoLlegar()">
+        <span>Como llegar</span>
+      </div>
   </div>
 
   <!-- Modal Structure -->
@@ -138,4 +142,32 @@
       </div>
     </div>
   </div>
+
+
+  <div id="modalComoLlegar" class="modal">
+    <div class="modal-content">
+      <h4>Como llegar</h4>
+      <div class="input-field input-div" style="margin: 15px">
+        <textarea type="text" id="nombre" class="materialize-textarea" name="nombre" #nombre></textarea>
+        <label id="nombrelbl" for="question" class="text-input">Nombre</label>
+      </div>
+      <div class="input-field input-div" style="margin: 15px">
+        <textarea type="text" id="ubicompleta" class="materialize-textarea" name="ubicompleta" #ubicompleta></textarea>
+        <label id="ubicompletalbl" for="answer" class="text-input">Ubicación completa</label>
+      </div>
+      <div class="input-field input-div" style="margin: 15px">
+        <textarea type="text" id="urlmapa" class="materialize-textarea" name="urlmapa" #urlmapa></textarea>
+        <label id="urlmapalbl" for="answer" class="text-input">Ubicación completa</label>
+      </div>
+      <div class="input-field input-div" style="margin: 15px">
+        <textarea type="text" id="imgmapa" class="materialize-textarea" name="imgmapa" #imgmapa></textarea>
+        <label id="imgmapalbl" for="answer" class="text-input">Imagen mapa</label>
+      </div>
+      <div class="modal-footer">
+        <a href="#!" class="modal-action modal-close waves-effect waves-red btn-flat" (click)="nombre.value = ''; urlmapa.value = ''; ubicompleta.value = ''; imgmapa.value = '';">Cancelar</a>
+        <a class="modal-action waves-effect waves-green btn-flat" (click)="guardarComoLlegar(nombre, ubicompleta, urlmapa, imgmapa)">Guardar</a>
+      </div>
+    </div>
+  </div>
+
 </div>

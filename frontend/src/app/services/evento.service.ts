@@ -82,4 +82,12 @@ export class EventoService {
   deleteFAQs (_id: string){
     return this.http.delete( this.URL_API_ADMIN + `/faq/${_id}`);
   }
+
+  putComoLlegar(_id: string, comoLlegar: { nombre: string; ubicompleta: string; urlmapa: string; imgmapa: string }) {
+    return this.http.put(this.URL_API_ADMIN + `/comoLlegar/${_id}`, comoLlegar);
+  }
+
+  postComoLlegar(comoLlegar: {nombre: string, ubicompleta: string, urlmapa: string; imgmapa: string;}) {
+    return this.http.post( this.URL_API_ADMIN + '/comoLlegar', comoLlegar);
+  }
 }
