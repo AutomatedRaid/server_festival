@@ -23,6 +23,7 @@ export class HomeComponent implements OnInit {
   actuaciones: Actuacion[] = [];
   talleres: Taller[] = [];
   faqs: {_id: String, question: String, answer: String}[] = [];
+  comollegar: {_id: String, nombre: String, ubicompleta: String, urlmapa: String, imgmapa: String}[] = [];
   alertHead: string;
   alertbody: string;
   idToEliminate: string;
@@ -31,6 +32,7 @@ export class HomeComponent implements OnInit {
   alertBody = '';
   private idFAQEdit = '';
   private file1: any;
+  private idComoLlegarEdit: any;
 
   constructor(private eventoService: EventoService) {
   }
@@ -205,6 +207,56 @@ export class HomeComponent implements OnInit {
       this.idFAQEdit = r._id;
     });
     var elems = document.getElementById('modalFAQs');
+    var instances = M.Modal.init(elems,{dismissible:false});
+    instances.open();
+  }
+
+  guardarComoLlegar(nombre: HTMLTextAreaElement, ubicompleta: HTMLTextAreaElement, urlmapa: HTMLTextAreaElement, imgmapa: HTMLTextAreaElement) {
+    if (nombre.value != "" && ubicompleta.value != '' && urlmapa.value != '' && imgmapa.value != '') {
+      var elems = document.getElementById('modalComoLlegar');
+      var instances = M.Modal.init(elems, {dismissible: false});
+      if (this.idComoLlegarEdit == '') {
+        this.eventoService.postComoLlegar({nombre: nombre.value, ubicompleta: ubicompleta.value, urlmapa: urlmapa.value, imgmapa: imgmapa.value}).subscribe(res => {
+          M.toast({html: 'Como llegar guardado', classes: 'rounded'});
+          this.comollegar.push({
+            _id: (res as { message: String }).message.split(', ')[1],
+            nombre: nombre.value,
+            ubicompleta: ubicompleta.value,
+            urlmapa: urlmapa.value,
+            imgmapa: imgmapa.value
+          });
+          nombre.value = '';
+          ubicompleta.value = '';
+          urlmapa.value = '';
+          imgmapa.value = '';
+          this.idComoLlegarEdit = '';
+        });
+      } else {
+        this.eventoService.putComoLlegar(this.idComoLlegarEdit, {nombre: nombre.value, ubicompleta: ubicompleta.value, urlmapa: urlmapa.value, imgmapa: imgmapa.value}).subscribe(() => {
+          M.toast({html: 'Como llegar guardado', classes: 'rounded'});
+          for (let i = 0; i <this.comollegar.length ; i++) {
+            if(this.comollegar[i]._id == this.idComoLlegarEdit){
+              this.comollegar[i].nombre = nombre.value;
+              this.comollegar[i].ubicompleta = ubicompleta.value;
+              this.comollegar[i].urlmapa = urlmapa.value;
+              this.comollegar[i].imgmapa = imgmapa.value;
+              break;
+            }
+          }
+          nombre.value = '';
+          ubicompleta.value = '';
+          urlmapa.value = '';
+          imgmapa.value = '';
+          this.idComoLlegarEdit = '';
+        });
+      }
+      instances.close();
+    } else
+      M.toast({html: 'Faltan datos', classes: 'rounded'});
+  }
+
+  abrirComoLlegar(){
+    var elems = document.getElementById('modalComoLlegar');
     var instances = M.Modal.init(elems,{dismissible:false});
     instances.open();
   }
