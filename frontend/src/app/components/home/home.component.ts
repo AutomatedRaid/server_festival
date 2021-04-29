@@ -6,6 +6,7 @@ import axios from "axios";
 import {Mapa} from "../../models/mapa";
 import {NgForm} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
+import {Comollegar} from "../../models/comollegar";
 
 declare const M: any;
 const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/djlgdcqhg/image/upload';
@@ -23,18 +24,20 @@ export class HomeComponent implements OnInit {
   actuaciones: Actuacion[] = [];
   talleres: Taller[] = [];
   faqs: {_id: String, question: String, answer: String}[] = [];
-  comollegar: {_id: String, nombre: String, ubicompleta: String, urlmapa: String, img: String}[] = [];
+  ngModel: Comollegar;
   alertHead: string;
   alertbody: string;
   idToEliminate: string;
   act0tal1 = null;
   img: String | ArrayBuffer = 'assets/img-not-found.png';
+  imgcmll: String | ArrayBuffer = 'assets/img-not-found.png';
   alertBody = '';
   private idFAQEdit = '';
   private file1: any;
-  private idComoLlegarEdit = '';
+  private file2: any;
 
   constructor(private eventoService: EventoService) {
+    this.ngModel = new Comollegar();
   }
 
   ngOnInit(): void {
@@ -53,6 +56,17 @@ export class HomeComponent implements OnInit {
       const mapa = res as Mapa;
       if(mapa.imagen != null && mapa.imagen != ''){
         this.img = mapa.imagen;
+      }
+    });
+    this.eventoService.getComoLlegar().subscribe(res =>{
+      this.ngModel= res as Comollegar;
+      if(this.ngModel.img != null && this.ngModel.img != ''){
+        this.imgcmll = this.ngModel.img;
+      }
+      const labels = ['nombrelbl','ubicompletalbl', 'urlmapalbl'];
+      for (let i = 0; i < labels.length; i++) {
+        const label = <HTMLLabelElement>document.getElementById(labels[i]);
+        label.classList.add('active');
       }
     });
   }
@@ -116,14 +130,26 @@ export class HomeComponent implements OnInit {
     return res.data.url;
   }
 
-  onSelectFile(event) {
+  onSelectFile(event, n) {
     if (event.target.files && event.target.files[0]) {
-      this.file1 = event.target.files[0];
-    }
-    const reader = new FileReader();
-    reader.readAsDataURL(event.target.files[0]);
-    reader.onload = (eventt) => {
-      this.img = eventt.target.result;
+      switch (n) {
+        case 1:
+          this.file1 = event.target.files[0];
+          const reader = new FileReader();
+          reader.readAsDataURL(event.target.files[0]);
+          reader.onload = (eventt) => {
+              this.img = eventt.target.result;
+          };
+          break;
+        case 2:
+          this.file1 = event.target.files[1];
+          const reader2 = new FileReader();
+          reader2.readAsDataURL(event.target.files[0]);
+          reader2.onload = (eventt) => {
+            this.imgcmll = eventt.target.result;
+          };
+          break;
+      }
     }
   }
 
@@ -211,75 +237,19 @@ export class HomeComponent implements OnInit {
     instances.open();
   }
 
-  guardarComoLlegar(nombre: HTMLTextAreaElement, ubicompleta: HTMLTextAreaElement, urlmapa: HTMLTextAreaElement, img: HTMLTextAreaElement) {
-    if (nombre.value != "" && ubicompleta.value != '' && urlmapa.value != '' && img.value != '') {
-      var elems = document.getElementById('modalComoLlegar');
-      var instances = M.Modal.init(elems, {dismissible: false});
-      if (this.idComoLlegarEdit == '') {
-        this.eventoService.postComoLlegar({nombre: nombre.value, ubicompleta: ubicompleta.value, urlmapa: urlmapa.value, img: img.value}).subscribe(res => {
-          M.toast({html: 'Como llegar guardado', classes: 'rounded'});
-          this.comollegar.push({
-            _id: (res as { message: String }).message.split(', ')[1],
-            nombre: nombre.value,
-            ubicompleta: ubicompleta.value,
-            urlmapa: urlmapa.value,
-            img: img.value
-          });
-          nombre.value = '';
-          ubicompleta.value = '';
-          urlmapa.value = '';
-          img.value = '';
-          this.idComoLlegarEdit = '';
+  guardarComoLlegar(cmllForm: NgForm) {
+    if (cmllForm.value.nombre != '' && cmllForm.value.ubicompleta != '' && cmllForm.value.urlmapa != '' && this.imgcmll != '' ) {
+      const cmoLlegar = new Comollegar();
+      if (this.ngModel._id == '') {
+        this.eventoService.postComoLlegar(this.ngModel).subscribe(res => {
+          M.toast({html: 'Comollegar guardado', classes: 'rounded'});
         });
-      } else {
-        this.eventoService.putComoLlegar(this.idComoLlegarEdit, {nombre: nombre.value, ubicompleta: ubicompleta.value, urlmapa: urlmapa.value, img: img.value}).subscribe(() => {
-          M.toast({html: 'Como llegar guardado', classes: 'rounded'});
-          for (let i = 0; i <this.comollegar.length ; i++) {
-            if(this.comollegar[i]._id == this.idComoLlegarEdit){
-              this.comollegar[i].nombre = nombre.value;
-              this.comollegar[i].ubicompleta = ubicompleta.value;
-              this.comollegar[i].urlmapa = urlmapa.value;
-              this.comollegar[i].img = img.value;
-              break;
-            }
-          }
-          nombre.value = '';
-          ubicompleta.value = '';
-          urlmapa.value = '';
-          img.value = '';
-          this.idComoLlegarEdit = '';
+      }else {
+        this.eventoService.putComoLlegar(this.ngModel._id, this.ngModel).subscribe(res => {
+          M.toast({html: 'Comollegar guardado', classes: 'rounded'});
         });
       }
-      instances.close();
     } else
       M.toast({html: 'Faltan datos', classes: 'rounded'});
-  }
-
-  editComoLlegar(_id:string, nombre: HTMLTextAreaElement, ubicompleta: HTMLTextAreaElement, urlmapa: HTMLTextAreaElement, img: HTMLTextAreaElement) {
-    this.eventoService.getComoLlegar(_id).subscribe(res => {
-      const r = res as {_id: string, nombre: string, ubicompleta: string, urlmapa: string, img: string};
-      nombre.value = r.nombre;
-      ubicompleta.value = r.ubicompleta;
-      urlmapa.value = r.urlmapa;
-      img.value = r.img;
-      const nombrelbl = <HTMLLabelElement>document.getElementById('nombrelbl');
-      nombrelbl.classList.add('active');
-      const ubicompletalbl = <HTMLLabelElement>document.getElementById('ubicompletalbl');
-      ubicompletalbl.classList.add('active');
-      const urlmapalbl = <HTMLLabelElement>document.getElementById('urlmapalbl');
-      urlmapalbl.classList.add('active');
-      const imgmapalbl = <HTMLLabelElement>document.getElementById('imgmapalbl');
-      imgmapalbl.classList.add('active');
-      this.idComoLlegarEdit = r._id;
-    });
-    var elems = document.getElementById('modalComoLlegar');
-    var instances = M.Modal.init(elems,{dismissible:false});
-    instances.open();
-  }
-
-  abrirComoLlegar(){
-    var elems = document.getElementById('modalComoLlegar');
-    var instances = M.Modal.init(elems,{dismissible:false});
-    instances.open();
   }
 }

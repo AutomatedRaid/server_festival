@@ -68,7 +68,7 @@
     <div class="file-field input-field" style="margin-top: 15px">
       <div class="btn">
         <span>File</span>
-        <input type="file" accept="image/*" (change)="onSelectFile($event)">
+        <input type="file" accept="image/*" (change)="onSelectFile($event,1)">
       </div>
       <div class="file-path-wrapper">
         <input class="file-path validate" accept="image/*" type="text">
@@ -108,15 +108,42 @@
         </tbody>
       </table>
     </div>
-    <h5>Como llegar</h5>
-    <h6>Nombre dirección: {{comollegar.nombre}}</h6>
-    <h6>Ubicación completa: </h6>
-    <h6>URL Mapa: </h6>
-    <h6>Imagen: </h6>
-    <div class="right-align" style="border: 20px">
-      <div class="btn" style=" font-size: 1.1em" (click)="abrirComoLlegar()">
-        <span>Como llegar</span>
-      </div>
+    <div>
+      <h5>Como llegar</h5>
+      <form #cmllForm="ngForm">
+        <div style="margin-left: 20px; margin-top: 20px">
+          <div class="input-field input-div" style="margin: 15px">
+            <textarea type="text" id="nombre" class="materialize-textarea" name="nombre" [(ngModel)]="ngModel.nombre"></textarea>
+            <label id="nombrelbl" for="question" class="text-input">Nombre</label>
+          </div>
+          <div class="input-field input-div" style="margin: 15px">
+            <textarea type="text" id="ubicompleta" class="materialize-textarea" name="ubicompleta" [(ngModel)]="ngModel.ubicompleta"></textarea>
+            <label id="ubicompletalbl" for="answer" class="text-input">Ubicación completa</label>
+          </div>
+          <div class="input-field input-div" style="margin: 15px">
+            <textarea type="text" id="urlmapa" class="materialize-textarea" name="urlmapa" [(ngModel)]="ngModel.urlmapa"></textarea>
+            <label id="urlmapalbl" for="answer" class="text-input">Url google maps</label>
+          </div>
+          <div class="file-field input-field" style="margin: 15px">
+            <div class="btn">
+              <span>File</span>
+              <input type="file" accept="image/*" (change)="onSelectFile($event, 2)">
+            </div>
+            <div class="file-path-wrapper">
+              <input class="file-path validate" accept="image/*" type="text">
+            </div>
+          </div>
+          <div class="center-align">
+            <img [src]="imgcmll"
+                 style="max-width: 50%; align-self: center">
+          </div>
+          <div class="right-align" style="border: 20px; margin-top: 15px" (click)="guardarComoLlegar(cmllForm)">
+            <div class="btn" style=" font-size: 1.1em">
+              <span>Guardar dirección</span>
+            </div>
+          </div>
+        </div>
+      </form>
     </div>
 
     <!-- Modal Structure -->
@@ -154,36 +181,5 @@
         </div>
       </div>
     </div>
-
-
-    <div id="modalComoLlegar" class="modal">
-      <div class="modal-content">
-        <h4>Como llegar</h4>
-        <div class="input-field input-div" style="margin: 15px">
-          <textarea type="text" id="nombre" class="materialize-textarea" name="nombre" #nombre></textarea>
-          <label id="nombrelbl" for="question" class="text-input">Nombre</label>
-        </div>
-        <div class="input-field input-div" style="margin: 15px">
-          <textarea type="text" id="ubicompleta" class="materialize-textarea" name="ubicompleta"
-                    #ubicompleta></textarea>
-          <label id="ubicompletalbl" for="answer" class="text-input">Ubicación completa</label>
-        </div>
-        <div class="input-field input-div" style="margin: 15px">
-          <textarea type="text" id="urlmapa" class="materialize-textarea" name="urlmapa" #urlmapa></textarea>
-          <label id="urlmapalbl" for="answer" class="text-input">Ubicación completa</label>
-        </div>
-        <div class="input-field input-div" style="margin: 15px">
-          <textarea type="text" id="imgmapa" class="materialize-textarea" name="imgmapa" #imgmapa></textarea>
-          <label id="imgmapalbl" for="answer" class="text-input">Imagen mapa</label>
-        </div>
-        <div class="modal-footer">
-          <a href="#!" class="modal-action modal-close waves-effect waves-red btn-flat"
-             (click)="nombre.value = ''; urlmapa.value = ''; ubicompleta.value = ''; imgmapa.value = '';">Cancelar</a>
-          <a class="modal-action waves-effect waves-green btn-flat"
-             (click)="guardarComoLlegar(nombre, ubicompleta, urlmapa, imgmapa)">Guardar</a>
-        </div>
-      </div>
-    </div>
-
   </div>
 </div>

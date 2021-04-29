@@ -133,6 +133,21 @@ adminappCtrl.createComoLlegar = async (req, res) => {
     }
 };
 
+adminappCtrl.editComoLlegar = async (req, res) => {
+    try{
+        const comollegar = {
+            nombre: req.body.nombre,
+            ubicompleta: req.body.ubicompleta,
+            urlmapa: req.body.urlmapa,
+            img: req.body.img
+        };
+        await ComoLlegar.findOneAndUpdate(req.params.id, {$set: comollegar}, {new:false, useFindAndModify:false});
+        res.status(201).json({message: 'Ubicacion editada'})
+    }catch (e) {
+        res.status(400).json({message: e.message});
+    }
+};
+
 adminappCtrl.createFAQ = async (req, res) => {
     try{
         const faq = new Faq({

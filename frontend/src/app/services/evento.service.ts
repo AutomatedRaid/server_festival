@@ -3,6 +3,7 @@ import {Actuacion} from "../models/actuacion";
 import {Taller} from "../models/taller";
 import {HttpClient} from "@angular/common/http";
 import {Mapa} from "../models/mapa";
+import {Comollegar} from "../models/comollegar";
 
 @Injectable({
   providedIn: 'root'
@@ -83,15 +84,15 @@ export class EventoService {
     return this.http.delete( this.URL_API_ADMIN + `/faq/${_id}`);
   }
 
-  putComoLlegar(_id: string, comoLlegar: { nombre: string; ubicompleta: string; urlmapa: string; img: string }) {
+  putComoLlegar(_id: string, comoLlegar: Comollegar) {
     return this.http.put(this.URL_API_ADMIN + `/comollegar/${_id}`, comoLlegar);
   }
 
-  postComoLlegar(comoLlegar: {nombre: string, ubicompleta: string, urlmapa: string; img: string;}) {
+  postComoLlegar(comoLlegar: Comollegar) {
     return this.http.post( this.URL_API_ADMIN + '/comollegar', comoLlegar);
   }
 
-  getComoLlegar(_id: string) {
-    return this.http.get( this.URL_API_EVENT + `/comollegar/${_id}`)
+  getComoLlegar() {
+    return this.http.get( this.URL_API_EVENT + '/comollegar/')
   }
 }

@@ -1,6 +1,6 @@
 export class Mapa {
   _id: string;
-  imagen: String;
+  imagen: string;
 
 
   constructor(id = "", imagen = "") {

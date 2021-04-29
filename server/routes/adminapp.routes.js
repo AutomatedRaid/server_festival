@@ -13,6 +13,7 @@ router.put('/taller/:id',  async (req, res) => {await adminAppCtrl.editTaller(re
 router.delete('/taller/:id',  async (req, res) => {await adminAppCtrl.deleteTaller(req, res);});
 router.post('/mapa', async (req, res) => {await adminAppCtrl.createMapa(req, res);});
 router.post('/comollegar', async (req, res) => {await adminAppCtrl.createComoLlegar(req, res);});
+router.put('/comollegar/:id', async (req, res) => {await adminAppCtrl.editComoLlegar(req, res);});
 router.post('/faq', async (req, res) => {await adminAppCtrl.createFAQ(req, res);});
 router.put('/faq/:id', async (req, res) => {await adminAppCtrl.editFAQ(req, res);});
 router.delete('/faq/:id', async (req, res) => {await adminAppCtrl.deleteFAQ(req, res);});
