@@ -3,6 +3,7 @@ const Taller = require('../models/taller');
 const Mapa = require('../models/mapa');
 const Faq = require('../models/faq');
 const ComoLlegar = require('../models/comollegar');
+const Restaurante = require('../models/restaurante');
 
 const adminappCtrl = {};
 
@@ -183,5 +184,47 @@ adminappCtrl.deleteFAQ = async (req, res) => {
         res.status(400).json({message: e.message});
     }
 };
+
+adminappCtrl.createRestaurante = async (req, res) => {
+    try{
+        const restaurante = new Restaurante({
+            nombre: nombre.body.nombre,
+            imagen: req.body.imagen,
+            horario: req.body.horario,
+            localizacion: req.body.localizacion
+        });
+        await restaurante.save();
+        res.status(201).json({message: 'Restaurante creado, ' + restaurante._id})
+    }catch (e) {
+        res.status(400).json({message: e.message});
+    }
+};
+
+adminappCtrl.editRestaurante = async (req, res) => {
+    try{
+        const restaurante = {
+            nombre: nombre.body.nombre,
+            imagen: req.body.imagen,
+            horario: req.body.horario,
+            localizacion: req.body.localizacion
+        };
+        await Restaurante.findByIdAndUpdate(req.params.id, {$set: restaurante}, {new:false, useFindAndModify:false});
+        res.status(201).json({message: 'Restaurante updated'});
+    }catch (e) {
+        res.status(400).json({message: e.message});
+    }
+};
+
+adminappCtrl.deleteRestaurante = async (req, res) => {
+    try{
+        console.log(req.params.id);
+        await Restaurante.findByIdAndDelete(req.params.id);
+        res.status(201).json({message: 'Restaurante deleted'});
+    }catch (e) {
+        res.status(400).json({message: e.message});
+    }
+};
+
+
 
 module.exports = adminappCtrl;

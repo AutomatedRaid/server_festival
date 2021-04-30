@@ -17,6 +17,9 @@ router.put('/comollegar/:id', verifyToken, async (req, res) => {await adminAppCt
 router.post('/faq', verifyToken, async (req, res) => {await adminAppCtrl.createFAQ(req, res);});
 router.put('/faq/:id', verifyToken, async (req, res) => {await adminAppCtrl.editFAQ(req, res);});
 router.delete('/faq/:id', verifyToken, async (req, res) => {await adminAppCtrl.deleteFAQ(req, res);});
+router.post('/restaurante', async (req, res) => {await adminAppCtrl.createRestaurante(req, res);});
+router.put('/restaurante/:id', async (req, res) => {await adminAppCtrl.editRestaurante(req, res);});
+router.delete('/restaurante/:id', async (req, res) => {await adminAppCtrl.deleteRestaurante(req, res);});
 router.get('/private', verifyToken, async (req, res) => {res.status(200).json({ message: "Okey... Hi!" })});
 
 module.exports = router;
