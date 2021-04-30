@@ -5,8 +5,9 @@ import {Taller} from "../../models/taller";
 import axios from "axios";
 import {Mapa} from "../../models/mapa";
 import {NgForm} from "@angular/forms";
-import {ActivatedRoute, Router} from "@angular/router";
+import {Router} from "@angular/router";
 import {Comollegar} from "../../models/comollegar";
+import {AuthService} from "../../services/auth.service";
 
 declare const M: any;
 const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/djlgdcqhg/image/upload';
@@ -23,20 +24,22 @@ export class HomeComponent implements OnInit {
 
   actuaciones: Actuacion[] = [];
   talleres: Taller[] = [];
+
   faqs: {_id: String, question: String, answer: String}[] = [];
   ngModel: Comollegar;
-  alertHead: string;
-  alertbody: string;
-  idToEliminate: string;
   act0tal1 = null;
+
   img: String | ArrayBuffer = 'assets/img-not-found.png';
   imgcmll: String | ArrayBuffer = 'assets/img-not-found.png';
+  private file1: any;
+
+  idToEliminate: string;
+  alertHead: string;
+  alertbody: string;
   alertBody = '';
   private idFAQEdit = '';
-  private file1: any;
-  private file2: any;
 
-  constructor(private eventoService: EventoService) {
+  constructor(private eventoService: EventoService, private authService: AuthService,  private router: Router) {
     this.ngModel = new Comollegar();
   }
 
@@ -69,44 +72,6 @@ export class HomeComponent implements OnInit {
         label.classList.add('active');
       }
     });
-  }
-
-  confirmdelete(_id: string, nombre: string, table: boolean) {
-    this.idToEliminate = _id;
-    this.act0tal1 = table;
-    this.alertHead = 'Eliminar "' + nombre + '" ?';
-    if (table)
-      this.alertbody = 'Estas seguro de eliminar el taller "' + nombre + '" de forma permanente?';
-    else
-      this.alertbody = 'Estas seguro de eliminar la actuacion "' + nombre + '" de forma permanente?';
-    var elems = document.getElementById('modal1');
-    var instances = M.Modal.init(elems);
-    instances.open();
-  }
-
-  delete() {
-    if (!this.act0tal1) {
-      this.eventoService.deleteActuacion(this.idToEliminate).subscribe(res => {
-        const resaux = res as { message: string };
-        M.toast({html: resaux.message, classes: 'rounded'});
-        for (let i = 0; i < this.actuaciones.length; i++) {
-          if (this.actuaciones[i]._id == this.idToEliminate) {
-            this.actuaciones.splice(i, 1);
-          }
-        }
-      });
-    } else {
-      this.eventoService.deleteTaller(this.idToEliminate).subscribe(res => {
-        const resaux = res as { message: string };
-        M.toast({html: resaux.message, classes: 'rounded'});
-        for (let i = 0; i < this.talleres.length; i++) {
-          if (this.talleres[i]._id == this.idToEliminate) {
-            this.talleres.splice(i, 1);
-          }
-        }
-      });
-    }
-
   }
 
   async uploadimg() {
@@ -161,7 +126,7 @@ export class HomeComponent implements OnInit {
     const mapa: Mapa = new Mapa();
     mapa.imagen = await this.uploadimg();
     this.eventoService.postMapa(mapa).subscribe(() => {
-      M.toast({html: 'Mapa guardado correctamente', classes: 'rounded'});
+      this.toast('Mapa guardado correctamente');
       instances.close();
     });
 
@@ -179,7 +144,7 @@ export class HomeComponent implements OnInit {
       var instances = M.Modal.init(elems, {dismissible: false});
       if (this.idFAQEdit == '') {
         this.eventoService.postFAQs({question: question.value, answer: answer.value}).subscribe(res => {
-          M.toast({html: 'FAQ guardada', classes: 'rounded'});
+          this.toast('FAQ guardada');
           this.faqs.push({
             _id: (res as { message: String }).message.split(', ')[1],
             question: question.value,
@@ -191,7 +156,7 @@ export class HomeComponent implements OnInit {
         });
       } else {
         this.eventoService.putFAQs(this.idFAQEdit, {question: question.value, answer: answer.value}).subscribe(() => {
-          M.toast({html: 'FAQ guardada', classes: 'rounded'});
+          this.toast('FAQ guardada');
           for (let i = 0; i <this.faqs.length ; i++) {
             if(this.faqs[i]._id == this.idFAQEdit){
               this.faqs[i].question = question.value;
@@ -206,19 +171,7 @@ export class HomeComponent implements OnInit {
       }
       instances.close();
     } else
-      M.toast({html: 'Faltan datos', classes: 'rounded'});
-  }
-
-  deleteFAQ(id: string) {
-    this.eventoService.deleteFAQs(id).subscribe(res => {
-      const resaux = res as { message: string };
-      for (let i = 0; i < this.faqs.length; i++) {
-        if (this.faqs[i]._id == id) {
-          this.faqs.splice(i, 1);
-          M.toast({html: resaux.message, classes: 'rounded'});
-        }
-      }
-    });
+      this.toast('Faltan datos');
   }
 
   editFAQ(_id:string, question: HTMLTextAreaElement, answer: HTMLTextAreaElement) {
@@ -237,19 +190,76 @@ export class HomeComponent implements OnInit {
     instances.open();
   }
 
+  deleteFAQ(id: string) {
+    this.eventoService.deleteFAQs(id).subscribe(res => {
+      const resaux = res as { message: string };
+      for (let i = 0; i < this.faqs.length; i++) {
+        if (this.faqs[i]._id == id) {
+          this.faqs.splice(i, 1);
+          M.toast({html: resaux.message, classes: 'rounded'});
+        }
+      }
+    });
+  }
+
   guardarComoLlegar(cmllForm: NgForm) {
     if (cmllForm.value.nombre != '' && cmllForm.value.ubicompleta != '' && cmllForm.value.urlmapa != '' && this.imgcmll != '' ) {
-      const cmoLlegar = new Comollegar();
       if (this.ngModel._id == '') {
         this.eventoService.postComoLlegar(this.ngModel).subscribe(res => {
-          M.toast({html: 'Comollegar guardado', classes: 'rounded'});
+          this.toast('Comollegar guardado');
         });
       }else {
         this.eventoService.putComoLlegar(this.ngModel._id, this.ngModel).subscribe(res => {
-          M.toast({html: 'Comollegar guardado', classes: 'rounded'});
+          this.toast('Comollegar guardado');
         });
       }
     } else
-      M.toast({html: 'Faltan datos', classes: 'rounded'});
+    this.toast('Faltan datos');
+  }
+
+  confirmdelete(_id: string, nombre: string, table: boolean) {
+    this.idToEliminate = _id;
+    this.act0tal1 = table;
+    this.alertHead = 'Eliminar "' + nombre + '" ?';
+    if (table)
+      this.alertbody = 'Estas seguro de eliminar el taller "' + nombre + '" de forma permanente?';
+    else
+      this.alertbody = 'Estas seguro de eliminar la actuacion "' + nombre + '" de forma permanente?';
+    var elems = document.getElementById('modal1');
+    var instances = M.Modal.init(elems);
+    instances.open();
+  }
+
+  delete() {
+    if (!this.act0tal1) {
+      this.eventoService.deleteActuacion(this.idToEliminate).subscribe(res => {
+        const resaux = res as { message: string };
+        this.toast(resaux.message);
+        for (let i = 0; i < this.actuaciones.length; i++) {
+          if (this.actuaciones[i]._id == this.idToEliminate) {
+            this.actuaciones.splice(i, 1);
+          }
+        }
+      });
+    } else {
+      this.eventoService.deleteTaller(this.idToEliminate).subscribe(res => {
+        const resaux = res as { message: string };
+        this.toast(resaux.message);
+        for (let i = 0; i < this.talleres.length; i++) {
+          if (this.talleres[i]._id == this.idToEliminate) {
+            this.talleres.splice(i, 1);
+          }
+        }
+      });
+    }
+  }
+
+  toast(message: string){
+    M.toast({html: message, classes: 'rounded'});
+  }
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 }

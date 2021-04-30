@@ -4,6 +4,7 @@ import {Actuacion} from "../../models/actuacion";
   import axios from 'axios';
 import {EventoService} from "../../services/evento.service";
 import {ActivatedRoute, Router} from "@angular/router";
+import {AuthService} from "../../services/auth.service";
 
 declare const M: any;
 
@@ -28,7 +29,7 @@ export class ActuacionComponent implements OnInit {
   actuacion: Actuacion;
   alertBody = '';
 
-  constructor(private eventService: EventoService, private route: ActivatedRoute,  private router: Router) {
+  constructor(private eventService: EventoService, private route: ActivatedRoute,  private router: Router, private authService: AuthService) {
     this.ngModel = new Actuacion();
   }
 
@@ -55,7 +56,7 @@ export class ActuacionComponent implements OnInit {
 
   async guardarActuacion(actForm: NgForm) {
     if (actForm.value.nombre != '' && actForm.value.descripcion != '' && actForm.value.ubicacion != '' && this.horaFinv != '' && this.horaIniciov != '' && this.file1 != null && this.file2 != null && this.artistas.length > 0) {
-      this.alertBody = 'Guardando imagen: ' + this.file1.name;
+      this.toast('Guardando imagen');
       const elems = document.getElementById('modal1');
       const instances = M.Modal.init(elems, {dismissible:false});
       instances.open();
@@ -73,21 +74,21 @@ export class ActuacionComponent implements OnInit {
       this.route.paramMap.subscribe(params => {
         if (params.has("id")) {
           this.eventService.putActuacion(params.get("id"), actuacion).subscribe(() => {
-            M.toast({html: 'Actuacion guardada correctamente', classes: 'rounded'});
+            this.toast('Actuacion guardada correctamente');
             this.router.navigate(['/']);
             instances.close();
           });
         }
         else {
           this.eventService.postActuacion(actuacion).subscribe(() => {
-            M.toast({html: 'Actuacion guardada correctamente', classes: 'rounded'});
+            this.toast('Actuacion guardada correctamente');
             this.router.navigate(['/']);
             instances.close();
           });
         }
       });
     } else {
-      M.toast({html: 'Debe completar todos los campos primero!', classes: 'rounded'});
+      this.toast('Debe completar todos los campos primero');
     }
   }
 
@@ -97,7 +98,7 @@ export class ActuacionComponent implements OnInit {
         this.artistas.push(artista.value);
       artista.value = "";
       }else {
-        M.toast({html: 'Máximo 25 carácteres', classes: 'rounded'});
+        this.toast('Máximo 25 carácteres');
       }
     }
   }
@@ -185,5 +186,14 @@ export class ActuacionComponent implements OnInit {
     this.file2 = this.actuacion.img_mapa;
     this.img = this.actuacion.img;
     this.img2 = this.actuacion.img_mapa;
+  }
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
+  }
+
+  toast(message: string) {
+    M.toast({html: message, classes: 'rounded'});
   }
 }

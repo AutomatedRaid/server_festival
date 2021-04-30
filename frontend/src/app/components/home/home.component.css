@@ -21,3 +21,11 @@ td{
 th{
   border-bottom: 1px solid #6a6a6a;
 }
+.logout {
+  font-size: 25px;
+  margin-right: 10px;
+}
+.logout:hover {
+  cursor: pointer;
+  color: lightgray;
+}

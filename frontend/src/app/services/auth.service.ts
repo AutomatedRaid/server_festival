@@ -14,7 +14,7 @@ export class AuthService {
   }
 
   async isAuth(): Promise<any> {
-    const t = localStorage.getItem("61757468");
+    const t = this.getToken();
     let e = false;
     if (t != null) {
       return this.http.get(this.URL_API_EVENT + '/auth', {
@@ -23,6 +23,7 @@ export class AuthService {
         })
       }).toPromise();
     }else {
+      this.logout();
       return false
     }
   }
@@ -38,4 +39,9 @@ export class AuthService {
   getToken() {
     return localStorage.getItem("61757468");
   }
+
+  logout() {
+    localStorage.removeItem("61757468");
+  }
+
 }
