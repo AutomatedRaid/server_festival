@@ -3,6 +3,7 @@ const Taller = require('../models/taller');
 const Mapa = require('../models/mapa');
 const ComoLlegar = require('../models/comollegar');
 const Faq = require('../models/faq');
+const Faq = require('../models/restaurante');
 
 const eventappCtrl = {};
 
@@ -79,6 +80,22 @@ eventappCtrl.getFAQ = async (req, res) => {
         res.status(500).json({message: err.message})
     });
     await res.status(201).json(faq);
+};
+
+//Get Restaurantes
+eventappCtrl.getRestaurantes = async (req, res) => {
+    const restaurante = await Restaurante.find().catch((err) => {
+        res.status(500).json({message: err.message})
+    });
+    await res.status(201).json(restaurante);
+};
+
+//Get Restaurante
+eventappCtrl.getRestaurante = async (req, res) => {
+    const restaurante = await Restaurante.findById(req.params.id).catch((err) => {
+        res.status(500).json({message: err.message})
+    });
+    await res.status(201).json(restaurante);
 };
 
 module.exports = eventappCtrl;
