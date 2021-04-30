@@ -211,11 +211,11 @@ export class HomeComponent implements OnInit {
     if (cmllForm.value.nombre != '' && cmllForm.value.ubicompleta != '' && cmllForm.value.urlmapa != '' && this.imgcmll != '' ) {
       if (this.ngModel._id == '') {
         this.eventoService.postComoLlegar(this.ngModel).subscribe(res => {
-          this.toast('Comollegar guardado');
+          this.toast('Como llegar guardado');
         });
       }else {
         this.eventoService.putComoLlegar(this.ngModel._id, this.ngModel).subscribe(res => {
-          this.toast('Comollegar guardado');
+          this.toast('Como llegar guardado');
         });
       }
     } else
