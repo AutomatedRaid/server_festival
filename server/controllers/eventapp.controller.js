@@ -3,7 +3,7 @@ const Taller = require('../models/taller');
 const Mapa = require('../models/mapa');
 const ComoLlegar = require('../models/comollegar');
 const Faq = require('../models/faq');
-const Faq = require('../models/restaurante');
+const Restaurante = require('../models/restaurante');
 
 const eventappCtrl = {};
 

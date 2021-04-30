@@ -8,6 +8,7 @@ import {NgForm} from "@angular/forms";
 import {Router} from "@angular/router";
 import {Comollegar} from "../../models/comollegar";
 import {AuthService} from "../../services/auth.service";
+import {Restaurante} from "../../models/restaurante";
 
 declare const M: any;
 const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/djlgdcqhg/image/upload';
@@ -24,6 +25,7 @@ export class HomeComponent implements OnInit {
 
   actuaciones: Actuacion[] = [];
   talleres: Taller[] = [];
+  restaurantes: Restaurante[] = [];
 
   faqs: {_id: String, question: String, answer: String}[] = [];
   ngModel: Comollegar;
@@ -51,6 +53,9 @@ export class HomeComponent implements OnInit {
     });
     this.eventoService.getTalleres().subscribe(res => {
       this.talleres = res as Taller[];
+    });
+    this.eventoService.getRestaurantes().subscribe(res => {
+      this.restaurantes = res as Restaurante[];
     });
     this.eventoService.getFAQs().subscribe( res => {
       this.faqs = res as {_id:String, question: String, answer: String}[];

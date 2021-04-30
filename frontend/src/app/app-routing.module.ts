@@ -6,6 +6,7 @@ import {TallerComponent} from "./components/taller/taller.component";
 import {LoginComponent} from "./components/login/login.component";
 import {EventoService} from "./services/evento.service";
 import {AuthGuard} from "./guards/auth.guard";
+import {RestauranteComponent} from "./components/restaurante/restaurante.component";
 
 let routes: Routes;
 
@@ -33,6 +34,18 @@ if (EventoService) {
       path:'taller',
       pathMatch: 'full',
       component: TallerComponent,
+      canActivate: [AuthGuard]
+    },
+    {
+      path:'restaurante',
+      pathMatch: 'full',
+      component: RestauranteComponent,
+      canActivate: [AuthGuard]
+    },
+    {
+      path:'restaurante/:id',
+      pathMatch: 'full',
+      component: RestauranteComponent,
       canActivate: [AuthGuard]
     },
     {

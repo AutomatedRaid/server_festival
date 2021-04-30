@@ -226,5 +226,4 @@ adminappCtrl.deleteRestaurante = async (req, res) => {
 };
 
 
-
 module.exports = adminappCtrl;

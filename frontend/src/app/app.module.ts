@@ -10,6 +10,7 @@ import { TallerComponent } from './components/taller/taller.component';
 import {HttpClientModule} from "@angular/common/http";
 import { LoginComponent } from './components/login/login.component';
 import { UsersComponent } from './components/users/users.component';
+import { RestauranteComponent } from './components/restaurante/restaurante.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { UsersComponent } from './components/users/users.component';
     ActuacionComponent,
     TallerComponent,
     LoginComponent,
-    UsersComponent
+    UsersComponent,
+    RestauranteComponent
   ],
   imports: [
     BrowserModule,

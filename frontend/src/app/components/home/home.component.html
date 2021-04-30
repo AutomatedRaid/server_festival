@@ -63,6 +63,34 @@
         </tbody>
       </table>
     </div>
+    <h5>Restaurantes</h5>
+    <div class="responsive-table table-status-sheet" style="margin: 30px">
+      <table class="bordered centered striped" style="text-indent: 1em;">
+        <thead>
+        <tr>
+          <th>Restaurante</th>
+          <th style="border-left: 1px solid #6a6a6a;">Horario</th>
+          <th style="border-left: 1px solid #6a6a6a;width: 120px">
+            <img src="assets/images/add.png" style="cursor: pointer;" routerLink="/restaurante">
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let r of restaurantes">
+          <td>{{r.nombre}}</td>
+          <td>{{r.horario}}</td>
+          <td [ngStyle]="{'width': restaurantes.length>=3 ? 'calc(120px - 0.2em)' : '133px'}">
+            <div>
+              <img src="assets/images/edit.png" alt="" routerLink="/restaurant/{{r._id}}"
+                   style="cursor: pointer; margin-right: 5px">
+              <img src="assets/images/delete.png" (click)="confirmdelete(r._id, r.nombre, false)"
+                   style="margin-left: 5px; cursor: pointer">
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
     <h5>Imagen mapa</h5>
     <div class="file-field input-field" style="margin-top: 15px">
       <div class="btn">

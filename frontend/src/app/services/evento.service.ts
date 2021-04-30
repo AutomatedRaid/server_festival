@@ -140,4 +140,12 @@ export class EventoService {
   getComoLlegar() {
     return this.http.get( this.URL_API_EVENT + '/comollegar/')
   }
+
+  getRestaurantes() {
+    return this.http.get( this.URL_API_EVENT + '/restaurante/')
+  }
+
+  getRestaurante(id: string) {
+    return this.http.get( this.URL_API_EVENT + `/restaurante/${id}`)
+  }
 }
