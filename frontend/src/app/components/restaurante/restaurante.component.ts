@@ -29,6 +29,7 @@ export class RestauranteComponent implements OnInit {
 
   constructor(private eventService: EventoService, private route: ActivatedRoute, private router: Router, private authService: AuthService) {
     this.ngModel = new Restaurante();
+    let e = "https://d1csarkz8obe9u.cloudfront.net/posterpreviews/fast-food-menu-template-design-5fe22c38724bd95ea68df82fb5483b08_screen.jpg?ts=1561390542";
   }
 
   ngOnInit(): void {
@@ -68,6 +69,6 @@ export class RestauranteComponent implements OnInit {
   }
 
   addImagen(imagen: HTMLInputElement) {
-    
+
   }
 }

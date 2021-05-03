@@ -15,7 +15,6 @@ export class AuthService {
 
   async isAuth(): Promise<any> {
     const t = this.getToken();
-    let e = false;
     if (t != null) {
       return this.http.get(this.URL_API_EVENT + '/auth', {
         headers: new HttpHeaders({
@@ -23,7 +22,6 @@ export class AuthService {
         })
       }).toPromise();
     }else {
-      this.logout();
       return false
     }
   }
