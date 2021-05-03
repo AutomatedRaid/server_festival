@@ -5,6 +5,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Mapa} from "../models/mapa";
 import {Comollegar} from "../models/comollegar";
 import {AuthService} from "./auth.service";
+import {Restaurante} from "../models/restaurante";
 
 @Injectable({
   providedIn: 'root'
@@ -147,5 +148,21 @@ export class EventoService {
 
   getRestaurante(id: string) {
     return this.http.get( this.URL_API_EVENT + `/restaurante/${id}`)
+  }
+
+  putRestaurante(_id: string, restaurante: Restaurante) {
+    return this.http.put(this.URL_API_ADMIN + `/restaurante/${_id}`, restaurante, {
+      headers: new HttpHeaders({
+        'x-access-token': ('Bearer ' + this.authServise.getToken())
+      })
+    });
+  }
+
+  postRestaurante(restaurante: Restaurante) {
+    return this.http.post( this.URL_API_ADMIN + '/restaurante', restaurante, {
+      headers: new HttpHeaders({
+        'x-access-token': ('Bearer ' + this.authServise.getToken())
+      })
+    });
   }
 }
