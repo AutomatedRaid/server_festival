@@ -5,6 +5,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {AuthService} from "../../services/auth.service";
 import {Restaurante} from "../../models/restaurante";
 import {NgForm} from "@angular/forms";
+import {Actuacion} from "../../models/actuacion";
 
 declare const M: any;
 
@@ -64,11 +65,44 @@ export class RestauranteComponent implements OnInit {
 
   }
 
-  guardarRestaurante(actForm: NgForm) {
+  guardarRestaurante(actForm: NgForm) {if (actForm.value.nombre != '' && actForm.value.ubicacion != '' && this.horaFinv != '' && this.horaIniciov != '') {
+    this.toast('Guardando imagen');
+    const elems = document.getElementById('modal1');
+    const instances = M.Modal.init(elems, {dismissible:false});
+    instances.open();
+    const restaurante: Restaurante = new Restaurante();
+    restaurante.nombre = actForm.value.nombre;
+    restaurante.localizacion = actForm.value.ubicacion;
+    restaurante.horario = this.horaIniciov + ' - ' + this.horaFinv;
+    this.alertBody = 'Guardando imagen: ' + this.file2.name;
+    progressbar.setAttribute('value', String(0));
 
+    this.route.paramMap.subscribe(params => {
+      if (params.has("id")) {
+        this.eventService.putRestaurante(params.get("id"), restaurante).subscribe(() => {
+          this.toast('Restaurante guardado correctamente');
+          this.router.navigate(['/']);
+          instances.close();
+        });
+      }
+      else {
+        this.eventService.postRestaurante(restaurante).subscribe(() => {
+          this.toast('Restaurante guardado correctamente');
+          this.router.navigate(['/']);
+          instances.close();
+        });
+      }
+    });
+  } else {
+    this.toast('Debe completar todos los campos primero');
+  }
   }
 
   addImagen(imagen: HTMLInputElement) {
 
+  }
+
+  toast(message: string) {
+    M.toast({html: message, classes: 'rounded'});
   }
 }
