@@ -35,12 +35,6 @@ export class RestauranteComponent implements OnInit {
     progressbar = document.getElementById('img-upload-bar');
     M.AutoInit();
     document.addEventListener('DOMContentLoaded', function () {
-      var elems = document.querySelectorAll('.timepicker');
-      M.Timepicker.init(elems, {
-        defaultTime: '9:00',
-        twelveHour: false,
-        i18n: {cancel: 'Cancelar', done: 'Aceptar'}
-      });
     });
     this.route.paramMap.subscribe(params => {
       if (params.has("id")) {
@@ -49,6 +43,13 @@ export class RestauranteComponent implements OnInit {
           this.inicializarDatos();
         });
       }
+    });
+
+    var elems = document.querySelectorAll('.timepicker');
+    M.Timepicker.init(elems, {
+      defaultTime: '9:00',
+      twelveHour: false,
+      i18n: {cancel: 'Cancelar', done: 'Aceptar'}
     });
   }
 
@@ -68,6 +69,6 @@ export class RestauranteComponent implements OnInit {
   }
 
   addImagen(imagen: HTMLInputElement) {
-    
+
   }
 }
