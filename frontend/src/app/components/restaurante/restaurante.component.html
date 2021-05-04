@@ -2,7 +2,6 @@
   <div class="nav-wrapper" style="padding-left: 5%;padding-right: 5%; background: #0cbf41;">
     <label class="brand-logo center" routerLink="/" style="height: 100%">
       <img src="assets/images/logo_cocodrilo_fondotransparente.png" style="height: 100%; cursor: pointer"></label>
-    <label class="brand-logo ">Evento</label>
     <label class="brand-logo right logout" (click)="logout()">Logout</label>
   </div>
 </nav>
@@ -27,18 +26,33 @@
         <input id="localizacion" type="text" name="localizacion" [(ngModel)]="ngModel.localizacion" maxlength="20">
         <label id="label4" for="localizacion" class="text-input">Descripción breve de la ubicación (max 20)</label>
       </div>
-      <div class="row" style="padding: 0px !important;">
-        <input type="text" class="form-control col s8" id="url_img" placeholder="Imágenes" aria-label="Url imagen"
-               #imagen maxlength="25"><div class="col s1"></div>
-        <button class="btn btn-outline-secondary col s3" type="button" (click)="addImagen(imagen)">Añadir</button>
+      <div class="file-field input-field" style="margin-top: 15px">
+        <div class="btn">
+          <span>File</span>
+          <input type="file" accept="image/*" (change)="onSelectFile($event)">
+        </div>
+        <div class="file-path-wrapper">
+          <input class="file-path validate" accept="image/*" type="text">
+        </div>
       </div>
       <div class="row">
-        <div class="col s3 no-padding">
-          <a href="/assets/images/fastfood.jpg" target="_blank">
-            <img src="../../../assets/images/fastfood.jpg" style="width: 100%; height: 100%;"/>
+        <div class="col s3 no-padding" *ngFor="let i of images" style="margin:0px 10px">
+          <a [href]="i.url" target="_blank">
+            <img [src]="i.url" style="width: 100%; height: 100%;"/>
           </a>
-          <div style="float: right">
-            <i class="close material-icons" style="color: red">delete</i>
+          <div class="row" style="margin: 0px !important; padding: 0px !important;">
+            <div class="col s3 center-align no-padding">
+              <img src="assets/images/firstback.png" alt="" style="cursor: pointer; width: 100%; max-width: 25px" (click)="orderimg(0,i.id)">
+            </div>
+            <div class="col s3 center-align no-padding">
+              <img src="assets/images/back.png" alt="" style="cursor: pointer; width: 100%; max-width: 25px" (click)="orderimg(1,i.id)">
+            </div>
+            <div class="col s3 center-align no-padding">
+              <img src="assets/images/forward.png" alt="" style="cursor: pointer; width: 100%; max-width: 25px" (click)="orderimg(2,i.id)">
+            </div>
+            <div class="col s3 center-align no-padding">
+              <img src="assets/images/delete.png" alt="" style="cursor: pointer; width: 100%; max-width: 25px;" (click)="deletemodalimg(i)">
+            </div>
           </div>
         </div>
       </div>
@@ -58,6 +72,18 @@
       <h4>Guardando imagenes</h4>
       <p>{{alertBody}}</p>
       <progress id="img-upload-bar" value="0" max="100" style="width: 100%; margin: 10px 0;"></progress>
+    </div>
+  </div>
+  <div id="eliminarmodal" class="modal">
+    <div class="modal-content">
+      <h4>Quieres eliminar esta imagen?</h4>
+      <div class="center-align">
+        <img [src]="imgdelete" style="height: 200px;"/>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <a class="modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
+      <a class="modal-action modal-close waves-effect waves-red btn-flat" (click)="deleteimg()">Eliminar</a>
     </div>
   </div>
 </div>

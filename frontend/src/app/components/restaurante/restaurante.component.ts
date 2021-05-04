@@ -23,10 +23,12 @@ export class RestauranteComponent implements OnInit {
   ngModel: Restaurante;
   horaIniciov = '';
   horaFinv = '';
-  img: String | ArrayBuffer = 'assets/img-not-found.png'; img2: String | ArrayBuffer = 'assets/img-not-found.png';
-  private file1: any; private file2: any;
+  private files: any[] = [];
   restaurante: Restaurante;
   alertBody = '';
+  images: {url:string | ArrayBuffer, id: number}[] = [{url: '/assets/images/fastfood.jpg',id: 0},{url: '/assets/images/fastfood2.jpg',id: 1}];
+  imgdelete = "";
+  iddelete = null;
 
   constructor(private eventService: EventoService, private route: ActivatedRoute, private router: Router, private authService: AuthService) {
     this.ngModel = new Restaurante();
@@ -54,8 +56,6 @@ export class RestauranteComponent implements OnInit {
     });
   }
 
-
-
   logout() {
     this.authService.logout();
     this.router.navigate(['/login']);
@@ -74,7 +74,6 @@ export class RestauranteComponent implements OnInit {
     restaurante.nombre = actForm.value.nombre;
     restaurante.localizacion = actForm.value.ubicacion;
     restaurante.horario = this.horaIniciov + ' - ' + this.horaFinv;
-    this.alertBody = 'Guardando imagen: ' + this.file2.name;
     progressbar.setAttribute('value', String(0));
 
     this.route.paramMap.subscribe(params => {
@@ -104,5 +103,50 @@ export class RestauranteComponent implements OnInit {
 
   toast(message: string) {
     M.toast({html: message, classes: 'rounded'});
+  }
+
+  orderimg(number: number, number2: number) {
+    switch (number) {
+      case 0:
+        this.images[number2].id = 0 ;
+        this.images[0].id = number2;
+        break;
+      case 1:
+        if(number2 > 0){
+          this.images[number2].id = number2-1;
+          this.images[number2-1].id = number2;
+        }
+        break;
+      case 2:
+        if(number2 < this.images.length-1) {
+          this.images[number2].id = number2+1;
+          this.images[number2+1].id = number2;
+        }
+        break;
+      case 3:
+        break;
+    }
+    this.images.sort((l1, l2) => {if(l1.id > l2.id){return 1;}if(l1.id < l2.id){return -1;}return 0;});
+  }
+
+  deletemodalimg(i: {url: string, id: string}) {
+    this.imgdelete = i.url;
+    this.iddelete = i.id;
+    var elems = document.getElementById('eliminarmodal');
+    var instances = M.Modal.init(elems);
+    instances.open();
+  }
+
+  deleteimg(){
+    this.images.splice(this.iddelete, 1);
+  }
+
+  onSelectFile(event) {
+    this.files.push(event.target.files[0]);
+    const reader = new FileReader();
+    reader.readAsDataURL(event.target.files[0]);
+    reader.onload = (eventt) => {
+      this.images.push({url: eventt.target.result, id: this.images.length});
+    };
   }
 }
