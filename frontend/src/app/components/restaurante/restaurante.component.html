@@ -22,14 +22,27 @@
                (change)="horaFinv = horaFin.value">
         <label id="label3" for="time-fin" class="text-input">Hora cierre</label>
       </div>
-      <div class="input-field input-div">
-        <input id="localizacion" type="text" name="localizacion" [(ngModel)]="ngModel.localizacion" maxlength="20">
-        <label id="label4" for="localizacion" class="text-input">Descripción breve de la ubicación (max 20)</label>
+      <div class="row valign-wrapper">
+        <div class="col s6" style="padding: 0px">
+          <label class="text-input">Imagen del restaurante</label>
+          <div class="file-field input-field" style="margin-top: 15px">
+            <div class="btn">
+              <span>File</span>
+              <input type="file" accept="image/*" (change)="onSelectFile($event, 1)">
+            </div>
+            <div class="file-path-wrapper">
+              <input class="file-path validate" accept="image/*" type="text">
+            </div>
+          </div>
+        </div>
+        <div class="col s6">
+          <img [src]="img1" style="max-width: 100%">
+        </div>
       </div>
       <div class="file-field input-field" style="margin-top: 15px">
         <div class="btn">
           <span>File</span>
-          <input type="file" accept="image/*" (change)="onSelectFile($event)">
+          <input type="file" accept="image/*" (change)="onSelectFile($event, 2)">
         </div>
         <div class="file-path-wrapper">
           <input class="file-path validate" accept="image/*" type="text">
@@ -55,6 +68,27 @@
             </div>
           </div>
         </div>
+      </div>
+      <div class="row valign-wrapper">
+        <div class="col s6" style="padding: 0px;">
+          <label class="text-input">Imagen de la ubicación</label>
+          <div class="file-field input-field" style="margin-top: 15px">
+            <div class="btn">
+              <span>File</span>
+              <input type="file" accept="image/*" (change)="onSelectFile($event, 3)">
+            </div>
+            <div class="file-path-wrapper">
+              <input class="file-path validate" accept="image/*" type="text">
+            </div>
+          </div>
+        </div>
+        <div class="col s6">
+          <img [src]="img3" style="max-width: 100%">
+        </div>
+      </div>
+      <div class="input-field input-div" style="margin-top: 15px">
+        <input id="localizacion" type="text" name="localizacion" [(ngModel)]="ngModel.localizacion" maxlength="20">
+        <label id="label4" for="localizacion" class="text-input">Descripción breve de la ubicación (max 20)</label>
       </div>
       <div class="row" style="margin-top: 50px">
         <div class="col s1"></div>

@@ -30,6 +30,9 @@ export class RestauranteComponent implements OnInit {
   images: {url:string | ArrayBuffer, id: number}[] = [];
   imgdelete: string | ArrayBuffer = "";
   iddelete = null;
+  img1: String | ArrayBuffer = 'assets/images/img-not-found.png';
+  img3: String | ArrayBuffer = 'assets/images/img-not-found.png';
+  file1: any; file3: any;
 
   constructor(private eventService: EventoService, private route: ActivatedRoute, private router: Router, private authService: AuthService) {
     this.ngModel = new Restaurante();
@@ -63,8 +66,8 @@ export class RestauranteComponent implements OnInit {
   }
 
   private inicializarDatos() {
-    for (let i = 0; i < this.restaurante.imagen.length; i++) {
-      this.images.push({url: this.restaurante.imagen[i], id: i});
+    for (let i = 0; i < this.restaurante.imagenes_carta.length; i++) {
+      this.images.push({url: this.restaurante.imagenes_carta[i], id: i});
     }
     this.ngModel.nombre = this.restaurante.nombre;
     this.ngModel.localizacion = this.restaurante.localizacion;
@@ -83,6 +86,10 @@ export class RestauranteComponent implements OnInit {
       const label = <HTMLLabelElement>document.getElementById(labels[i]);
       label.classList.add('active');
     }
+    this.file1 = this.restaurante.imagen;
+    this.file3 = this.restaurante.img_mapa;
+    this.img1 = this.restaurante.imagen;
+    this.img3 = this.restaurante.img_mapa;
   }
 
   async guardarRestaurante(actForm: NgForm) {
@@ -96,9 +103,12 @@ export class RestauranteComponent implements OnInit {
       this.restaurante.horario = this.horaIniciov + ' - ' + this.horaFinv;
       for (let i = 0; i < this.files.length; i++) {
         progressbar.setAttribute('value', String(0));
-        this.restaurante.imagen.push(await this.uploadimg(i));
+        this.restaurante.imagenes_carta.push(await this.uploadimg(i, true));
       }
-
+      progressbar.setAttribute('value', String(0));
+      this.restaurante.imagen = await this.uploadimg(0,false, this.img1);
+      progressbar.setAttribute('value', String(0));
+      this.restaurante.img_mapa = await this.uploadimg(0, false, this.img3);
       this.route.paramMap.subscribe(params => {
         if (params.has("id")) {
           this.eventService.putRestaurante(params.get("id"), this.restaurante).subscribe(() => {
@@ -126,8 +136,13 @@ export class RestauranteComponent implements OnInit {
     }
   }
 
-  async uploadimg(number: number) {
-    let file: any = this.files[number];
+  async uploadimg(number: number, t: boolean, f?: any ) {
+    let file: any;
+    if (t) {
+      file = this.files[number];
+    }else {
+      file = f;
+    }
     const formData = new FormData();
     formData.append('file', file);
     formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
@@ -192,14 +207,32 @@ export class RestauranteComponent implements OnInit {
     }
   }
 
-  onSelectFile(event) {
+  onSelectFile(event, n: number) {
     if (event.target.files && event.target.files[0]) {
-      this.files.push(event.target.files[0]);
       const reader = new FileReader();
-      reader.readAsDataURL(event.target.files[0]);
-      reader.onload = (eventt) => {
-        this.images.push({url: eventt.target.result, id: this.images.length});
-      };
+      switch (n) {
+        case 1:
+          this.file1 = event.target.files[0];
+          reader.readAsDataURL(event.target.files[0]);
+          reader.onload = (eventt) => {
+            this.img1 = eventt.target.result;
+          };
+          break;
+        case 2:
+          this.files.push(event.target.files[0]);
+          reader.readAsDataURL(event.target.files[0]);
+          reader.onload = (eventt) => {
+            this.images.push({url: eventt.target.result, id: this.images.length});
+          };
+          break;
+        case 3:
+          this.file3 = event.target.files[0];
+          reader.readAsDataURL(event.target.files[0]);
+          reader.onload = (eventt) => {
+            this.img3 = eventt.target.result;
+          };
+          break;
+    }
     }
   }
 }
