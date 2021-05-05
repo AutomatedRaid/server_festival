@@ -191,7 +191,9 @@ adminappCtrl.createRestaurante = async (req, res) => {
         const restaurante = new Restaurante({
             nombre: req.body.nombre,
             imagen: req.body.imagen,
+            imagenes_carta: req.body.imagenes_carta,
             horario: req.body.horario,
+            img_mapa: req.body.img_mapa,
             localizacion: req.body.localizacion
         });
         await restaurante.save();
@@ -207,7 +209,9 @@ adminappCtrl.editRestaurante = async (req, res) => {
         const restaurante = {
             nombre: req.body.nombre,
             imagen: req.body.imagen,
+            imagenes_carta: req.body.imagenes_carta,
             horario: req.body.horario,
+            img_mapa: req.body.img_mapa,
             localizacion: req.body.localizacion
         };
         await Restaurante.findByIdAndUpdate(req.params.id, {$set: restaurante}, {new:false, useFindAndModify:false});
