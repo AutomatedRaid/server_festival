@@ -28,7 +28,7 @@
             <div>
               <img src="assets/images/edit.png" alt="" routerLink="/actuacion/{{a._id}}"
                    style="cursor: pointer; margin-right: 5px">
-              <img src="assets/images/delete.png" (click)="confirmdelete(a._id, a.nombre, false)"
+              <img src="assets/images/delete.png" (click)="confirmdelete(a._id, a.nombre, 1)"
                    style="margin-left: 5px; cursor: pointer">
             </div>
           </td>
@@ -56,7 +56,7 @@
             <div>
               <img src="assets/images/edit.png" alt="" routerLink="/taller/{{t._id}}"
                    style="cursor: pointer; margin-right: 5px">
-              <img src="assets/images/delete.png" (click)="confirmdelete(t._id, t.nombre, false)"
+              <img src="assets/images/delete.png" (click)="confirmdelete(t._id, t.nombre, 2)"
                    style="margin-left: 5px; cursor: pointer">
             </div>
           </td>
@@ -81,9 +81,9 @@
           <td>{{r.horario}}</td>
           <td [ngStyle]="{'width': restaurantes.length>=3 ? 'calc(120px - 0.2em)' : '133px'}">
             <div>
-              <img src="assets/images/edit.png" alt="" routerLink="/restaurant/{{r._id}}"
+              <img src="assets/images/edit.png" alt="" routerLink="/restaurante/{{r._id}}"
                    style="cursor: pointer; margin-right: 5px">
-              <img src="assets/images/delete.png" (click)="confirmdelete(r._id, r.nombre, false)"
+              <img src="assets/images/delete.png" (click)="confirmdelete(r._id, r.nombre, 3)"
                    style="margin-left: 5px; cursor: pointer">
             </div>
           </td>

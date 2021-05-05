@@ -119,7 +119,11 @@ export class EventoService {
   }
 
   deleteFAQs (_id: string){
-    return this.http.delete( this.URL_API_ADMIN + `/faq/${_id}`);
+    return this.http.delete( this.URL_API_ADMIN + `/faq/${_id}`, {
+      headers: new HttpHeaders({
+        'x-access-token': ('Bearer ' + this.authServise.getToken())
+      })
+    });
   }
 
   putComoLlegar(_id: string, comoLlegar: Comollegar) {
@@ -160,6 +164,14 @@ export class EventoService {
 
   postRestaurante(restaurante: Restaurante) {
     return this.http.post( this.URL_API_ADMIN + '/restaurante', restaurante, {
+      headers: new HttpHeaders({
+        'x-access-token': ('Bearer ' + this.authServise.getToken())
+      })
+    });
+  }
+
+  deleteRestaurante(_id: string) {
+    return this.http.delete( this.URL_API_ADMIN + `/restaurante/${_id}`, {
       headers: new HttpHeaders({
         'x-access-token': ('Bearer ' + this.authServise.getToken())
       })

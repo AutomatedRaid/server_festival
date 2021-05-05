@@ -29,10 +29,10 @@ export class HomeComponent implements OnInit {
 
   faqs: {_id: String, question: String, answer: String}[] = [];
   ngModel: Comollegar;
-  act0tal1 = null;
+  act1tal2rest3 = 0;
 
-  img: String | ArrayBuffer = 'assets/img-not-found.png';
-  imgcmll: String | ArrayBuffer = 'assets/img-not-found.png';
+  img: String | ArrayBuffer = 'assets/images/img-not-found.png';
+  imgcmll: String | ArrayBuffer = 'assets/images/img-not-found.png';
   private file1: any; private file2: any;
 
   idToEliminate: string;
@@ -239,22 +239,31 @@ export class HomeComponent implements OnInit {
       this.toast('Faltan datos');
   }
 
-  confirmdelete(_id: string, nombre: string, table: boolean) {
+  confirmdelete(_id: string, nombre: string, table: number) {
     this.idToEliminate = _id;
-    this.act0tal1 = table;
+    this.act1tal2rest3 = table;
     this.alertHead = 'Eliminar "' + nombre + '" ?';
-    if (table)
-      this.alertbody = 'Estas seguro de eliminar el taller "' + nombre + '" de forma permanente?';
-    else
-      this.alertbody = 'Estas seguro de eliminar la actuacion "' + nombre + '" de forma permanente?';
+    switch (table) {
+      case 1:
+        this.alertbody = 'Estas seguro de eliminar el taller "' + nombre + '" de forma permanente?';
+        break;
+      case 2:
+        this.alertbody = 'Estas seguro de eliminar la actuacion "' + nombre + '" de forma permanente?';
+        break;
+      case 3:
+        this.alertbody = 'Estas seguro de eliminar el restaurante "' + nombre + '" de forma permanente?';
+        break;
+    }
+
     var elems = document.getElementById('modal1');
     var instances = M.Modal.init(elems);
     instances.open();
   }
 
   delete() {
-    if (!this.act0tal1) {
-      this.eventoService.deleteActuacion(this.idToEliminate).subscribe(res => {
+    switch (this.act1tal2rest3) {
+      case 1:
+        this.eventoService.deleteActuacion(this.idToEliminate).subscribe(res => {
         const resaux = res as { message: string };
         this.toast(resaux.message);
         for (let i = 0; i < this.actuaciones.length; i++) {
@@ -263,16 +272,29 @@ export class HomeComponent implements OnInit {
           }
         }
       });
-    } else {
-      this.eventoService.deleteTaller(this.idToEliminate).subscribe(res => {
-        const resaux = res as { message: string };
-        this.toast(resaux.message);
-        for (let i = 0; i < this.talleres.length; i++) {
-          if (this.talleres[i]._id == this.idToEliminate) {
-            this.talleres.splice(i, 1);
+        break;
+      case 2:
+        this.eventoService.deleteTaller(this.idToEliminate).subscribe(res => {
+          const resaux = res as { message: string };
+          this.toast(resaux.message);
+          for (let i = 0; i < this.talleres.length; i++) {
+            if (this.talleres[i]._id == this.idToEliminate) {
+              this.talleres.splice(i, 1);
+            }
           }
-        }
-      });
+        });
+        break;
+      case 3:
+        this.eventoService.deleteRestaurante(this.idToEliminate).subscribe(res => {
+          const resaux = res as { message: string };
+          this.toast(resaux.message);
+          for (let i = 0; i < this.restaurantes.length; i++) {
+            if (this.restaurantes[i]._id == this.idToEliminate) {
+              this.restaurantes.splice(i, 1);
+            }
+          }
+        });
+        break;
     }
   }
 

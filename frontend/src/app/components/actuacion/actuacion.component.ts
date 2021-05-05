@@ -175,13 +175,11 @@ export class ActuacionComponent implements OnInit {
       const label = <HTMLLabelElement>document.getElementById(labels[i]);
       label.classList.add('active');
     }
-
     this.horaIniciov = this.actuacion.horario.split(' - ')[0];
     const time_fin = <HTMLInputElement>document.getElementById('time-fin');
     time_fin.value = this.actuacion.horario.split(' - ')[1];
     this.horaFinv = this.actuacion.horario.split(' - ')[1];
     this.artistas = this.actuacion.artistas;
-    console.log(this.actuacion.horario);
     this.file1 = this.actuacion.img;
     this.file2 = this.actuacion.img_mapa;
     this.img = this.actuacion.img;

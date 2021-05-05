@@ -187,8 +187,9 @@ adminappCtrl.deleteFAQ = async (req, res) => {
 
 adminappCtrl.createRestaurante = async (req, res) => {
     try{
+        console.log(req);
         const restaurante = new Restaurante({
-            nombre: nombre.body.nombre,
+            nombre: req.body.nombre,
             imagen: req.body.imagen,
             horario: req.body.horario,
             localizacion: req.body.localizacion
@@ -196,6 +197,7 @@ adminappCtrl.createRestaurante = async (req, res) => {
         await restaurante.save();
         res.status(201).json({message: 'Restaurante creado, ' + restaurante._id})
     }catch (e) {
+        console.log(e.message);
         res.status(400).json({message: e.message});
     }
 };
@@ -203,7 +205,7 @@ adminappCtrl.createRestaurante = async (req, res) => {
 adminappCtrl.editRestaurante = async (req, res) => {
     try{
         const restaurante = {
-            nombre: nombre.body.nombre,
+            nombre: req.body.nombre,
             imagen: req.body.imagen,
             horario: req.body.horario,
             localizacion: req.body.localizacion
@@ -217,7 +219,6 @@ adminappCtrl.editRestaurante = async (req, res) => {
 
 adminappCtrl.deleteRestaurante = async (req, res) => {
     try{
-        console.log(req.params.id);
         await Restaurante.findByIdAndDelete(req.params.id);
         res.status(201).json({message: 'Restaurante deleted'});
     }catch (e) {
