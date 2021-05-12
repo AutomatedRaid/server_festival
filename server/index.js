@@ -12,8 +12,8 @@ app.set('port', process.env.PORT || 3000);
 //Middlewares
 app.use(morgan('dev'));
 app.use(express.json());
-//app.use(cors({origin: ['http://45.84.0.19:8100','http://45.84.0.19:4200']}));
-app.use(cors({origin: ['http://localhost:8100','http://localhost:4200']}));
+app.use(cors({origin: ['http://82.223.151.201:8100','http://82.223.151.201:4200']}));
+//app.use(cors({origin: ['http://localhost:8100','http://localhost:4200']}));
 app.use(session({
     secret: config.SECRET,
     resave: true,

@@ -103,7 +103,7 @@ export class HomeComponent implements OnInit {
         }
       }
     );
-    return res.data.url;
+    return res.data.secure_url;
   }
 
   onSelectFile(event, n) {

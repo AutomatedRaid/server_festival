@@ -23,7 +23,7 @@ export class TallerComponent implements OnInit {
   ngModel: Taller;
   horaIniciov = '';
   horaFinv = '';
-  img: String | ArrayBuffer = 'assets/img-not-found.png'; img2: String | ArrayBuffer = 'assets/img-not-found.png';
+  img: String | ArrayBuffer = 'assets/images/img-not-found.png'; img2: String | ArrayBuffer = 'assets/images/img-not-found.png';
   private file1: any; private file2: any;
   taller: Taller;
   alertBody = '';
@@ -159,7 +159,7 @@ export class TallerComponent implements OnInit {
         }
       }
     );
-    return res.data.url;
+    return res.data.secure_url;
   }
 
   logout() {
