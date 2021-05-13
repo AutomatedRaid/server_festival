@@ -12,8 +12,10 @@ import {Restaurante} from "../models/restaurante";
 })
 export class EventoService {
 
-  URL_API_ADMIN = 'http://localhost:3000/api/adminapp';
-  URL_API_EVENT = 'http://localhost:3000/api/eventapp';
+  //URL_API_ADMIN = 'http://localhost:3000/api/adminapp';
+  //URL_API_EVENT = 'http://localhost:3000/api/eventapp';
+  URL_API_ADMIN = 'https://angry-bhabha.82-223-151-201.plesk.page/api/adminapp';
+  URL_API_EVENT = 'https://angry-bhabha.82-223-151-201.plesk.page/api/eventapp';
 
   constructor(private http: HttpClient, private authServise: AuthService) {
   }
