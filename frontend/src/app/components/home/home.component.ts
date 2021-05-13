@@ -68,8 +68,12 @@ export class HomeComponent implements OnInit {
     });
     this.eventoService.getComoLlegar().subscribe(res =>{
       this.ngModel= res as Comollegar;
-      if(this.ngModel.img != null && this.ngModel.img != ''){
-        this.imgcmll = this.ngModel.img;
+      if(this.ngModel != null) {
+        if (this.ngModel.img != null && this.ngModel.img != '') {
+          this.imgcmll = this.ngModel.img;
+        }
+      }else {
+        this.ngModel = new Comollegar();
       }
       const labels = ['nombrelbl','ubicompletalbl', 'urlmapalbl'];
       for (let i = 0; i < labels.length; i++) {
