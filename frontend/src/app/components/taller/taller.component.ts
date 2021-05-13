@@ -159,7 +159,7 @@ export class TallerComponent implements OnInit {
         }
       }
     );
-    return res.data.url;
+    return res.data.secure_url;
   }
 
   logout() {

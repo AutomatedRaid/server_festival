@@ -7,8 +7,8 @@ import {User} from "../models/user";
 })
 export class AuthService {
 
-  //URL_API_EVENT = 'http://45.84.0.19:3000/api/userauth';
-  URL_API_EVENT = 'http://localhost:3000/api/userauth';
+  URL_API_EVENT = 'https://angry-bhabha.82-223-151-201.plesk.page/api/userauth';
+  //URL_API_EVENT = 'http://localhost:3000/api/userauth';
 
   constructor(private http: HttpClient) {
   }

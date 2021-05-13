@@ -161,7 +161,7 @@ export class ActuacionComponent implements OnInit {
         }
       }
     );
-    return res.data.url;
+    return res.data.secure_url;
   }
 
   private inicializarDatos() {

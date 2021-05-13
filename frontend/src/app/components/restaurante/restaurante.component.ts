@@ -160,7 +160,7 @@ export class RestauranteComponent implements OnInit {
         }
       }
     );
-    return res.data.url;
+    return res.data.secure_url;
   }
 
   toast(message: string) {
