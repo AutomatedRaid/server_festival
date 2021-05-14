@@ -31,7 +31,6 @@ export class HomeComponent implements OnInit {
 
   faqs: { _id: String, question: String, answer: String }[] = [];
   ngModel: Comollegar;
-  ngModel2: DatosContacto;
   act1tal2rest3 = 0;
 
   img: String | ArrayBuffer = 'assets/images/img-not-found.png';
@@ -47,7 +46,7 @@ export class HomeComponent implements OnInit {
 
   constructor(private eventoService: EventoService, private authService: AuthService, private router: Router) {
     this.ngModel = new Comollegar();
-    this.ngModel2 = new DatosContacto();
+    this.datosContacto = new DatosContacto("","","");
   }
 
   ngOnInit(): void {
@@ -67,8 +66,6 @@ export class HomeComponent implements OnInit {
     });
     this.eventoService.getDatosContacto().subscribe(res => {
       this.datosContacto = res as DatosContacto;
-      console.log(res);
-      console.log('AAAAAAAAAAAA');
     });
     this.eventoService.getMapa().subscribe(res => {
       const mapa = res as Mapa;
@@ -328,20 +325,20 @@ export class HomeComponent implements OnInit {
       const elems = document.getElementById('modal2');
       const instances = M.Modal.init(elems, {dismissible: false});
       instances.open();
-      let dtcContacto = new DatosContacto(this.ngModel2._id, this.ngModel2.numero, this.ngModel2.correo);
+      let dtcContacto = new DatosContacto(this.datosContacto._id, this.datosContacto.numero, this.datosContacto.correo);
 
-      console.log(dtcContacto);
-
+      if (this.datosContacto._id == '') {
         await this.eventoService.postDatosContacto(dtcContacto).subscribe(res => {
           this.toast('Datos contacto guardado');
           instances.close();
         });
-       /*else {
+      }
+       else {
         await this.eventoService.putDatosContacto(dtcContacto._id, dtcContacto).subscribe(res => {
           this.toast('Datos contacto guardado');
           instances.close();
         });
-      }*/
+      }
     }
   }
 }

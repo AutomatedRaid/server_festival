@@ -176,12 +176,12 @@
     <form #dtcForm="ngForm">
       <div style="margin-left: 20px; margin-top: 20px">
         <div class="input-field input-div" style="margin: 15px">
-          <textarea type="text" id="numero" class="materialize-textarea" name="numero" [(ngModel)]="ngModel2.numero"></textarea>
-          <label id="numerolbl" for="question" class="text-input">Número</label>
+          <textarea type="text" id="numero" class="materialize-textarea" name="numero" [(ngModel)]="datosContacto.numero"></textarea>
+          <label id="numerolbl" for="question" class="text-input active">Número</label>
         </div>
         <div class="input-field input-div" style="margin: 15px">
-          <textarea type="text" id="correo" class="materialize-textarea" name="ubicompleta" [(ngModel)]="ngModel2.correo"></textarea>
-          <label id="correolbl" for="answer" class="text-input">Correo electrónico</label>
+          <textarea type="text" id="correo" class="materialize-textarea" name="ubicompleta" [(ngModel)]="datosContacto.correo"></textarea>
+          <label id="correolbl" for="answer" class="text-input active">Correo electrónico</label>
         </div>
       </div>
       <div class="right-align" style="border: 20px; margin-top: 15px" (click)="guardarDatosContacto(dtcForm)">

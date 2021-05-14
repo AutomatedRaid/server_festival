@@ -101,7 +101,7 @@ eventappCtrl.getRestaurante = async (req, res) => {
 
 //Get Datos contacto
 eventappCtrl.getDatosContacto = async (req, res) => {
-    const datosContacto = await DatosContacto.findById(req.params.id).catch((err) => {
+    const datosContacto = await DatosContacto.findOne().catch((err) => {
         res.status(500).json({message: err.message})
     });
     await res.status(201).json(datosContacto);
