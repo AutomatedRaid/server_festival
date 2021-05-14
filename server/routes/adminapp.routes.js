@@ -20,6 +20,9 @@ router.delete('/faq/:id', verifyToken, async (req, res) => {await adminAppCtrl.d
 router.post('/restaurante', verifyToken, async (req, res) => {await adminAppCtrl.createRestaurante(req, res);});
 router.put('/restaurante/:id', verifyToken, async (req, res) => {await adminAppCtrl.editRestaurante(req, res);});
 router.delete('/restaurante/:id', verifyToken, async (req, res) => {await adminAppCtrl.deleteRestaurante(req, res);});
+router.post('/datoscontacto', verifyToken, async (req, res) => {await adminAppCtrl.createDatosContacto(req, res);});
+router.put('/datoscontacto/:id', verifyToken, async (req, res) => {await adminAppCtrl.editDatosContacto(req, res);});
+router.delete('/datoscontacto/:id', verifyToken, async (req, res) => {await adminAppCtrl.deleteDatosContacto(req, res);});
 router.get('/private', verifyToken, async (req, res) => {res.status(200).json({ message: "Okey... Hi!" })});
 
 module.exports = router;

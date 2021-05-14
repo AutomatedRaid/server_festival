@@ -9,6 +9,7 @@ import {Router} from "@angular/router";
 import {Comollegar} from "../../models/comollegar";
 import {AuthService} from "../../services/auth.service";
 import {Restaurante} from "../../models/restaurante";
+import {DatosContacto} from "../../models/datosContacto";
 
 declare const M: any;
 const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/djlgdcqhg/image/upload';
@@ -26,14 +27,17 @@ export class HomeComponent implements OnInit {
   actuaciones: Actuacion[] = [];
   talleres: Taller[] = [];
   restaurantes: Restaurante[] = [];
+  datosContacto: DatosContacto;
 
-  faqs: {_id: String, question: String, answer: String}[] = [];
+  faqs: { _id: String, question: String, answer: String }[] = [];
   ngModel: Comollegar;
+  ngModel2: DatosContacto;
   act1tal2rest3 = 0;
 
   img: String | ArrayBuffer = 'assets/images/img-not-found.png';
   imgcmll: String | ArrayBuffer = 'assets/images/img-not-found.png';
-  private file1: any; private file2: any;
+  private file1: any;
+  private file2: any;
 
   idToEliminate: string;
   alertHead: string;
@@ -41,8 +45,9 @@ export class HomeComponent implements OnInit {
   alertBody = '';
   idFAQEdit = '';
 
-  constructor(private eventoService: EventoService, private authService: AuthService,  private router: Router) {
+  constructor(private eventoService: EventoService, private authService: AuthService, private router: Router) {
     this.ngModel = new Comollegar();
+    this.ngModel2 = new DatosContacto();
   }
 
   ngOnInit(): void {
@@ -57,25 +62,30 @@ export class HomeComponent implements OnInit {
     this.eventoService.getRestaurantes().subscribe(res => {
       this.restaurantes = res as Restaurante[];
     });
-    this.eventoService.getFAQs().subscribe( res => {
-      this.faqs = res as {_id:String, question: String, answer: String}[];
+    this.eventoService.getFAQs().subscribe(res => {
+      this.faqs = res as { _id: String, question: String, answer: String }[];
     });
-    this.eventoService.getMapa().subscribe( res => {
+    this.eventoService.getDatosContacto().subscribe(res => {
+      this.datosContacto = res as DatosContacto;
+      console.log(res);
+      console.log('AAAAAAAAAAAA');
+    });
+    this.eventoService.getMapa().subscribe(res => {
       const mapa = res as Mapa;
-      if(mapa.imagen != null && mapa.imagen != ''){
+      if (mapa.imagen != null && mapa.imagen != '') {
         this.img = mapa.imagen;
       }
     });
-    this.eventoService.getComoLlegar().subscribe(res =>{
-      this.ngModel= res as Comollegar;
-      if(this.ngModel != null) {
+    this.eventoService.getComoLlegar().subscribe(res => {
+      this.ngModel = res as Comollegar;
+      if (this.ngModel != null) {
         if (this.ngModel.img != null && this.ngModel.img != '') {
           this.imgcmll = this.ngModel.img;
         }
-      }else {
+      } else {
         this.ngModel = new Comollegar();
       }
-      const labels = ['nombrelbl','ubicompletalbl', 'urlmapalbl'];
+      const labels = ['nombrelbl', 'ubicompletalbl', 'urlmapalbl'];
       for (let i = 0; i < labels.length; i++) {
         const label = <HTMLLabelElement>document.getElementById(labels[i]);
         label.classList.add('active');
@@ -118,12 +128,12 @@ export class HomeComponent implements OnInit {
           const reader = new FileReader();
           reader.readAsDataURL(event.target.files[0]);
           reader.onload = (eventt) => {
-              this.img = eventt.target.result;
+            this.img = eventt.target.result;
           };
           break;
         case 2:
           this.file2 = event.target.files[1];
-          if (this.file2 == null){
+          if (this.file2 == null) {
             this.file2 = event.target.files[0];
           }
           const reader2 = new FileReader();
@@ -152,7 +162,7 @@ export class HomeComponent implements OnInit {
 
   addFAQ() {
     var elems = document.getElementById('modalFAQs');
-    var instances = M.Modal.init(elems,{dismissible:false});
+    var instances = M.Modal.init(elems, {dismissible: false});
     instances.open();
   }
 
@@ -175,8 +185,8 @@ export class HomeComponent implements OnInit {
       } else {
         this.eventoService.putFAQs(this.idFAQEdit, {question: question.value, answer: answer.value}).subscribe(() => {
           this.toast('FAQ guardada');
-          for (let i = 0; i <this.faqs.length ; i++) {
-            if(this.faqs[i]._id == this.idFAQEdit){
+          for (let i = 0; i < this.faqs.length; i++) {
+            if (this.faqs[i]._id == this.idFAQEdit) {
               this.faqs[i].question = question.value;
               this.faqs[i].answer = answer.value;
               break;
@@ -192,9 +202,9 @@ export class HomeComponent implements OnInit {
       this.toast('Faltan datos');
   }
 
-  editFAQ(_id:string, question: HTMLTextAreaElement, answer: HTMLTextAreaElement) {
+  editFAQ(_id: string, question: HTMLTextAreaElement, answer: HTMLTextAreaElement) {
     this.eventoService.getFAQ(_id).subscribe(res => {
-      const r = res as {_id: string, question: string, answer: string};
+      const r = res as { _id: string, question: string, answer: string };
       question.value = r.question;
       answer.value = r.answer;
       const questionlbl = <HTMLLabelElement>document.getElementById('questionlbl');
@@ -204,7 +214,7 @@ export class HomeComponent implements OnInit {
       this.idFAQEdit = r._id;
     });
     var elems = document.getElementById('modalFAQs');
-    var instances = M.Modal.init(elems,{dismissible:false});
+    var instances = M.Modal.init(elems, {dismissible: false});
     instances.open();
   }
 
@@ -227,17 +237,19 @@ export class HomeComponent implements OnInit {
       const instances = M.Modal.init(elems, {dismissible: false});
       instances.open();
       let cmllegar = new Comollegar(this.ngModel._id, this.ngModel.nombre, this.ngModel.ubicompleta, this.ngModel.urlmapa);
-      cmllegar.img = await this.uploadimg(2);
-      if (this.ngModel._id == '') {
-        await this.eventoService.postComoLlegar(cmllegar).subscribe(res => {
-          this.toast('Como llegar guardado');
-          instances.close();
-        });
-      } else {
-        await this.eventoService.putComoLlegar(cmllegar._id , cmllegar).subscribe(res => {
-          this.toast('Como llegar guardado');
-          instances.close();
-        });
+      if (this.file2 != null) {
+        cmllegar.img = await this.uploadimg(2);
+        if (this.ngModel._id == '') {
+          await this.eventoService.postComoLlegar(cmllegar).subscribe(res => {
+            this.toast('Como llegar guardado');
+            instances.close();
+          });
+        } else {
+          await this.eventoService.putComoLlegar(cmllegar._id, cmllegar).subscribe(res => {
+            this.toast('Como llegar guardado');
+            instances.close();
+          });
+        }
       }
     } else
       this.toast('Faltan datos');
@@ -268,14 +280,14 @@ export class HomeComponent implements OnInit {
     switch (this.act1tal2rest3) {
       case 1:
         this.eventoService.deleteActuacion(this.idToEliminate).subscribe(res => {
-        const resaux = res as { message: string };
-        this.toast(resaux.message);
-        for (let i = 0; i < this.actuaciones.length; i++) {
-          if (this.actuaciones[i]._id == this.idToEliminate) {
-            this.actuaciones.splice(i, 1);
+          const resaux = res as { message: string };
+          this.toast(resaux.message);
+          for (let i = 0; i < this.actuaciones.length; i++) {
+            if (this.actuaciones[i]._id == this.idToEliminate) {
+              this.actuaciones.splice(i, 1);
+            }
           }
-        }
-      });
+        });
         break;
       case 2:
         this.eventoService.deleteTaller(this.idToEliminate).subscribe(res => {
@@ -302,12 +314,34 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  toast(message: string){
+  toast(message: string) {
     M.toast({html: message, classes: 'rounded'});
   }
 
   logout() {
     this.authService.logout();
     this.router.navigate(['/login']);
+  }
+
+  async guardarDatosContacto(dtcForm: NgForm) {
+    if (dtcForm.value.correo != '' && dtcForm.value.numero != '') {
+      const elems = document.getElementById('modal2');
+      const instances = M.Modal.init(elems, {dismissible: false});
+      instances.open();
+      let dtcContacto = new DatosContacto(this.ngModel2._id, this.ngModel2.numero, this.ngModel2.correo);
+
+      console.log(dtcContacto);
+
+        await this.eventoService.postDatosContacto(dtcContacto).subscribe(res => {
+          this.toast('Datos contacto guardado');
+          instances.close();
+        });
+       /*else {
+        await this.eventoService.putDatosContacto(dtcContacto._id, dtcContacto).subscribe(res => {
+          this.toast('Datos contacto guardado');
+          instances.close();
+        });
+      }*/
+    }
   }
 }

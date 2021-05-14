@@ -4,6 +4,7 @@ const Mapa = require('../models/mapa');
 const ComoLlegar = require('../models/comollegar');
 const Faq = require('../models/faq');
 const Restaurante = require('../models/restaurante');
+const DatosContacto = require('../models/datoscontacto');
 
 const eventappCtrl = {};
 
@@ -96,6 +97,14 @@ eventappCtrl.getRestaurante = async (req, res) => {
         res.status(500).json({message: err.message})
     });
     await res.status(201).json(restaurante);
+};
+
+//Get Datos contacto
+eventappCtrl.getDatosContacto = async (req, res) => {
+    const datosContacto = await DatosContacto.findById(req.params.id).catch((err) => {
+        res.status(500).json({message: err.message})
+    });
+    await res.status(201).json(datosContacto);
 };
 
 module.exports = eventappCtrl;
