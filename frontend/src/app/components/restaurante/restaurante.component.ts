@@ -103,12 +103,12 @@ export class RestauranteComponent implements OnInit {
       this.restaurante.horario = this.horaIniciov + ' - ' + this.horaFinv;
       for (let i = 0; i < this.files.length; i++) {
         progressbar.setAttribute('value', String(0));
-        this.restaurante.imagenes_carta.push(await this.uploadimg(i, true));
+        this.restaurante.imagenes_carta.push(await this.uploadimg(this.files[i]));
       }
       progressbar.setAttribute('value', String(0));
-      this.restaurante.imagen = await this.uploadimg(0,false, this.img1);
+      this.restaurante.imagen = await this.uploadimg(this.file1);
       progressbar.setAttribute('value', String(0));
-      this.restaurante.img_mapa = await this.uploadimg(0, false, this.img3);
+      this.restaurante.img_mapa = await this.uploadimg(this.file3);
       this.route.paramMap.subscribe(params => {
         if (params.has("id")) {
           this.eventService.putRestaurante(params.get("id"), this.restaurante).subscribe(() => {
@@ -136,31 +136,21 @@ export class RestauranteComponent implements OnInit {
     }
   }
 
-  async uploadimg(number: number, t: boolean, f?: any ) {
-    let file: any;
-    if (t) {
-      file = this.files[number];
-    }else {
-      file = f;
-    }
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
-
-    const res = await axios.post(
-      CLOUDINARY_URL,
-      formData,
-      {
+  async uploadimg(file: File) {
+    let e = new FormData();
+    e.append('image', file);
+    let url = 'http://localhost:3000/api/adminapp/image';
+    const res = await axios.post(url, e, {
         headers: {
           'Content-Type': 'multipart/form-data'
         },
         onUploadProgress(e) {
-          var progress = Math.round((e.loaded * 100.0) / e.total);
+          let progress = Math.round((e.loaded * 100.0) / e.total);
           progressbar.setAttribute('value', String(progress));
         }
       }
     );
-    return res.data.secure_url;
+    return res.data;
   }
 
   toast(message: string) {

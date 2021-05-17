@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const verifyToken = require('../middleware/authjwt');
+const upload = require('../middleware/storage');
 
 const adminAppCtrl = require('../controllers/adminapp.controller');
 
@@ -21,5 +22,6 @@ router.post('/restaurante', verifyToken, async (req, res) => {await adminAppCtrl
 router.put('/restaurante/:id', verifyToken, async (req, res) => {await adminAppCtrl.editRestaurante(req, res);});
 router.delete('/restaurante/:id', verifyToken, async (req, res) => {await adminAppCtrl.deleteRestaurante(req, res);});
 router.get('/private', verifyToken, async (req, res) => {res.status(200).json({ message: "Okey... Hi!" })});
-
+router.post('/image', upload.single('image'), async (file, res) => {await adminAppCtrl.image(file, res);});
+//router.post('/image', upload.single('image'), async (req, res) => {res.status(201).json({ message: ":/" })});
 module.exports = router;

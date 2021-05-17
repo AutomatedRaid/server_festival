@@ -85,10 +85,10 @@ export class TallerComponent implements OnInit {
       taller.ubicacion = actForm.value.ubicacion;
       taller.horario = this.horaIniciov + ' - ' + this.horaFinv;
       taller.descripcion = actForm.value.descripcion;
-      taller.img = await this.uploadimg(1);
+      taller.img = await this.uploadimg(this.file1);
       this.alertBody = 'Guardando imagen: ' + this.file2.name;
       progressbar.setAttribute('value', String(0));
-      taller.img_mapa = await this.uploadimg(2);
+      taller.img_mapa = await this.uploadimg(this.file2);
       this.route.paramMap.subscribe(params => {
         if (params.has("id")) {
           this.eventService.putTaller(params.get("id"), taller).subscribe(() => {
@@ -110,58 +110,48 @@ export class TallerComponent implements OnInit {
     }
   }
 
-  onSelectFile(event, number: number) {
+  onSelectFile(event, n) {
     if (event.target.files && event.target.files[0]) {
-      switch (number) {
+      switch (n) {
         case 1:
           this.file1 = event.target.files[0];
+          const reader = new FileReader();
+          reader.readAsDataURL(this.file1);
+          reader.onload = (eventt) => {
+            this.img = eventt.target.result;
+          };
           break;
         case 2:
           this.file2 = event.target.files[0];
-          break;
-      }
-      var reader = new FileReader();
-      reader.readAsDataURL(event.target.files[0]);
-      reader.onload = (eventt) => {
-        switch (number) {
-          case 1:
-            this.img = eventt.target.result;
-            break;
-          case 2:
+          if (this.file2 == null){
+            this.file2 = event.target.files[0];
+          }
+          const reader2 = new FileReader();
+          reader2.readAsDataURL(this.file2);
+          reader2.onload = (eventt) => {
             this.img2 = eventt.target.result;
-            break;
-        }
+          };
+          break;
       }
     }
   }
 
-  async uploadimg(number: number) {
-    let file: any;
-    if (number === 1) {
-      file = this.file1;
-    } else {
-      file = this.file2;
-    }
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
-
-    const res = await axios.post(
-      CLOUDINARY_URL,
-      formData,
-      {
+  async uploadimg(file: File) {
+    let e = new FormData();
+    e.append('image', file);
+    let url = 'http://localhost:3000/api/adminapp/image';
+    const res = await axios.post(url, e, {
         headers: {
           'Content-Type': 'multipart/form-data'
         },
         onUploadProgress(e) {
-          var progress = Math.round((e.loaded * 100.0) / e.total);
+          let progress = Math.round((e.loaded * 100.0) / e.total);
           progressbar.setAttribute('value', String(progress));
         }
       }
     );
-    return res.data.secure_url;
+    return res.data;
   }
-
   logout() {
     this.authService.logout();
     this.router.navigate(['/login']);

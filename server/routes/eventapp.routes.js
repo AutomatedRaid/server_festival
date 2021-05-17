@@ -14,5 +14,4 @@ router.get('/faq/:id', async (req, res) => {eventAppCtrl.getFAQ(req,res);});
 router.get('/comollegar', async (req, res) => {eventAppCtrl.getComoLlegar(req,res);});
 router.get('/restaurante/:id', async (req, res) => {eventAppCtrl.getRestaurante(req,res);});
 router.get('/restaurante', async (req, res) => {eventAppCtrl.getRestaurantes(req,res);});
-
 module.exports = router;

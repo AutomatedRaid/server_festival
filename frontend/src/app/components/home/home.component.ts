@@ -11,8 +11,6 @@ import {AuthService} from "../../services/auth.service";
 import {Restaurante} from "../../models/restaurante";
 
 declare const M: any;
-const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/djlgdcqhg/image/upload';
-const CLOUDINARY_UPLOAD_PRESET = 'rdzzccwc';
 let progressbar: any = null;
 
 @Component({
@@ -42,7 +40,7 @@ export class HomeComponent implements OnInit {
   idFAQEdit = '';
 
   constructor(private eventoService: EventoService, private authService: AuthService,  private router: Router) {
-    this.ngModel = new Comollegar();
+    this.ngModel = new Comollegar("", "", "", "", "");
   }
 
   ngOnInit(): void {
@@ -68,8 +66,12 @@ export class HomeComponent implements OnInit {
     });
     this.eventoService.getComoLlegar().subscribe(res =>{
       this.ngModel= res as Comollegar;
-      if(this.ngModel.img != null && this.ngModel.img != ''){
-        this.imgcmll = this.ngModel.img;
+      if(this.ngModel != null) {
+        if (this.ngModel.img != null && this.ngModel.img != '') {
+          this.imgcmll = this.ngModel.img;
+        }
+      }else {
+        this.ngModel = new Comollegar("", "", "", "", "");
       }
       const labels = ['nombrelbl','ubicompletalbl', 'urlmapalbl'];
       for (let i = 0; i < labels.length; i++) {
@@ -79,31 +81,21 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  async uploadimg(filenum: number) {
-    let file: any;
-    if (filenum === 1) {
-      file = this.file1;
-    } else {
-      file = this.file2;
-    }
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
-
-    const res = await axios.post(
-      CLOUDINARY_URL,
-      formData,
-      {
+  async uploadimg(file: File) {
+    let e = new FormData();
+    e.append('image', file);
+    let url = 'http://localhost:3000/api/adminapp/image';
+    const res = await axios.post(url, e, {
         headers: {
           'Content-Type': 'multipart/form-data'
         },
         onUploadProgress(e) {
-          var progress = Math.round((e.loaded * 100.0) / e.total);
+          let progress = Math.round((e.loaded * 100.0) / e.total);
           progressbar.setAttribute('value', String(progress));
         }
       }
     );
-    return res.data.secure_url;
+    return res.data;
   }
 
   onSelectFile(event, n) {
@@ -112,18 +104,18 @@ export class HomeComponent implements OnInit {
         case 1:
           this.file1 = event.target.files[0];
           const reader = new FileReader();
-          reader.readAsDataURL(event.target.files[0]);
+          reader.readAsDataURL(this.file1);
           reader.onload = (eventt) => {
               this.img = eventt.target.result;
           };
           break;
         case 2:
-          this.file2 = event.target.files[1];
+          this.file2 = event.target.files[0];
           if (this.file2 == null){
             this.file2 = event.target.files[0];
           }
           const reader2 = new FileReader();
-          reader2.readAsDataURL(event.target.files[0]);
+          reader2.readAsDataURL(this.file2);
           reader2.onload = (eventt) => {
             this.imgcmll = eventt.target.result;
           };
@@ -138,12 +130,21 @@ export class HomeComponent implements OnInit {
     const instances = M.Modal.init(elems, {dismissible: false});
     instances.open();
     const mapa: Mapa = new Mapa();
-    mapa.imagen = await this.uploadimg(1);
-    this.eventoService.postMapa(mapa).subscribe(() => {
-      this.toast('Mapa guardado correctamente');
-      instances.close();
-    });
-
+    let err = false;
+    try {
+      mapa.imagen = await this.uploadimg(this.file1);
+    }catch (e) {
+      this.toast('Imagen incorrecta, debe pesar menos de 2Mb y ser .png .jpg .jpeg');
+      err = true;
+    }
+    if(!err) {
+      this.eventoService.postMapa(mapa).subscribe(() => {
+        this.toast('Mapa guardado correctamente');
+        instances.close();
+      });
+    }else{
+      instances.close()
+    }
   }
 
   addFAQ() {
@@ -218,12 +219,14 @@ export class HomeComponent implements OnInit {
 
   async guardarComoLlegar(cmllForm: NgForm) {
     if (cmllForm.value.nombre != '' && cmllForm.value.ubicompleta != '' && cmllForm.value.urlmapa != '' && this.imgcmll != '') {
-      this.alertBody = 'Guardando imagen: ' + this.file2.name;
       const elems = document.getElementById('modal2');
       const instances = M.Modal.init(elems, {dismissible: false});
-      instances.open();
       let cmllegar = new Comollegar(this.ngModel._id, this.ngModel.nombre, this.ngModel.ubicompleta, this.ngModel.urlmapa);
-      cmllegar.img = await this.uploadimg(2);
+      if(this.file2 != null) {
+        this.alertBody = 'Guardando imagen: ' + this.file2.name;
+        instances.open();
+        cmllegar.img = await this.uploadimg(this.file2);
+      }
       if (this.ngModel._id == '') {
         await this.eventoService.postComoLlegar(cmllegar).subscribe(res => {
           this.toast('Como llegar guardado');

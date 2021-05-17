@@ -5,7 +5,7 @@ const morgan = require('morgan');
 const app = express();
 const { mongoose } = require('./database');
 const config = require('./config');
-
+const path = require('path');
 
 //settings
 app.set('port', process.env.PORT || 3000);
@@ -30,6 +30,7 @@ app.use(session({
 app.use('/api/eventapp', require('./routes/eventapp.routes'));
 app.use('/api/adminapp', require('./routes/adminapp.routes'));
 app.use('/api/userauth', require('./routes/auth.routes'));
+app.use(express.static(path.join(__dirname, 'public')));
 //Starting the server
 app.listen(app.get('port'), () => {
     console.log('Server on port ', app.get('port'));

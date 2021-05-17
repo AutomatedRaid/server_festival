@@ -177,4 +177,12 @@ export class EventoService {
       })
     });
   }
+
+  postImage(file: FormData) {
+    return this.http.post("http://localhost:3000/api/adminapp" + '/image', file, {
+      headers: new HttpHeaders({
+        'x-access-token': ('Bearer ' + this.authServise.getToken())
+      })
+    }).toPromise();
+  }
 }

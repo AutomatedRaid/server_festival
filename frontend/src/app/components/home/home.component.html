@@ -8,6 +8,7 @@
 </nav>
 <div class="container">
   <div class="card" style="padding: 20px">
+    <form>
     <h5>Actuaciones</h5>
     <div class="responsive-table table-status-sheet" style="margin: 30px">
       <table class="bordered centered striped" style="text-indent: 1em;">
@@ -95,10 +96,10 @@
     <div class="file-field input-field" style="margin-top: 15px">
       <div class="btn">
         <span>File</span>
-        <input type="file" accept="image/*" (change)="onSelectFile($event,1)">
+        <input type="file" accept=".png, .jpg, .jpeg" (change)="onSelectFile($event,1)">
       </div>
       <div class="file-path-wrapper">
-        <input class="file-path validate" accept="image/*" type="text">
+        <input class="file-path validate" accept=".png, .jpg, .jpeg" placeholder="Max 2Mb, jpg, jpeg, png"  type="text">
       </div>
     </div>
     <div class="center-align">
@@ -179,8 +180,8 @@
         <p>{{alertbody}}</p>
       </div>
       <div class="modal-footer">
-        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
-        <a href="#!" class="modal-action modal-close waves-effect waves-red btn-flat" (click)="delete()">Eliminar</a>
+        <a href="#" class="modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
+        <a href="#" class="modal-action modal-close waves-effect waves-red btn-flat" (click)="delete()">Eliminar</a>
       </div>
     </div>
     <div id="modal2" class="modal">
@@ -201,11 +202,12 @@
           <label id="answerlbl" for="answer" class="text-input">Respuesta</label>
         </div>
         <div class="modal-footer">
-          <a href="#!" class="modal-action modal-close waves-effect waves-red btn-flat"
+          <a href="#" class="modal-action modal-close waves-effect waves-red btn-flat"
              (click)="question.value = ''; answer.value = ''">Cancelar</a>
           <a class="modal-action waves-effect waves-green btn-flat" (click)="guardarFAQs(question, answer)">Guardar</a>
         </div>
       </div>
     </div>
+    </form>
   </div>
 </div>
