@@ -11,6 +11,7 @@ import {HttpClientModule} from "@angular/common/http";
 import { LoginComponent } from './components/login/login.component';
 import { UsersComponent } from './components/users/users.component';
 import { RestauranteComponent } from './components/restaurante/restaurante.component';
+import { ImagenesComponent } from './components/imagenes/imagenes.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { RestauranteComponent } from './components/restaurante/restaurante.compo
     TallerComponent,
     LoginComponent,
     UsersComponent,
-    RestauranteComponent
+    RestauranteComponent,
+    ImagenesComponent
   ],
   imports: [
     BrowserModule,
