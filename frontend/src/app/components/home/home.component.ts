@@ -9,10 +9,10 @@ import {Router} from "@angular/router";
 import {Comollegar} from "../../models/comollegar";
 import {AuthService} from "../../services/auth.service";
 import {Restaurante} from "../../models/restaurante";
+import {DatosContacto} from "../../models/datosContacto";
 
 declare const M: any;
-const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/djlgdcqhg/image/upload';
-const CLOUDINARY_UPLOAD_PRESET = 'rdzzccwc';
+
 let progressbar: any = null;
 
 @Component({
@@ -92,6 +92,7 @@ export class HomeComponent implements OnInit {
   async uploadimg(file: File) {
     let e = new FormData();
     e.append('image', file);
+    //let url = this.eventoService.URL_API_ADMIN+'/image';
     let url = 'http://localhost:3000/api/adminapp/image';
     const res = await axios.post(url, e, {
         headers: {
@@ -142,6 +143,7 @@ export class HomeComponent implements OnInit {
     try {
       mapa.imagen = await this.uploadimg(this.file1);
     }catch (e) {
+      console.log(e);
       this.toast('Imagen incorrecta, debe pesar menos de 2Mb y ser .png .jpg .jpeg');
       err = true;
     }
@@ -151,7 +153,7 @@ export class HomeComponent implements OnInit {
         instances.close();
       });
     }else{
-      instances.close()
+      instances.close();
     }
   }
 
