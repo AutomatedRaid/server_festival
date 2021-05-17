@@ -6,6 +6,7 @@ import {Mapa} from '../models/mapa';
 import {Comollegar} from '../models/comollegar';
 import {AuthService} from './auth.service';
 import {Restaurante} from '../models/restaurante';
+import {DatosContacto} from "../models/datosContacto";
 
 @Injectable({
   providedIn: 'root'
@@ -142,8 +143,36 @@ export class EventoService {
     });
   }
 
+  putDatosContacto(_id: string, datoscontacto: DatosContacto) {
+    return this.http.put(this.URL_API_ADMIN + `/datoscontacto/${_id}`, datoscontacto, {
+      headers: new HttpHeaders({
+        'x-access-token': ('Bearer ' + this.authServise.getToken())
+      })
+    });
+  }
+
+  deleteDatosContacto(_id: string){
+    return this.http.delete( this.URL_API_ADMIN + `/datoscontacto/${_id}`, {
+      headers: new HttpHeaders({
+        'x-access-token': ('Bearer ' + this.authServise.getToken())
+      })
+    });
+  }
+
+  postDatosContacto(datoscontacto: DatosContacto) {
+    return this.http.post( this.URL_API_ADMIN + '/datoscontacto/', datoscontacto, {
+      headers: new HttpHeaders({
+        'x-access-token': ('Bearer ' + this.authServise.getToken())
+      })
+    });
+  }
+
   getComoLlegar() {
     return this.http.get( this.URL_API_EVENT + '/comollegar/');
+  }
+
+  getDatosContacto() {
+    return this.http.get( this.URL_API_EVENT + '/datoscontacto/');
   }
 
   getRestaurantes() {

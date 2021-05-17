@@ -4,6 +4,7 @@ const Mapa = require('../models/mapa');
 const Faq = require('../models/faq');
 const ComoLlegar = require('../models/comollegar');
 const Restaurante = require('../models/restaurante');
+const DatosContacto = require('../models/datoscontacto');
 
 const adminappCtrl = {};
 
@@ -232,6 +233,43 @@ adminappCtrl.deleteRestaurante = async (req, res) => {
 
 adminappCtrl.image = async (file, res) => {
   res.status(201).json(("https://angry-bhabha.82-223-151-201.plesk.page/uploads/"+file.file.path.split('\\')[3]));
+};
+
+adminappCtrl.createDatosContacto = async (req, res) => {
+    try{
+        console.log(req);
+        const datoscontacto = new DatosContacto({
+            numero: req.body.numero,
+            correo: req.body.correo,
+        });
+        await datoscontacto.save();
+        res.status(201).json({message: 'Datos contactos creado, ' + datoscontacto._id})
+    }catch (e) {
+        console.log(e.message);
+        res.status(400).json({message: e.message});
+    }
+};
+
+adminappCtrl.editDatosContacto = async (req, res) => {
+    try{
+        const datoscontacto = {
+            numero: req.body.numero,
+            correo: req.body.correo,
+        };
+        await DatosContacto.findByIdAndUpdate(req.params.id, {$set: datoscontacto}, {new:false, useFindAndModify:false});
+        res.status(201).json({message: 'Datos contactos updated'});
+    }catch (e) {
+        res.status(400).json({message: e.message});
+    }
+};
+
+adminappCtrl.deleteDatosContacto = async (req, res) => {
+    try{
+        await DatosContacto.findByIdAndDelete(req.params.id);
+        res.status(201).json({message: 'Datos contactos deleted'});
+    }catch (e) {
+        res.status(400).json({message: e.message});
+    }
 };
 
 module.exports = adminappCtrl;

@@ -1,5 +1,7 @@
 <nav>
   <div class="nav-wrapper" style="padding-left: 5%;padding-right: 5%; background: #0cbf41;">
+    <label class="brand-logo left" routerLink="/imagenes" style="height: 100%">
+      <img src="assets/images/imagenico.png" style="height: 100%; cursor: pointer"></label>
     <label class="brand-logo center" routerLink="/" style="height: 100%">
       <img src="assets/images/logo_cocodrilo_fondotransparente.png" style="height: 100%; cursor: pointer"
            routerLink="/"></label>
@@ -115,7 +117,7 @@
       <table class="bordered centered striped" style="text-indent: 1em;">
         <thead>
         <tr>
-          <th>Actuacion</th>
+          <th>FAQ's</th>
           <th style="border-left: 1px solid #6a6a6a;width: 120px">
             <img src="assets/images/add.png" style="cursor: pointer;" (click)="addFAQ()">
           </th>
@@ -172,6 +174,25 @@
         </div>
       </form>
     </div>
+
+    <h5>Datos contacto</h5>
+    <form #dtcForm="ngForm">
+      <div style="margin-left: 20px; margin-top: 20px">
+        <div class="input-field input-div" style="margin: 15px">
+          <textarea type="text" id="numero" class="materialize-textarea" name="numero" [(ngModel)]="datosContacto.numero"></textarea>
+          <label id="numerolbl" for="question" class="text-input active">Número</label>
+        </div>
+        <div class="input-field input-div" style="margin: 15px">
+          <textarea type="text" id="correo" class="materialize-textarea" name="ubicompleta" [(ngModel)]="datosContacto.correo"></textarea>
+          <label id="correolbl" for="answer" class="text-input active">Correo electrónico</label>
+        </div>
+      </div>
+      <div class="right-align" style="border: 20px; margin-top: 15px" (click)="guardarDatosContacto(dtcForm)">
+        <div class="btn" style=" font-size: 1.1em">
+          <span>Guardar datos</span>
+        </div>
+      </div>
+    </form>
 
     <!-- Modal Structure -->
     <div id="modal1" class="modal">

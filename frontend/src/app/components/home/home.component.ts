@@ -11,6 +11,8 @@ import {AuthService} from "../../services/auth.service";
 import {Restaurante} from "../../models/restaurante";
 
 declare const M: any;
+const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/djlgdcqhg/image/upload';
+const CLOUDINARY_UPLOAD_PRESET = 'rdzzccwc';
 let progressbar: any = null;
 
 @Component({
@@ -24,14 +26,16 @@ export class HomeComponent implements OnInit {
   actuaciones: Actuacion[] = [];
   talleres: Taller[] = [];
   restaurantes: Restaurante[] = [];
+  datosContacto: DatosContacto;
 
-  faqs: {_id: String, question: String, answer: String}[] = [];
+  faqs: { _id: String, question: String, answer: String }[] = [];
   ngModel: Comollegar;
   act1tal2rest3 = 0;
 
   img: String | ArrayBuffer = 'assets/images/img-not-found.png';
   imgcmll: String | ArrayBuffer = 'assets/images/img-not-found.png';
-  private file1: any; private file2: any;
+  private file1: any;
+  private file2: any;
 
   idToEliminate: string;
   alertHead: string;
@@ -41,6 +45,7 @@ export class HomeComponent implements OnInit {
 
   constructor(private eventoService: EventoService, private authService: AuthService,  private router: Router) {
     this.ngModel = new Comollegar("", "", "", "", "");
+    this.datosContacto = new DatosContacto("","","");
   }
 
   ngOnInit(): void {
@@ -55,12 +60,15 @@ export class HomeComponent implements OnInit {
     this.eventoService.getRestaurantes().subscribe(res => {
       this.restaurantes = res as Restaurante[];
     });
-    this.eventoService.getFAQs().subscribe( res => {
-      this.faqs = res as {_id:String, question: String, answer: String}[];
+    this.eventoService.getFAQs().subscribe(res => {
+      this.faqs = res as { _id: String, question: String, answer: String }[];
     });
-    this.eventoService.getMapa().subscribe( res => {
+    this.eventoService.getDatosContacto().subscribe(res => {
+      this.datosContacto = res as DatosContacto;
+    });
+    this.eventoService.getMapa().subscribe(res => {
       const mapa = res as Mapa;
-      if(mapa.imagen != null && mapa.imagen != ''){
+      if (mapa.imagen != null && mapa.imagen != '') {
         this.img = mapa.imagen;
       }
     });
@@ -73,7 +81,7 @@ export class HomeComponent implements OnInit {
       }else {
         this.ngModel = new Comollegar("", "", "", "", "");
       }
-      const labels = ['nombrelbl','ubicompletalbl', 'urlmapalbl'];
+      const labels = ['nombrelbl', 'ubicompletalbl', 'urlmapalbl'];
       for (let i = 0; i < labels.length; i++) {
         const label = <HTMLLabelElement>document.getElementById(labels[i]);
         label.classList.add('active');
@@ -106,7 +114,7 @@ export class HomeComponent implements OnInit {
           const reader = new FileReader();
           reader.readAsDataURL(this.file1);
           reader.onload = (eventt) => {
-              this.img = eventt.target.result;
+            this.img = eventt.target.result;
           };
           break;
         case 2:
@@ -149,7 +157,7 @@ export class HomeComponent implements OnInit {
 
   addFAQ() {
     var elems = document.getElementById('modalFAQs');
-    var instances = M.Modal.init(elems,{dismissible:false});
+    var instances = M.Modal.init(elems, {dismissible: false});
     instances.open();
   }
 
@@ -172,8 +180,8 @@ export class HomeComponent implements OnInit {
       } else {
         this.eventoService.putFAQs(this.idFAQEdit, {question: question.value, answer: answer.value}).subscribe(() => {
           this.toast('FAQ guardada');
-          for (let i = 0; i <this.faqs.length ; i++) {
-            if(this.faqs[i]._id == this.idFAQEdit){
+          for (let i = 0; i < this.faqs.length; i++) {
+            if (this.faqs[i]._id == this.idFAQEdit) {
               this.faqs[i].question = question.value;
               this.faqs[i].answer = answer.value;
               break;
@@ -189,9 +197,9 @@ export class HomeComponent implements OnInit {
       this.toast('Faltan datos');
   }
 
-  editFAQ(_id:string, question: HTMLTextAreaElement, answer: HTMLTextAreaElement) {
+  editFAQ(_id: string, question: HTMLTextAreaElement, answer: HTMLTextAreaElement) {
     this.eventoService.getFAQ(_id).subscribe(res => {
-      const r = res as {_id: string, question: string, answer: string};
+      const r = res as { _id: string, question: string, answer: string };
       question.value = r.question;
       answer.value = r.answer;
       const questionlbl = <HTMLLabelElement>document.getElementById('questionlbl');
@@ -201,7 +209,7 @@ export class HomeComponent implements OnInit {
       this.idFAQEdit = r._id;
     });
     var elems = document.getElementById('modalFAQs');
-    var instances = M.Modal.init(elems,{dismissible:false});
+    var instances = M.Modal.init(elems, {dismissible: false});
     instances.open();
   }
 
@@ -267,14 +275,14 @@ export class HomeComponent implements OnInit {
     switch (this.act1tal2rest3) {
       case 1:
         this.eventoService.deleteActuacion(this.idToEliminate).subscribe(res => {
-        const resaux = res as { message: string };
-        this.toast(resaux.message);
-        for (let i = 0; i < this.actuaciones.length; i++) {
-          if (this.actuaciones[i]._id == this.idToEliminate) {
-            this.actuaciones.splice(i, 1);
+          const resaux = res as { message: string };
+          this.toast(resaux.message);
+          for (let i = 0; i < this.actuaciones.length; i++) {
+            if (this.actuaciones[i]._id == this.idToEliminate) {
+              this.actuaciones.splice(i, 1);
+            }
           }
-        }
-      });
+        });
         break;
       case 2:
         this.eventoService.deleteTaller(this.idToEliminate).subscribe(res => {
@@ -301,12 +309,34 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  toast(message: string){
+  toast(message: string) {
     M.toast({html: message, classes: 'rounded'});
   }
 
   logout() {
     this.authService.logout();
     this.router.navigate(['/login']);
+  }
+
+  async guardarDatosContacto(dtcForm: NgForm) {
+    if (dtcForm.value.correo != '' && dtcForm.value.numero != '') {
+      const elems = document.getElementById('modal2');
+      const instances = M.Modal.init(elems, {dismissible: false});
+      instances.open();
+      let dtcContacto = new DatosContacto(this.datosContacto._id, this.datosContacto.numero, this.datosContacto.correo);
+
+      if (this.datosContacto._id == '') {
+        await this.eventoService.postDatosContacto(dtcContacto).subscribe(res => {
+          this.toast('Datos contacto guardado');
+          instances.close();
+        });
+      }
+       else {
+        await this.eventoService.putDatosContacto(dtcContacto._id, dtcContacto).subscribe(res => {
+          this.toast('Datos contacto guardado');
+          instances.close();
+        });
+      }
+    }
   }
 }
