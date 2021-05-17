@@ -9,6 +9,7 @@ import {Router} from "@angular/router";
 import {Comollegar} from "../../models/comollegar";
 import {AuthService} from "../../services/auth.service";
 import {Restaurante} from "../../models/restaurante";
+import {DatosContacto} from "../../models/datosContacto";
 
 declare const M: any;
 const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/djlgdcqhg/image/upload';
