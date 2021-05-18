@@ -12,8 +12,8 @@ import {Restaurante} from "../../models/restaurante";
 import {DatosContacto} from "../../models/datosContacto";
 
 declare const M: any;
-const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/djlgdcqhg/image/upload';
-const CLOUDINARY_UPLOAD_PRESET = 'rdzzccwc';
+// const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/djlgdcqhg/image/upload';
+// const CLOUDINARY_UPLOAD_PRESET = 'rdzzccwc';
 let progressbar: any = null;
 
 @Component({
