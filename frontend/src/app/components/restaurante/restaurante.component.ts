@@ -52,7 +52,7 @@ export class RestauranteComponent implements OnInit {
         });
       }
     });
-    var elems = document.querySelectorAll('.timepicker');
+    let elems = document.querySelectorAll('.timepicker');
     M.Timepicker.init(elems, {
       defaultTime: '9:00',
       twelveHour: false,
@@ -86,8 +86,8 @@ export class RestauranteComponent implements OnInit {
       const label = <HTMLLabelElement>document.getElementById(labels[i]);
       label.classList.add('active');
     }
-    this.file1 = this.restaurante.imagen;
-    this.file3 = this.restaurante.img_mapa;
+    /*this.file1 = this.restaurante.imagen;
+    this.file3 = this.restaurante.img_mapa;*/
     this.img1 = this.restaurante.imagen;
     this.img3 = this.restaurante.img_mapa;
   }
@@ -103,14 +103,20 @@ export class RestauranteComponent implements OnInit {
       this.restaurante.horario = this.horaIniciov + ' - ' + this.horaFinv;
       let err = false;
       try {
-        for (let i = 0; i < this.files.length; i++) {
-          progressbar.setAttribute('value', String(0));
-          this.restaurante.imagenes_carta.push(await this.uploadimg(this.files[i]));
+        if(this.files != null && this.files.length > 0) {
+          for (let i = 0; i < this.files.length; i++) {
+            progressbar.setAttribute('value', String(0));
+            this.restaurante.imagenes_carta.push(await this.uploadimg(this.files[i]));
+          }
         }
-        progressbar.setAttribute('value', String(0));
-        this.restaurante.imagen = await this.uploadimg(this.file1);
-        progressbar.setAttribute('value', String(0));
-        this.restaurante.img_mapa = await this.uploadimg(this.file3);
+        if(this.file1 != null) {
+          progressbar.setAttribute('value', String(0));
+          this.restaurante.imagen = await this.uploadimg(this.file1);
+        }
+        if(this.file3 != null) {
+          progressbar.setAttribute('value', String(0));
+          this.restaurante.img_mapa = await this.uploadimg(this.file3);
+        }
       }catch (e) {
         err = true;
         instances.close();
@@ -128,14 +134,16 @@ export class RestauranteComponent implements OnInit {
               this.toast('Error al guardar el restaurante');
             });
           } else {
-            this.eventService.postRestaurante(this.restaurante).subscribe(() => {
-              this.toast('Restaurante guardado correctamente');
-              this.router.navigate(['/']);
-              instances.close();
-            }, error => {
-              instances.close();
-              this.toast('Error al guardar el restaurante');
-            });
+            if(this.file1 != null && this.file3 != null && this.files.length > 0) {
+              this.eventService.postRestaurante(this.restaurante).subscribe(() => {
+                this.toast('Restaurante guardado correctamente');
+                this.router.navigate(['/']);
+                instances.close();
+              }, error => {
+                instances.close();
+                this.toast('Error al guardar el restaurante');
+              });
+            }
           }
         });
       }

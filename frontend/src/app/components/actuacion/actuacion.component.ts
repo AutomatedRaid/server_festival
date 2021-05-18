@@ -52,7 +52,7 @@ export class ActuacionComponent implements OnInit {
   }
 
   async guardarActuacion(actForm: NgForm) {
-    if (actForm.value.nombre != '' && actForm.value.descripcion != '' && actForm.value.ubicacion != '' && this.horaFinv != '' && this.horaIniciov != '' && this.file1 != null && this.file2 != null && this.artistas.length > 0) {
+    if (actForm.value.nombre != '' && actForm.value.descripcion != '' && actForm.value.ubicacion != '' && this.horaFinv != '' && this.horaIniciov != '' && this.artistas.length > 0) {
       const elems = document.getElementById('modal1');
       const instances = M.Modal.init(elems, {dismissible:false});
       instances.open();
@@ -64,10 +64,18 @@ export class ActuacionComponent implements OnInit {
       actuacion.descripcion = actForm.value.descripcion;
       let err = false;
       try {
-        actuacion.img = await this.uploadimg(this.file1);
-        this.alertBody = 'Guardando imagen: ' + this.file2.name;
-        progressbar.setAttribute('value', String(0));
-        actuacion.img_mapa = await this.uploadimg(this.file2);
+        if(this.file1 != null) {
+          actuacion.img = await this.uploadimg(this.file1);
+          this.alertBody = 'Guardando imagen: ' + this.file2.name;
+          progressbar.setAttribute('value', String(0));
+        }else{
+          actuacion.img = this.ngModel.img;
+        }
+        if(this.file2 != null){
+          actuacion.img_mapa = await this.uploadimg(this.file2);
+        }else{
+          actuacion.img_mapa = this.ngModel.img_mapa;
+        }
       }catch (e) {
         err = true;
         instances.close();
@@ -82,11 +90,13 @@ export class ActuacionComponent implements OnInit {
               instances.close();
             });
           } else {
-            this.eventService.postActuacion(actuacion).subscribe(() => {
-              this.toast('Actuacion guardada correctamente');
-              this.router.navigate(['/']);
-              instances.close();
-            });
+            if(this.file1 != null && this.file2 != null) {
+              this.eventService.postActuacion(actuacion).subscribe(() => {
+                this.toast('Actuacion guardada correctamente');
+                this.router.navigate(['/']);
+                instances.close();
+              });
+            }else{this.toast('Faltan datos')}
           }
         });
       }
@@ -177,8 +187,10 @@ export class ActuacionComponent implements OnInit {
     time_fin.value = this.actuacion.horario.split(' - ')[1];
     this.horaFinv = this.actuacion.horario.split(' - ')[1];
     this.artistas = this.actuacion.artistas;
-    this.file1 = this.actuacion.img;
-    this.file2 = this.actuacion.img_mapa;
+/*    this.file1 = this.actuacion.img;
+    this.file2 = this.actuacion.img_mapa;*/
+    this.ngModel.img = this.actuacion.img;
+    this.ngModel.img_mapa = this.actuacion.img_mapa;
     this.img = this.actuacion.img;
     this.img2 = this.actuacion.img_mapa;
   }

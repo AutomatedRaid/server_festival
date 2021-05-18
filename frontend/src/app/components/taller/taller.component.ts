@@ -70,8 +70,10 @@ export class TallerComponent implements OnInit {
     this.horaFinv = this.taller.horario.split(' - ')[1];
     this.img = this.taller.img;
     this.img2 = this.taller.img_mapa;
-    this.file1 = this.taller.img;
-    this.file2 = this.taller.img_mapa;
+    this.ngModel.img = this.taller.img;
+    this.ngModel.img_mapa = this.taller.img_mapa;
+    /*    this.file1 = this.taller.img;
+        this.file2 = this.taller.img_mapa;*/
   }
 
   async guardarTaller(actForm: NgForm) {
@@ -87,10 +89,18 @@ export class TallerComponent implements OnInit {
       taller.descripcion = actForm.value.descripcion;
       let err = false;
       try {
-        taller.img = await this.uploadimg(this.file1);
-        this.alertBody = 'Guardando imagen: ' + this.file2.name;
-        progressbar.setAttribute('value', String(0));
-        taller.img_mapa = await this.uploadimg(this.file2);
+        if(this.file1 != null) {
+          taller.img = await this.uploadimg(this.file1);
+          this.alertBody = 'Guardando imagen: ' + this.file2.name;
+          progressbar.setAttribute('value', String(0));
+        }else{
+          taller.img = this.ngModel.img;
+        }
+        if(this.file2 != null){
+          taller.img_mapa = await this.uploadimg(this.file2);
+        }else {
+          taller.img_mapa = this.ngModel.img_mapa;
+        }
       }catch (e) {
         err = true;
         instances.close();
@@ -105,11 +115,13 @@ export class TallerComponent implements OnInit {
               instances.close();
             });
           } else {
-            this.eventService.postTaller(taller).subscribe(() => {
-              this.toast('Taller guardado correctamente');
-              this.router.navigate(['/']);
-              instances.close();
-            });
+            if(this.file1 != null && this.file2 != null) {
+              this.eventService.postTaller(taller).subscribe(() => {
+                this.toast('Taller guardado correctamente');
+                this.router.navigate(['/']);
+                instances.close();
+              });
+            }else{this.toast('Faltan datos')}
           }
         });
       }
