@@ -12,8 +12,7 @@ import {Restaurante} from "../../models/restaurante";
 import {DatosContacto} from "../../models/datosContacto";
 
 declare const M: any;
-// const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/djlgdcqhg/image/upload';
-// const CLOUDINARY_UPLOAD_PRESET = 'rdzzccwc';
+
 let progressbar: any = null;
 
 @Component({
@@ -43,6 +42,8 @@ export class HomeComponent implements OnInit {
   alertbody: string;
   alertBody = '';
   idFAQEdit = '';
+
+  faqsinstance: any;
 
   constructor(private eventoService: EventoService, private authService: AuthService,  private router: Router) {
     this.ngModel = new Comollegar("", "", "", "", "");
@@ -88,12 +89,16 @@ export class HomeComponent implements OnInit {
         label.classList.add('active');
       }
     });
+
+    const elems = document.getElementById('modalFAQs');
+    this.faqsinstance = M.Modal.init(elems, {dismissible: false});
   }
 
   async uploadimg(file: File) {
     let e = new FormData();
     e.append('image', file);
-    let url = 'http://localhost:3000/api/adminapp/image';
+    let url = this.eventoService.URL_API_ADMIN+'/image';
+    //let url = 'http://localhost:3000/api/adminapp/image';
     const res = await axios.post(url, e, {
         headers: {
           'Content-Type': 'multipart/form-data'
@@ -108,7 +113,7 @@ export class HomeComponent implements OnInit {
   }
 
   onSelectFile(event, n) {
-    if (event.target.files && event.target.files[0]) {
+    if (event.target.files[0].size < 2097152 && event.target.files[0].type == 'image/png' || event.target.files[0].type == 'image/jpg' || event.target.files[0].type == 'image/jpeg') {
       switch (n) {
         case 1:
           this.file1 = event.target.files[0];
@@ -130,42 +135,44 @@ export class HomeComponent implements OnInit {
           };
           break;
       }
+    }else{
+      this.toast('Imagen incorrecta, debe pesar menos de 2Mb y ser .png .jpg .jpeg');
     }
   }
 
   async guardarCambios() {
-    this.alertBody = 'Guardando imagen: ' + this.file1.name;
-    const elems = document.getElementById('modal2');
-    const instances = M.Modal.init(elems, {dismissible: false});
-    instances.open();
-    const mapa: Mapa = new Mapa();
-    let err = false;
-    try {
-      mapa.imagen = await this.uploadimg(this.file1);
-    }catch (e) {
-      this.toast('Imagen incorrecta, debe pesar menos de 2Mb y ser .png .jpg .jpeg');
-      err = true;
-    }
-    if(!err) {
-      this.eventoService.postMapa(mapa).subscribe(() => {
-        this.toast('Mapa guardado correctamente');
+    if(this.file1 != null) {
+      this.alertBody = 'Guardando imagen: ' + this.file1.name;
+      const elems = document.getElementById('modal2');
+      const instances = M.Modal.init(elems, {dismissible: false});
+      instances.open();
+      const mapa: Mapa = new Mapa();
+      let err = false;
+      try {
+        mapa.imagen = await this.uploadimg(this.file1);
+      } catch (e) {
+        err = true;
         instances.close();
-      });
+        this.toast('Hubo un error inesperado')
+      }
+      if (!err) {
+        this.eventoService.postMapa(mapa).subscribe(() => {
+          this.toast('Mapa guardado correctamente');
+          instances.close();
+          this.file1 = null;
+        });
+      }
     }else{
-      instances.close()
+      this.toast('No se han detectdo cambios')
     }
   }
 
   addFAQ() {
-    var elems = document.getElementById('modalFAQs');
-    var instances = M.Modal.init(elems, {dismissible: false});
-    instances.open();
+    this.faqsinstance.open();
   }
 
   guardarFAQs(question: HTMLTextAreaElement, answer: HTMLTextAreaElement) {
     if (question.value != "" && answer.value != '') {
-      var elems = document.getElementById('modalFAQs');
-      var instances = M.Modal.init(elems, {dismissible: false});
       if (this.idFAQEdit == '') {
         this.eventoService.postFAQs({question: question.value, answer: answer.value}).subscribe(res => {
           this.toast('FAQ guardada');
@@ -193,7 +200,7 @@ export class HomeComponent implements OnInit {
           this.idFAQEdit = '';
         });
       }
-      instances.close();
+      this.faqsinstance.close();
     } else
       this.toast('Faltan datos');
   }
@@ -209,9 +216,7 @@ export class HomeComponent implements OnInit {
       answerlbl.classList.add('active');
       this.idFAQEdit = r._id;
     });
-    var elems = document.getElementById('modalFAQs');
-    var instances = M.Modal.init(elems, {dismissible: false});
-    instances.open();
+    this.faqsinstance.open();
   }
 
   deleteFAQ(id: string) {
@@ -227,28 +232,38 @@ export class HomeComponent implements OnInit {
   }
 
   async guardarComoLlegar(cmllForm: NgForm) {
-    if (cmllForm.value.nombre != '' && cmllForm.value.ubicompleta != '' && cmllForm.value.urlmapa != '' && this.imgcmll != '') {
+    if (cmllForm.value.nombre != '' && cmllForm.value.ubicompleta != '' && cmllForm.value.urlmapa != '') {
       const elems = document.getElementById('modal2');
       const instances = M.Modal.init(elems, {dismissible: false});
       let cmllegar = new Comollegar(this.ngModel._id, this.ngModel.nombre, this.ngModel.ubicompleta, this.ngModel.urlmapa);
-      if(this.file2 != null) {
-        this.alertBody = 'Guardando imagen: ' + this.file2.name;
-        instances.open();
-        cmllegar.img = await this.uploadimg(this.file2);
+      let err = false;
+      try {
+        if (this.file2 != null) {
+          this.alertBody = 'Guardando imagen: ' + this.file2.name;
+          instances.open();
+          cmllegar.img = await this.uploadimg(this.file2);
+        }
+      }catch (e) {
+        err = true;
+        instances.close();
+        this.toast('Hubo un error inesperado')
       }
-      if (this.ngModel._id == '') {
-        await this.eventoService.postComoLlegar(cmllegar).subscribe(res => {
-          this.toast('Como llegar guardado');
-          instances.close();
-        });
-      } else {
-        await this.eventoService.putComoLlegar(cmllegar._id , cmllegar).subscribe(res => {
-          this.toast('Como llegar guardado');
-          instances.close();
-        });
+      if(!err) {
+        if (this.ngModel._id == '') {
+          await this.eventoService.postComoLlegar(cmllegar).subscribe(res => {
+            this.toast('Como llegar guardado');
+            instances.close();
+          });
+        } else {
+          await this.eventoService.putComoLlegar(cmllegar._id, cmllegar).subscribe(res => {
+            this.toast('Como llegar guardado');
+            instances.close();
+          });
+        }
       }
-    } else
-      this.toast('Faltan datos');
+    } else {
+        this.toast('Faltan datos');
+    }
   }
 
   confirmdelete(_id: string, nombre: string, table: number) {

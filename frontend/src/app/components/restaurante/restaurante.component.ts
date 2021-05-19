@@ -52,7 +52,7 @@ export class RestauranteComponent implements OnInit {
         });
       }
     });
-    var elems = document.querySelectorAll('.timepicker');
+    let elems = document.querySelectorAll('.timepicker');
     M.Timepicker.init(elems, {
       defaultTime: '9:00',
       twelveHour: false,
@@ -86,8 +86,8 @@ export class RestauranteComponent implements OnInit {
       const label = <HTMLLabelElement>document.getElementById(labels[i]);
       label.classList.add('active');
     }
-    this.file1 = this.restaurante.imagen;
-    this.file3 = this.restaurante.img_mapa;
+    /*this.file1 = this.restaurante.imagen;
+    this.file3 = this.restaurante.img_mapa;*/
     this.img1 = this.restaurante.imagen;
     this.img3 = this.restaurante.img_mapa;
   }
@@ -101,36 +101,52 @@ export class RestauranteComponent implements OnInit {
       this.restaurante.nombre = actForm.value.nombre;
       this.restaurante.localizacion = actForm.value.localizacion;
       this.restaurante.horario = this.horaIniciov + ' - ' + this.horaFinv;
-      for (let i = 0; i < this.files.length; i++) {
-        progressbar.setAttribute('value', String(0));
-        this.restaurante.imagenes_carta.push(await this.uploadimg(this.files[i]));
-      }
-      progressbar.setAttribute('value', String(0));
-      this.restaurante.imagen = await this.uploadimg(this.file1);
-      progressbar.setAttribute('value', String(0));
-      this.restaurante.img_mapa = await this.uploadimg(this.file3);
-      this.route.paramMap.subscribe(params => {
-        if (params.has("id")) {
-          this.eventService.putRestaurante(params.get("id"), this.restaurante).subscribe(() => {
-            this.toast('Restaurante guardado correctamente');
-            this.router.navigate(['/']);
-            instances.close();
-          },error => {
-            instances.close();
-            this.toast('Error al guardar el restaurante');
-          });
-        } else {
-          this.eventService.postRestaurante(this.restaurante).subscribe(() => {
-            this.toast('Restaurante guardado correctamente');
-            this.router.navigate(['/']);
-            instances.close();
-          },error => {
-            instances.close();
-            this.toast('Error al guardar el restaurante');
-          });
+      let err = false;
+      try {
+        if(this.files != null && this.files.length > 0) {
+          for (let i = 0; i < this.files.length; i++) {
+            progressbar.setAttribute('value', String(0));
+            this.restaurante.imagenes_carta.push(await this.uploadimg(this.files[i]));
+          }
         }
-      });
-
+        if(this.file1 != null) {
+          progressbar.setAttribute('value', String(0));
+          this.restaurante.imagen = await this.uploadimg(this.file1);
+        }
+        if(this.file3 != null) {
+          progressbar.setAttribute('value', String(0));
+          this.restaurante.img_mapa = await this.uploadimg(this.file3);
+        }
+      }catch (e) {
+        err = true;
+        instances.close();
+        this.toast('Hubo un error inesperado')
+      }
+      if(!err) {
+        this.route.paramMap.subscribe(params => {
+          if (params.has("id")) {
+            this.eventService.putRestaurante(params.get("id"), this.restaurante).subscribe(() => {
+              this.toast('Restaurante guardado correctamente');
+              this.router.navigate(['/']);
+              instances.close();
+            }, error => {
+              instances.close();
+              this.toast('Error al guardar el restaurante');
+            });
+          } else {
+            if(this.file1 != null && this.file3 != null && this.files.length > 0) {
+              this.eventService.postRestaurante(this.restaurante).subscribe(() => {
+                this.toast('Restaurante guardado correctamente');
+                this.router.navigate(['/']);
+                instances.close();
+              }, error => {
+                instances.close();
+                this.toast('Error al guardar el restaurante');
+              });
+            }
+          }
+        });
+      }
     } else {
       this.toast('Debe completar todos los campos primero');
     }
@@ -139,7 +155,8 @@ export class RestauranteComponent implements OnInit {
   async uploadimg(file: File) {
     let e = new FormData();
     e.append('image', file);
-    let url = 'http://localhost:3000/api/adminapp/image';
+    let url = this.eventService.URL_API_ADMIN+'/image';
+    //let url = 'http://localhost:3000/api/adminapp/image';
     const res = await axios.post(url, e, {
         headers: {
           'Content-Type': 'multipart/form-data'
@@ -198,7 +215,7 @@ export class RestauranteComponent implements OnInit {
   }
 
   onSelectFile(event, n: number) {
-    if (event.target.files && event.target.files[0]) {
+    if (event.target.files[0].size < 2097152 && event.target.files[0].type == 'image/png' || event.target.files[0].type == 'image/jpg' || event.target.files[0].type == 'image/jpeg') {
       const reader = new FileReader();
       switch (n) {
         case 1:
@@ -222,7 +239,9 @@ export class RestauranteComponent implements OnInit {
             this.img3 = eventt.target.result;
           };
           break;
-    }
+      }
+    }else{
+      this.toast('Imagen incorrecta, debe pesar menos de 2Mb y ser .png .jpg .jpeg');
     }
   }
 }

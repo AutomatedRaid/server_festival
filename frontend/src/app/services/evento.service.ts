@@ -208,7 +208,7 @@ export class EventoService {
   }
 
   postImage(file: FormData) {
-    return this.http.post("http://localhost:3000/api/adminapp" + '/image', file, {
+    return this.http.post(this.URL_API_ADMIN + '/image', file, {
       headers: new HttpHeaders({
         'x-access-token': ('Bearer ' + this.authServise.getToken())
       })

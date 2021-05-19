@@ -70,8 +70,10 @@ export class TallerComponent implements OnInit {
     this.horaFinv = this.taller.horario.split(' - ')[1];
     this.img = this.taller.img;
     this.img2 = this.taller.img_mapa;
-    this.file1 = this.taller.img;
-    this.file2 = this.taller.img_mapa;
+    this.ngModel.img = this.taller.img;
+    this.ngModel.img_mapa = this.taller.img_mapa;
+    /*    this.file1 = this.taller.img;
+        this.file2 = this.taller.img_mapa;*/
   }
 
   async guardarTaller(actForm: NgForm) {
@@ -85,33 +87,51 @@ export class TallerComponent implements OnInit {
       taller.ubicacion = actForm.value.ubicacion;
       taller.horario = this.horaIniciov + ' - ' + this.horaFinv;
       taller.descripcion = actForm.value.descripcion;
-      taller.img = await this.uploadimg(this.file1);
-      this.alertBody = 'Guardando imagen: ' + this.file2.name;
-      progressbar.setAttribute('value', String(0));
-      taller.img_mapa = await this.uploadimg(this.file2);
-      this.route.paramMap.subscribe(params => {
-        if (params.has("id")) {
-          this.eventService.putTaller(params.get("id"), taller).subscribe(() => {
-            this.toast('Taller guardado correctamente');
-            this.router.navigate(['/']);
-            instances.close();
-          });
+      let err = false;
+      try {
+        if(this.file1 != null) {
+          taller.img = await this.uploadimg(this.file1);
+          this.alertBody = 'Guardando imagen: ' + this.file2.name;
+          progressbar.setAttribute('value', String(0));
+        }else{
+          taller.img = this.ngModel.img;
         }
-        else {
-          this.eventService.postTaller(taller).subscribe(() => {
-            this.toast('Taller guardado correctamente');
-            this.router.navigate(['/']);
-            instances.close();
-          });
+        if(this.file2 != null){
+          taller.img_mapa = await this.uploadimg(this.file2);
+        }else {
+          taller.img_mapa = this.ngModel.img_mapa;
         }
-      });
+      }catch (e) {
+        err = true;
+        instances.close();
+        this.toast('Hubo un error inesperado')
+      }
+      if(!err) {
+        this.route.paramMap.subscribe(params => {
+          if (params.has("id")) {
+            this.eventService.putTaller(params.get("id"), taller).subscribe(() => {
+              this.toast('Taller guardado correctamente');
+              this.router.navigate(['/']);
+              instances.close();
+            });
+          } else {
+            if(this.file1 != null && this.file2 != null) {
+              this.eventService.postTaller(taller).subscribe(() => {
+                this.toast('Taller guardado correctamente');
+                this.router.navigate(['/']);
+                instances.close();
+              });
+            }else{this.toast('Faltan datos')}
+          }
+        });
+      }
     } else {
       this.toast('Debe completar todos los campos primero');
     }
   }
 
   onSelectFile(event, n) {
-    if (event.target.files && event.target.files[0]) {
+    if (event.target.files[0].size < 2097152 && event.target.files[0].type == 'image/png' || event.target.files[0].type == 'image/jpg' || event.target.files[0].type == 'image/jpeg') {
       switch (n) {
         case 1:
           this.file1 = event.target.files[0];
@@ -133,13 +153,16 @@ export class TallerComponent implements OnInit {
           };
           break;
       }
+    }else{
+      this.toast('Imagen incorrecta, debe pesar menos de 2Mb y ser .png .jpg .jpeg');
     }
   }
 
   async uploadimg(file: File) {
     let e = new FormData();
     e.append('image', file);
-    let url = 'http://localhost:3000/api/adminapp/image';
+    let url = this.eventService.URL_API_ADMIN+'/image';
+    //let url = 'http://localhost:3000/api/adminapp/image';
     const res = await axios.post(url, e, {
         headers: {
           'Content-Type': 'multipart/form-data'
