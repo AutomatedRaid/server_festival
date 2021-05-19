@@ -237,7 +237,6 @@ adminappCtrl.image = async (file, res) => {
 
 adminappCtrl.createDatosContacto = async (req, res) => {
     try{
-        console.log(req);
         const datoscontacto = new DatosContacto({
             numero: req.body.numero,
             correo: req.body.correo,
