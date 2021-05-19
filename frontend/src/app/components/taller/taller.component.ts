@@ -72,13 +72,11 @@ export class TallerComponent implements OnInit {
     this.img2 = this.taller.img_mapa;
     this.ngModel.img = this.taller.img;
     this.ngModel.img_mapa = this.taller.img_mapa;
-    /*    this.file1 = this.taller.img;
-        this.file2 = this.taller.img_mapa;*/
   }
 
   async guardarTaller(actForm: NgForm) {
-    if (actForm.value.nombre != '' && actForm.value.descripcion != '' && actForm.value.ubicacion != '' && this.horaFinv != '' && this.horaIniciov != '' && this.file1 != null && this.file2 != null) {
-      this.alertBody = 'Guardando imagen: ' + this.file1.name;
+    if (actForm.value.nombre != '' && actForm.value.descripcion != '' && actForm.value.ubicacion != '' && this.horaFinv != '' && this.horaIniciov != '') {
+
       const elems = document.getElementById('modal1');
       const instances = M.Modal.init(elems, {dismissible:false});
       instances.open();
@@ -90,13 +88,14 @@ export class TallerComponent implements OnInit {
       let err = false;
       try {
         if(this.file1 != null) {
+          this.alertBody = 'Guardando imagen: ' + this.file1.name;
           taller.img = await this.uploadimg(this.file1);
-          this.alertBody = 'Guardando imagen: ' + this.file2.name;
-          progressbar.setAttribute('value', String(0));
         }else{
           taller.img = this.ngModel.img;
         }
         if(this.file2 != null){
+          progressbar.setAttribute('value', String(0));
+          this.alertBody = 'Guardando imagen: ' + this.file2.name;
           taller.img_mapa = await this.uploadimg(this.file2);
         }else {
           taller.img_mapa = this.ngModel.img_mapa;

@@ -65,13 +65,14 @@ export class ActuacionComponent implements OnInit {
       let err = false;
       try {
         if(this.file1 != null) {
+          this.alertBody = 'Guardando imagen: ' + this.file1.name;
           actuacion.img = await this.uploadimg(this.file1);
-          this.alertBody = 'Guardando imagen: ' + this.file2.name;
-          progressbar.setAttribute('value', String(0));
         }else{
           actuacion.img = this.ngModel.img;
         }
         if(this.file2 != null){
+          this.alertBody = 'Guardando imagen: ' + this.file2.name;
+          progressbar.setAttribute('value', String(0));
           actuacion.img_mapa = await this.uploadimg(this.file2);
         }else{
           actuacion.img_mapa = this.ngModel.img_mapa;
@@ -79,6 +80,7 @@ export class ActuacionComponent implements OnInit {
       }catch (e) {
         err = true;
         instances.close();
+        console.log(e);
         this.toast('Hubo un error inesperado')
       }
       if(!err) {
@@ -187,8 +189,6 @@ export class ActuacionComponent implements OnInit {
     time_fin.value = this.actuacion.horario.split(' - ')[1];
     this.horaFinv = this.actuacion.horario.split(' - ')[1];
     this.artistas = this.actuacion.artistas;
-/*    this.file1 = this.actuacion.img;
-    this.file2 = this.actuacion.img_mapa;*/
     this.ngModel.img = this.actuacion.img;
     this.ngModel.img_mapa = this.actuacion.img_mapa;
     this.img = this.actuacion.img;
