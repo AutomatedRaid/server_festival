@@ -20,6 +20,7 @@ export class ActuacionComponent implements OnInit {
   ngModel: Actuacion;
   horaIniciov = '';
   horaFinv = '';
+  fecha = '';
   artistas: String[] = [];
   img: String | ArrayBuffer = 'assets/images/img-not-found.png'; img2: String | ArrayBuffer = 'assets/images/img-not-found.png';
   private file1: any; private file2: any;
@@ -49,10 +50,15 @@ export class ActuacionComponent implements OnInit {
       twelveHour: false,
       i18n: {cancel: 'Cancelar', done: 'Aceptar'}
     });
+    const elems2 = document.querySelectorAll('.datepicker');
+    M.Datepicker.init(elems2, {
+      i18n: {cancel: 'Cancelar', done: 'Aceptar'},
+      format: 'dd-mm-yyyy',
+    });
   }
 
   async guardarActuacion(actForm: NgForm) {
-    if (actForm.value.nombre != '' && actForm.value.descripcion != '' && actForm.value.ubicacion != '' && this.horaFinv != '' && this.horaIniciov != '' && this.artistas.length > 0) {
+    if (actForm.value.nombre != '' && actForm.value.descripcion != '' && actForm.value.ubicacion != '' && this.fecha != '' && this.horaFinv != '' && this.horaIniciov != '' && this.artistas.length > 0) {
       const elems = document.getElementById('modal1');
       const instances = M.Modal.init(elems, {dismissible:false});
       instances.open();
@@ -60,6 +66,7 @@ export class ActuacionComponent implements OnInit {
       actuacion.nombre = actForm.value.nombre;
       actuacion.ubicacion = actForm.value.ubicacion;
       actuacion.horario = this.horaIniciov + ' - ' + this.horaFinv;
+      actuacion.fecha = this.fecha;
       actuacion.artistas = this.artistas;
       actuacion.descripcion = actForm.value.descripcion;
       let err = false;
@@ -176,8 +183,9 @@ export class ActuacionComponent implements OnInit {
     this.ngModel.descripcion = this.actuacion.descripcion;
     this.ngModel.ubicacion = this.actuacion.ubicacion;
     const time_inicio = <HTMLInputElement>document.getElementById('time-inicio');
+    const fecha = <HTMLInputElement>document.getElementById('fecha');
     time_inicio.value = this.actuacion.horario.split(' - ')[0];
-    const labels = ['label1','label2','label3','label4', 'label5'];
+    const labels = ['label1','label2','label3','label4', 'label5, label6'];
     for (let i = 0; i < labels.length; i++) {
       const label = <HTMLLabelElement>document.getElementById(labels[i]);
       label.classList.add('active');
