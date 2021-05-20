@@ -2,6 +2,7 @@ export class Actuacion {
   _id: string;
   nombre: String;
   horario: String;
+  fecha: string;
   artistas: String[];
   descripcion: String;
   zona: String;
@@ -10,10 +11,11 @@ export class Actuacion {
   ubicacion: String;
 
 
-  constructor(id = "", nombre = "", horario = "", artistas = [], descripcion = "", zona = "", img = "", img_mapa = "", ubicacion = "") {
+  constructor(id = "", nombre = "", horario = "", fecha = "", artistas = [], descripcion = "", zona = "", img = "", img_mapa = "", ubicacion = "") {
     this._id = id;
     this.nombre = nombre;
     this.horario = horario;
+    this.fecha = fecha;
     this.artistas = artistas;
     this.descripcion = descripcion;
     this.zona = zona;

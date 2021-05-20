@@ -13,6 +13,7 @@ adminappCtrl.createActuacion = async (req, res) => {
         const actuacion = new Actuacion({
             nombre: req.body.nombre,
             horario: req.body.horario,
+            fecha: req.body.fecha,
             artistas: req.body.artistas,
             descripcion: req.body.descripcion,
             zona: req.body.zona,
@@ -32,6 +33,7 @@ adminappCtrl.editActuacion = async (req, res) => {
         const actuacion = {
             nombre: req.body.nombre,
             horario: req.body.horario,
+            fecha: req.body.fecha,
             artistas: req.body.artistas,
             descripcion: req.body.descripcion,
             zona: req.body.zona,
@@ -60,6 +62,7 @@ adminappCtrl.createTaller = async (req, res) => {
         const taller = new Taller({
             nombre: req.body.nombre,
             horario: req.body.horario,
+            fecha: req.body.fecha,
             descripcion: req.body.descripcion,
             zona: req.body.zona,
             img: req.body.img,
@@ -78,6 +81,7 @@ adminappCtrl.editTaller = async (req, res) => {
         const taller = {
             nombre: req.body.nombre,
             horario: req.body.horario,
+            fecha: req.body.fecha,
             descripcion: req.body.descripcion,
             zona: req.body.zona,
             img: req.body.img,
@@ -237,7 +241,6 @@ adminappCtrl.image = async (file, res) => {
 
 adminappCtrl.createDatosContacto = async (req, res) => {
     try{
-        console.log(req);
         const datoscontacto = new DatosContacto({
             numero: req.body.numero,
             correo: req.body.correo,

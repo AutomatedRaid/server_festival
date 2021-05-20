@@ -4,6 +4,7 @@ const {Schema} = mongoose;
 const ActuacionSchema = new Schema({
     nombre: String,
     horario: String,
+    fecha: String,
     artistas: [String],
     descripcion: String,
     img: String,

@@ -1,7 +1,7 @@
 <nav>
   <div class="nav-wrapper" style="padding-left: 5%;padding-right: 5%; background: #0cbf41;">
-    <label class="brand-logo left" routerLink="/imagenes" style="height: 100%">
-      <img src="assets/images/imagenico.png" style="height: 100%; cursor: pointer"></label>
+<!--    <label class="brand-logo left" routerLink="/imagenes" style="height: 100%">-->
+<!--      <img src="assets/images/imagenico.png" style="height: 100%; cursor: pointer"></label>-->
     <label class="brand-logo center" routerLink="/" style="height: 100%">
       <img src="assets/images/logo_cocodrilo_fondotransparente.png" style="height: 100%; cursor: pointer"
            routerLink="/"></label>
@@ -24,6 +24,11 @@
         <input type="text" id="time-fin" class="timepicker" name="horafin" readonly #horaFin
                (change)="horaFinv = horaFin.value">
         <label id="label3" for="time-fin" class="text-input">Hora fin</label>
+      </div>
+      <div class="input-field input-div">
+        <input type="text" id="fecha" class="datepicker" name="fecha" readonly #fech
+               (change)="fecha = fech.value">
+        <label id="label6" for="fecha" class="text-input">Fecha</label>
       </div>
       <label class="text-input">Artistas (max 25)</label>
       <div class="row">
