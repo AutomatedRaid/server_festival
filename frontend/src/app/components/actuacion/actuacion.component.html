@@ -1,7 +1,7 @@
 <nav>
   <div class="nav-wrapper" style="padding-left: 5%;padding-right: 5%; background: #0cbf41;">
-    <label class="brand-logo left" routerLink="/imagenes" style="height: 100%">
-      <img src="assets/images/imagenico.png" style="height: 100%; cursor: pointer"></label>
+<!--    <label class="brand-logo left" routerLink="/imagenes" style="height: 100%">-->
+<!--      <img src="assets/images/imagenico.png" style="height: 100%; cursor: pointer"></label>-->
     <label class="brand-logo center" routerLink="/" style="height: 100%">
       <img src="assets/images/logo_cocodrilo_fondotransparente.png" style="height: 100%; cursor: pointer"
            routerLink="/"></label>
@@ -26,9 +26,9 @@
         <label id="label3" for="time-fin" class="text-input">Hora fin</label>
       </div>
       <div class="input-field input-div">
-        <input type="text" id="fecha" class="datepicker" name="fecha"> <!--readonly #fecha
-               (change)="fecha = fecha.value"-->
-        <label id="label4" for="fecha" class="text-input">Fecha</label>
+        <input type="text" id="fecha" class="datepicker" name="fecha" readonly #fech
+               (change)="fecha = fech.value">
+        <label id="label6" for="fecha" class="text-input">Fecha</label>
       </div>
       <label class="text-input">Artistas (max 25)</label>
       <div class="row">
@@ -47,7 +47,7 @@
       <div class="input-field input-div">
         <textarea type="text" id="descripcion" class="materialize-textarea" name="descripcion"
                   [(ngModel)]="ngModel.descripcion"></textarea>
-        <label id="label5" for="descripcion" class="text-input">Descripción</label>
+        <label id="label4" for="descripcion" class="text-input">Descripción</label>
       </div>
       <div class="row valign-wrapper">
         <div class="col s6">
@@ -85,7 +85,7 @@
       </div>
       <div class="input-field input-div">
         <input id="ubicacion" type="text" name="ubicacion" [(ngModel)]="ngModel.ubicacion" maxlength="20">
-        <label id="label6" for="ubicacion" class="text-input">Ubicación breve(max 20)</label>
+        <label id="label5" for="ubicacion" class="text-input">Ubicación breve(max 20)</label>
       </div>
       <div class="row" style="margin-top: 50px">
         <div class="col s1"></div>

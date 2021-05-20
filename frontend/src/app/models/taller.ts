@@ -2,7 +2,7 @@ export class Taller {
   _id: string;
   nombre: String;
   horario: String;
-  fecha: String;
+  fecha: string;
   descripcion: String;
   zona: String;
   img: String;

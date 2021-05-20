@@ -23,6 +23,7 @@ export class TallerComponent implements OnInit {
   ngModel: Taller;
   horaIniciov = '';
   horaFinv = '';
+  fecha = '';
   img: String | ArrayBuffer = 'assets/images/img-not-found.png'; img2: String | ArrayBuffer = 'assets/images/img-not-found.png';
   private file1: any; private file2: any;
   taller: Taller;
@@ -51,18 +52,26 @@ export class TallerComponent implements OnInit {
       twelveHour: false,
       i18n: {cancel: 'Cancelar', done: 'Aceptar'}
     });
+    const elems2 = document.querySelectorAll('.datepicker');
+    M.Datepicker.init(elems2, {
+      i18n: {cancel: 'Cancelar', done: 'Aceptar'},
+      format: 'dd-mm-yyyy',
+    });
   }
 
   private inicializarDatos() {
     this.ngModel.nombre = this.taller.nombre;
     this.ngModel.descripcion = this.taller.descripcion;
     this.ngModel.ubicacion = this.taller.ubicacion;
-    const labels = ['label1','label2','label3','label4','label5'];
+    const labels = ['label1','label2','label3','label4','label5', 'label6'];
     for (let i = 0; i < labels.length; i++) {
       const label = <HTMLLabelElement>document.getElementById(labels[i]);
       label.classList.add('active');
     }
+    const fecha = <HTMLInputElement>document.getElementById('fecha');
+    fecha.value = this.taller.fecha;
     const time_inicio = <HTMLInputElement>document.getElementById('time-inicio');
+    this.fecha = this.taller.fecha;
     time_inicio.value = this.taller.horario.split(' - ')[0];
     this.horaIniciov = this.taller.horario.split(' - ')[0];
     const time_fin = <HTMLInputElement>document.getElementById('time-fin');
@@ -77,7 +86,7 @@ export class TallerComponent implements OnInit {
   }
 
   async guardarTaller(actForm: NgForm) {
-    if (actForm.value.nombre != '' && actForm.value.descripcion != '' && actForm.value.ubicacion != '' && this.horaFinv != '' && this.horaIniciov != '' && this.file1 != null && this.file2 != null) {
+    if (actForm.value.nombre != '' && actForm.value.descripcion != '' && actForm.value.ubicacion != '' && this.horaFinv != '' && this.fecha != '' && this.horaIniciov != '' && this.file1 != null && this.file2 != null) {
       this.alertBody = 'Guardando imagen: ' + this.file1.name;
       const elems = document.getElementById('modal1');
       const instances = M.Modal.init(elems, {dismissible:false});
@@ -86,6 +95,7 @@ export class TallerComponent implements OnInit {
       taller.nombre = actForm.value.nombre;
       taller.ubicacion = actForm.value.ubicacion;
       taller.horario = this.horaIniciov + ' - ' + this.horaFinv;
+      taller.fecha = this.fecha;
       taller.descripcion = actForm.value.descripcion;
       let err = false;
       try {
@@ -104,7 +114,7 @@ export class TallerComponent implements OnInit {
       }catch (e) {
         err = true;
         instances.close();
-        this.toast('Hubo un error inesperado')
+        this.toast('Hubo un error inesperado');
       }
       if(!err) {
         this.route.paramMap.subscribe(params => {

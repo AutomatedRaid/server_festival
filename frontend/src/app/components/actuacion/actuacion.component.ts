@@ -185,12 +185,14 @@ export class ActuacionComponent implements OnInit {
     const time_inicio = <HTMLInputElement>document.getElementById('time-inicio');
     const fecha = <HTMLInputElement>document.getElementById('fecha');
     time_inicio.value = this.actuacion.horario.split(' - ')[0];
-    const labels = ['label1','label2','label3','label4', 'label5, label6'];
+    fecha.value = this.actuacion.fecha;
+    const labels = ['label1','label2','label3','label4', 'label5', 'label6'];
     for (let i = 0; i < labels.length; i++) {
       const label = <HTMLLabelElement>document.getElementById(labels[i]);
       label.classList.add('active');
     }
     this.horaIniciov = this.actuacion.horario.split(' - ')[0];
+    this.fecha = this.actuacion.fecha;
     const time_fin = <HTMLInputElement>document.getElementById('time-fin');
     time_fin.value = this.actuacion.horario.split(' - ')[1];
     this.horaFinv = this.actuacion.horario.split(' - ')[1];

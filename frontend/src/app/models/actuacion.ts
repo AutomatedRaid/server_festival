@@ -2,7 +2,7 @@ export class Actuacion {
   _id: string;
   nombre: String;
   horario: String;
-  fecha: String;
+  fecha: string;
   artistas: String[];
   descripcion: String;
   zona: String;
