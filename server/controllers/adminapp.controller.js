@@ -232,7 +232,7 @@ adminappCtrl.deleteRestaurante = async (req, res) => {
 };
 
 adminappCtrl.image = async (file, res) => {
-  res.status(201).json(("https://angry-bhabha.82-223-151-201.plesk.page/uploads/"+file.file.path.split('\\')[3]));
+  res.status(201).json(("https://angry-bhabha.82-223-151-201.plesk.page/uploads/"+file.file.path.split('/')[2]));
 };
 
 adminappCtrl.createDatosContacto = async (req, res) => {
