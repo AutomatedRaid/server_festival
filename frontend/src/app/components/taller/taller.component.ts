@@ -84,7 +84,7 @@ export class TallerComponent implements OnInit {
   }
 
   async guardarTaller(actForm: NgForm) {
-    if (actForm.value.nombre != '' && actForm.value.descripcion != '' && actForm.value.ubicacion != '' && this.horaFinv != '' && this.fecha != '' && this.horaIniciov != '' && this.file1 != null && this.file2 != null) {
+    if (actForm.value.nombre != '' && actForm.value.descripcion != '' && actForm.value.ubicacion != '' && this.horaFinv != '' && this.fecha != '' && this.horaIniciov != '') {
       const elems = document.getElementById('modal1');
       const instances = M.Modal.init(elems, {dismissible:false});
       instances.open();
