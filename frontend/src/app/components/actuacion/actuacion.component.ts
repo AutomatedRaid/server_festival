@@ -93,17 +93,21 @@ export class ActuacionComponent implements OnInit {
       if(!err) {
         this.route.paramMap.subscribe(params => {
           if (params.has("id")) {
-            this.eventService.putActuacion(params.get("id"), actuacion).subscribe(() => {
+            console.log(actuacion);
+            this.eventService.putActuacion(params.get("id"), actuacion).subscribe(r => {
               this.toast('Actuacion guardada correctamente');
               this.router.navigate(['/']);
               instances.close();
+              console.log(r);
             });
           } else {
             if(this.file1 != null && this.file2 != null) {
-              this.eventService.postActuacion(actuacion).subscribe(() => {
+              console.log(actuacion);
+              this.eventService.postActuacion(actuacion).subscribe(r => {
                 this.toast('Actuacion guardada correctamente');
                 this.router.navigate(['/']);
                 instances.close();
+                console.log(r);
               });
             }else{this.toast('Faltan datos')}
           }
