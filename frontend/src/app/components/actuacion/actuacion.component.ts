@@ -5,6 +5,7 @@ import axios from 'axios';
 import {EventoService} from "../../services/evento.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {AuthService} from "../../services/auth.service";
+import {HttpClient} from "@angular/common/http";
 
 declare const M: any;
 let progressbar: any = null;
@@ -26,9 +27,11 @@ export class ActuacionComponent implements OnInit {
   private file1: any; private file2: any;
   actuacion: Actuacion;
   alertBody = '';
+  duplicate: boolean;
 
-  constructor(private eventService: EventoService, private route: ActivatedRoute,  private router: Router, private authService: AuthService) {
+  constructor(private eventService: EventoService, private route: ActivatedRoute,  private router: Router, private authService: AuthService, private http: HttpClient) {
     this.ngModel = new Actuacion();
+    this.duplicate = false;
   }
 
   ngOnInit() {
@@ -37,10 +40,20 @@ export class ActuacionComponent implements OnInit {
     document.addEventListener('DOMContentLoaded', function () {
     });
     this.route.paramMap.subscribe(params => {
-      if (params.has("id")) {
+      let badid = false;
+      if (params.has("duplicate")) {
+        this.duplicate = true;
+        if (params.get("duplicate") != "duplicate"){
+          badid = true;
+          this.router.navigate(["/"]);
+        }
+      }
+      if (params.has("id") && !badid) {
         this.eventService.getActuacion(params.get("id") || "").subscribe(res => {
           this.actuacion = res as Actuacion;
           this.inicializarDatos();
+        }, () => {
+          this.router.navigate(["/"]);
         });
       }
     });
@@ -56,6 +69,32 @@ export class ActuacionComponent implements OnInit {
       format: 'dd-mm-yyyy',
     });
   }
+
+  private inicializarDatos() {
+    this.ngModel.nombre = this.actuacion.nombre;
+    this.ngModel.descripcion = this.actuacion.descripcion;
+    this.ngModel.ubicacion = this.actuacion.ubicacion;
+    const labels = ['label1','label2','label3','label4', 'label5', 'label6'];
+    for (let i = 0; i < labels.length; i++) {
+      const label = <HTMLLabelElement>document.getElementById(labels[i]);
+      label.classList.add('active');
+    }
+    const fecha = <HTMLInputElement>document.getElementById('fecha');
+    fecha.value = this.actuacion.fecha;
+    this.fecha = this.actuacion.fecha;
+    const time_inicio = <HTMLInputElement>document.getElementById('time-inicio');
+    time_inicio.value = this.actuacion.horario.split(' - ')[0];
+    this.horaIniciov = this.actuacion.horario.split(' - ')[0];
+    const time_fin = <HTMLInputElement>document.getElementById('time-fin');
+    time_fin.value = this.actuacion.horario.split(' - ')[1];
+    this.horaFinv = this.actuacion.horario.split(' - ')[1];
+    this.artistas = this.actuacion.artistas;
+    this.ngModel.img = this.actuacion.img;
+    this.ngModel.img_mapa = this.actuacion.img_mapa;
+    this.img = this.actuacion.img;
+    this.img2 = this.actuacion.img_mapa;
+  }
+
 
   async guardarActuacion(actForm: NgForm) {
     if (actForm.value.nombre != '' && actForm.value.descripcion != '' && actForm.value.ubicacion != '' && this.fecha != '' && this.horaFinv != '' && this.horaIniciov != '' && this.artistas.length > 0) {
@@ -87,17 +126,24 @@ export class ActuacionComponent implements OnInit {
       }catch (e) {
         err = true;
         instances.close();
-        console.log(e);
-        this.toast('Hubo un error inesperado')
+        this.toast('Hubo un error inesperado al guardar las imagenes')
       }
       if(!err) {
         this.route.paramMap.subscribe(params => {
           if (params.has("id")) {
-            this.eventService.putActuacion(params.get("id"), actuacion).subscribe(() => {
-              this.toast('Actuacion guardada correctamente');
-              this.router.navigate(['/']);
-              instances.close();
-            });
+            if (!this.duplicate) {
+              this.eventService.putActuacion(params.get("id"), actuacion).subscribe(() => {
+                this.toast('Actuacion guardada correctamente');
+                this.router.navigate(['/']);
+                instances.close();
+              });
+            }else {
+              this.eventService.postActuacion(actuacion).subscribe(() => {
+                this.toast('Actuacion guardada correctamente');
+                this.router.navigate(['/']);
+                instances.close();
+              });
+            }
           } else {
             if(this.file1 != null && this.file2 != null) {
               this.eventService.postActuacion(actuacion).subscribe(() => {
@@ -178,31 +224,6 @@ export class ActuacionComponent implements OnInit {
       }
     );
     return res.data;
-  }
-
-  private inicializarDatos() {
-    this.ngModel.nombre = this.actuacion.nombre;
-    this.ngModel.descripcion = this.actuacion.descripcion;
-    this.ngModel.ubicacion = this.actuacion.ubicacion;
-    const time_inicio = <HTMLInputElement>document.getElementById('time-inicio');
-    const fecha = <HTMLInputElement>document.getElementById('fecha');
-    time_inicio.value = this.actuacion.horario.split(' - ')[0];
-    fecha.value = this.actuacion.fecha;
-    const labels = ['label1','label2','label3','label4', 'label5', 'label6'];
-    for (let i = 0; i < labels.length; i++) {
-      const label = <HTMLLabelElement>document.getElementById(labels[i]);
-      label.classList.add('active');
-    }
-    this.horaIniciov = this.actuacion.horario.split(' - ')[0];
-    this.fecha = this.actuacion.fecha;
-    const time_fin = <HTMLInputElement>document.getElementById('time-fin');
-    time_fin.value = this.actuacion.horario.split(' - ')[1];
-    this.horaFinv = this.actuacion.horario.split(' - ')[1];
-    this.artistas = this.actuacion.artistas;
-    this.ngModel.img = this.actuacion.img;
-    this.ngModel.img_mapa = this.actuacion.img_mapa;
-    this.img = this.actuacion.img;
-    this.img2 = this.actuacion.img_mapa;
   }
 
   logout() {

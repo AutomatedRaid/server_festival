@@ -32,7 +32,25 @@ if (EventoService) {
       canActivate: [AuthGuard]
     },
     {
+      path: 'actuacion/:id/:duplicate',
+      pathMatch: 'full',
+      component: ActuacionComponent,
+      canActivate: [AuthGuard]
+    },
+    {
       path: 'taller',
+      pathMatch: 'full',
+      component: TallerComponent,
+      canActivate: [AuthGuard]
+    },
+    {
+      path: 'taller/:id',
+      pathMatch: 'full',
+      component: TallerComponent,
+      canActivate: [AuthGuard]
+    },
+    {
+      path: 'taller/:id/:duplicate',
       pathMatch: 'full',
       component: TallerComponent,
       canActivate: [AuthGuard]
@@ -49,12 +67,7 @@ if (EventoService) {
       component: RestauranteComponent,
       canActivate: [AuthGuard]
     },
-    {
-      path: 'taller/:id',
-      pathMatch: 'full',
-      component: TallerComponent,
-      canActivate: [AuthGuard]
-    },
+
     {
       path: 'imagenes',
       pathMatch: 'full',

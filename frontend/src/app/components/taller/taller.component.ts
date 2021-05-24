@@ -8,8 +8,6 @@ import {AuthService} from "../../services/auth.service";
 
 declare const M: any;
 
-const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/djlgdcqhg/image/upload';
-const CLOUDINARY_UPLOAD_PRESET = 'rdzzccwc';
 let progressbar: any = null;
 
 @Component({
@@ -28,9 +26,11 @@ export class TallerComponent implements OnInit {
   private file1: any; private file2: any;
   taller: Taller;
   alertBody = '';
+  duplicate: Boolean;
 
   constructor(private eventService: EventoService, private route: ActivatedRoute, private router: Router, private authService: AuthService) {
     this.ngModel = new Taller();
+    this.duplicate = false
   }
 
   ngOnInit() {
@@ -39,10 +39,20 @@ export class TallerComponent implements OnInit {
     document.addEventListener('DOMContentLoaded', function () {
     });
     this.route.paramMap.subscribe(params => {
-      if (params.has("id")) {
+      let badid = false;
+      if (params.has("duplicate")) {
+        this.duplicate = true;
+        if (params.get("duplicate") != "duplicate"){
+          badid = true;
+          this.router.navigate(["/"]);
+        }
+      }
+      if (params.has("id") && !badid) {
         this.eventService.getTaller(params.get("id") || "").subscribe(res => {
           this.taller = res as Taller;
           this.inicializarDatos();
+        }, () => {
+          this.router.navigate(["/"]);
         });
       }
     });
@@ -70,8 +80,8 @@ export class TallerComponent implements OnInit {
     }
     const fecha = <HTMLInputElement>document.getElementById('fecha');
     fecha.value = this.taller.fecha;
-    const time_inicio = <HTMLInputElement>document.getElementById('time-inicio');
     this.fecha = this.taller.fecha;
+    const time_inicio = <HTMLInputElement>document.getElementById('time-inicio');
     time_inicio.value = this.taller.horario.split(' - ')[0];
     this.horaIniciov = this.taller.horario.split(' - ')[0];
     const time_fin = <HTMLInputElement>document.getElementById('time-fin');
@@ -84,7 +94,7 @@ export class TallerComponent implements OnInit {
   }
 
   async guardarTaller(actForm: NgForm) {
-    if (actForm.value.nombre != '' && actForm.value.descripcion != '' && actForm.value.ubicacion != '' && this.horaFinv != '' && this.fecha != '' && this.horaIniciov != '') {
+    if (actForm.value.nombre != '' && actForm.value.descripcion != '' && actForm.value.ubicacion != ''  && this.fecha != '' && this.horaFinv != '' && this.fecha != '' && this.horaIniciov != '') {
       const elems = document.getElementById('modal1');
       const instances = M.Modal.init(elems, {dismissible:false});
       instances.open();
@@ -112,16 +122,24 @@ export class TallerComponent implements OnInit {
       }catch (e) {
         err = true;
         instances.close();
-        this.toast('Hubo un error inesperado');
+        this.toast('Hubo un error inesperado al guardar las imagenes');
       }
       if(!err) {
         this.route.paramMap.subscribe(params => {
           if (params.has("id")) {
-            this.eventService.putTaller(params.get("id"), taller).subscribe(() => {
-              this.toast('Taller guardado correctamente');
-              this.router.navigate(['/']);
-              instances.close();
-            });
+            if (!this.duplicate) {
+              this.eventService.putTaller(params.get("id"), taller).subscribe(() => {
+                this.toast('Taller guardado correctamente');
+                this.router.navigate(['/']);
+                instances.close();
+              });
+            }else {
+              this.eventService.postTaller(taller).subscribe(() => {
+                this.toast('Taller guardado correctamente');
+                this.router.navigate(['/']);
+                instances.close();
+              });
+            }
           } else {
             if(this.file1 != null && this.file2 != null) {
               this.eventService.postTaller(taller).subscribe(() => {
